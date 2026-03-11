@@ -1,0 +1,105 @@
+*{
+    padding: 0px;
+    margin: 0px;
+}
+main{
+    background-color: #000000;
+}
+
+div.article{
+    align-items: center;
+    text-align: center;
+    color: #ffffff;
+    font-family: Times New Roman, Times, serif;
+    padding-top: 60px;
+}
+div.article-title{
+    text-align: center;
+    color: #ffffff;
+    font-family: Times New Roman, Times, serif;
+    width: 400px;
+    height: 400px;
+}
+.newc{
+    background-color: yellow;
+    border-radius: 8px;
+}
+.features{
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+}
+.features-card{
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    left: 40px;
+    width: 550px;
+    height: 200px;
+    text-align: center;
+    color: #000000;
+    gap: 40px;
+    
+}
+.f-card{
+    background-color: rgb(192, 199, 205);
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.colabration{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    top: 50px;
+    left:  180px;
+    position: absolute;
+    margin: 20px;
+    padding: 30px;
+    width: 650px;
+    height: 300px;
+    gap: 10px;
+}
+.myi{
+    background-color: rgb(68, 104, 171);
+    width: 212px;
+    height: 212px;
+}
+.learners-goals{
+    align-items: center;
+    text-align: center;
+    width: 1,440px;
+    height: 1090px;
+    background-color: #000000;
+    color: seashell;
+    
+}
+
+.knowledge{
+    background-color: #ffffff;
+    width: 1,440px;
+    height: 400px;
+}
+.knowledge-exp{
+    display: block;
+    justify-self: start;
+    align-items: center;
+    background-color: yellow;
+    width: 800px;
+    height: 300px;
+    left: 200px;
+}
+.bt{
+    background-color: #000000;
+    color: #ffffff;
+    height: 30px;
+    width: 100px;
+    border: 2px solid black;
+    border-radius: 8px;
+}

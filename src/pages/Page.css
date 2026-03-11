@@ -3,7 +3,7 @@
     margin: 0px;
 }
 main{
-    background-color: #000000;
+    background-color: #FFFFFF;
 }
 
 div.article{
@@ -21,7 +21,7 @@ div.article-title{
     height: 400px;
 }
 .newc{
-    background-color: yellow;
+    background-color: #F7CA4E;
     border-radius: 8px;
 }
 .features{
@@ -32,25 +32,35 @@ div.article-title{
     justify-content: center;
     align-content: center;
 }
+.feature-c{
+    width: 676px; height: 100px; top: 100px; left: 382px;
+    text-align: center;
+    font-family: DM Sans; font-weight: 700; font-size: 25px; font-style: Bold; line-height: 50px; letter-spacing: 0%;
+}
 .features-card{
     padding: 50px;
     display: flex;
     justify-content: center;
     flex-direction: row;
-    left: 40px;
-    width: 550px;
-    height: 200px;
+    top: 282.51px;
+    left: 121px;
+    width: 1,197px;
+    height: 274px;
     text-align: center;
-    color: #000000;
-    gap: 40px;
+    gap: 23.25px;
     
 }
 .f-card{
-    background-color: rgb(192, 199, 205);
+    background-color: #F5F5F5;
     justify-content: center;
     align-content: center;
     text-align: center;
-    border-radius: 10px;
+    width: 300px;
+    height: 184px;
+    border-radius: 24px;
+    padding: 30px 33px;
+    gap: 26px;
+
 }
 
 .colabration{
@@ -90,7 +100,7 @@ div.article-title{
     display: block;
     justify-self: start;
     align-items: center;
-    background-color: yellow;
+    background-color: #F7CA4E;
     width: 800px;
     height: 300px;
     left: 200px;

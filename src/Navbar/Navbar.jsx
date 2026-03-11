@@ -6,14 +6,14 @@ import Features from '../pages/Features'
 function Navbar() {
     return (
       <div className="header">
-        <div className="nav">
+        <div className="nav-container">
           <div className="logo">
             <Link to="/" className="logo-l">
               <img src="../assets/images/book.png" alt="Logo" />
               <p>LearnFlow</p>
             </Link>
           </div>
-          <div className="navbar">
+          <div className="navba">
             <ul>
               <Link to="/About" className="li-ul">
                 About

@@ -12,15 +12,34 @@ footer{
     padding-left: 42.67px;
     padding-right: 42.67px;
     gap: 349px;
+    top: 120px;
+    position: relative;
 }
 .logo{
     display: block;
-    justify-content: center;
-    flex-direction: column;
+    flex: 1;
+    
+}
+.footer-c{
+    padding-top: 10px;
 }
 .footer-socila-links{
     display: flex;
     width: 431.33px;
     height: 272.33px;
     gap: 42.676px;
+}
+.footer-socila-links-c{
+    padding-top: 10px;
+}
+.hr-content{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    padding: 20px 32px;
+    gap: 64px;
+}
+.footer-sec{
+    display: flex;
+    gap: 10px;
 }

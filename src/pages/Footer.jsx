@@ -10,15 +10,21 @@ export default function () {
             <img src="../assets/images/book.png" alt="Logo" />
             <p>LearnFlow</p>
           </Link>
-          <p>Top learning experiences that create more talent in the world.</p>
+          <div className="footer-c">
+            <p>
+              Top learning experiences that create more talent in the world.
+            </p>
+          </div>
         </div>
         <div className="footer-socila-links">
           <div>
             <h1>Links</h1>
-            <p>About</p>
-            <p>Program</p>
-            <p>Contact us</p>
-            <p>FAQ</p>
+            <div className="footer-socila-links-c">
+              <p>About</p>
+              <p>Program</p>
+              <p>Contact us</p>
+              <p>FAQ</p>
+            </div>
           </div>
           <div>
             <h1>Social</h1>
@@ -31,6 +37,19 @@ export default function () {
             <p>Tearm</p>
             <p>Privacy</p>
           </div>
+        </div>
+      </div>
+      <hr />
+      <div className="hr-content">
+        <div className="footer-sec">
+          <p>© 2024 Kudovia programmers University. All rights reserved.</p>
+        </div>
+
+        <div className="footer-sec">
+          <p>Twitter logo</p>
+          <p>Linkind logo</p>
+          <p>Facebook logo</p>
+          <p>Instagram logo</p>
         </div>
       </div>
     </footer>

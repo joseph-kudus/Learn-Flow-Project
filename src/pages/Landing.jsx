@@ -42,6 +42,7 @@ function Landing() {
                 qualified learners with relevant career path
               </p>
             </div>
+            <div></div>
             <div className="f-card">
               <div className="title">
                 <h3>Collaboration</h3>
@@ -53,20 +54,21 @@ function Landing() {
             </div>
           </div>
           <div className="colabration">
-            <div className="myi">
-              <img src="../assets/images/Frame8754.png" alt="img here" />
-            </div>
-            <div>
-              <div className="colo">
-                <h1>Collaborate & learn with our platform</h1>
-                <p>
-                  qualified instructors, who are passionate about teaching and
-                  dedicated to helping you achieve your language goals.
-                </p>
+            <div className="colab">
+              <div className="myi">
+                <img src="../assets/images/Frame8754.png" alt="img here" />
               </div>
-              <button className="newc">Get Started</button>
-            </div>
-            <div className="colabration">
+              <div className="colo">
+                <div className="cols">
+                  <h1>Collaborate & learn with our platform</h1>
+                  <p>
+                    qualified instructors, who are passionate about teaching and
+                    dedicated to helping you achieve your language goals.
+                  </p>
+                </div>
+                <button className="newc">Get Started</button>
+              </div>
+              <div></div>
               <div className="colo">
                 <h1>Propel your career & expand your knowledge at any level</h1>
                 <p>
@@ -74,8 +76,6 @@ function Landing() {
                   categories of programming courses.
                 </p>
                 <button className="newc">Get Started</button>
-              </div>
-              <div>
                 <div className="myi">
                   <img src="../assets/images/Frame8754.png" alt="img here" />
                 </div>

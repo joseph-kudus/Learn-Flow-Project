@@ -1,0 +1,26 @@
+footer{
+    width: 1,350px;
+    height: 358px;
+    background-color: #000000;
+    color: #ffffff;
+}
+.footer-container{
+    display: flex;
+    flex-direction: row;
+    width: 1,250px;
+    height: 272.33px;
+    padding-left: 42.67px;
+    padding-right: 42.67px;
+    gap: 349px;
+}
+.logo{
+    display: block;
+    justify-content: center;
+    flex-direction: column;
+}
+.footer-socila-links{
+    display: flex;
+    width: 431.33px;
+    height: 272.33px;
+    gap: 42.676px;
+}

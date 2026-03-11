@@ -6,16 +6,56 @@ function Landing() {
   return (
     <main>
       <div className="Container">
-        <div className="article">
-          <div className="article-title">
-            <h1>The free, fun, and effective way to learn a language</h1>
-            <p>
-              Learn at your own pace with lifetime access on mobile and desktop.
-            </p>
+        {/* Hero section */}
+        <div className="Hero-section">
+          <div className="CTA">
+            <div className="cta-text">
+              <h1 className="cta-h1">
+                The free, fun, and effective way to learn a language
+              </h1>
+              <p className="cta-h1-p">
+                Learn at your own pace with lifetime access on mobile and
+                desktop.
+              </p>
+            </div>
+
+            <div className="article">
+              <div className="join">
+                <button className="newc">Start a new course!</button>
+                <div className="groupimg">
+                  <img src="" alt="gr" />
+                  <img src="" alt="gr" />
+                  <img src="" alt="gr" />
+                </div>
+                <h3>Join thousands of students to start coding now!</h3>
+              </div>
+            </div>
           </div>
-          <div className="join">
-            <button className="newc">Start a new course!</button>
-            <h3>Join thousands of students to start coding now!</h3>
+          <div>
+            <img src="" alt="build course" />
+          </div>
+        </div>
+
+        {/**Logo slide */}
+        <div className="logo-slides">
+          <div className="logos">
+            <Link>
+              <img src="" alt="lingo" />
+            </Link>
+          </div>
+          <div className="logos">
+            <Link>
+              <img src="" alt="codecov" />
+            </Link>
+          </div>
+          <div className="logos">
+            <img src="" alt="usertesting" />
+          </div>
+          <div className="logos">
+            <img src="" alt="magicleaf" />
+          </div>
+          <div className="logos">
+            <img src="" alt="codevo" />
           </div>
         </div>
         <div className="features">
@@ -77,7 +117,7 @@ function Landing() {
                 </p>
                 <button className="newc">Get Started</button>
                 <div className="myi">
-                  <img src="../assets/images/Frame8754.png" alt="img here" />
+                  <img src="../assets/images/" alt="img here" />
                 </div>
               </div>
             </div>

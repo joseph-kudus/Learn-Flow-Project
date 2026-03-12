@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "../pages/Page.css";
 
 function Landing() {
+
   return (
     <main>
       <div className="Container">
@@ -32,7 +33,7 @@ function Landing() {
             </div>
           </div>
           <div className="hero-img">
-            <img src="" alt="build course" />
+            
           </div>
         </div>
 

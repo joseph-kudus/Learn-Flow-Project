@@ -5,6 +5,7 @@ import About from "./pages/About";
 import Features from "./pages/Features";
 import Pricing from "./pages/Pricing"
 import Footer from "./pages/Footer";
+import Login from "./loginsignup/Login";
 function App() {
   return (
     <div>
@@ -13,7 +14,8 @@ function App() {
           <Route path="/" element={<Landing/>} />
           <Route path="/About" element={<About/>} />
           <Route path="/features" element={<Features/>} />
-          <Route path="/pricing" element={<Pricing/>} />
+          <Route path="/pricing" element={<Pricing />} />
+        <Route path="/login" element={ <Login/>}/>
       </Routes>
       <Footer/>
     </div>

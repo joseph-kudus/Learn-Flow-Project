@@ -1,4 +1,5 @@
 import React from 'react'
+import {Notebook} from 'lucide-react'
 import '../App.css'
 import { Link } from 'react-router-dom';
 export default function () {
@@ -7,7 +8,7 @@ export default function () {
       <div className="footer-container">
         <div className="logo">
           <Link to="/" className="logo-l">
-            <img src="../assets/images/book.png" alt="Logo" />
+            <Notebook/>
             <p>LearnFlow</p>
           </Link>
           <div className="footer-c">

@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
+import { Notebook } from 'lucide-react';
 import './Nav.css'
 import About from '../pages/About';
 import Features from '../pages/Features'
+import Login from '../loginsignup/Login'
 
 function Navbar() {
     return (
@@ -9,7 +11,7 @@ function Navbar() {
         <div className="nav-container">
           <div className="logo">
             <Link to="/" className="logo-l">
-              <img src="../assets/images/book.png" alt="Logo" />
+              <Notebook/>
               <p>LearnFlow</p>
             </Link>
           </div>
@@ -26,7 +28,11 @@ function Navbar() {
               </Link>
             </ul>
           </div>
-          <button className='button-header'>start your learning journey</button>
+          <button className="button-header">            
+              <Link to="/login" className="li-ul-e">
+                start your learning journey
+              </Link>
+          </button>
         </div>
       </div>
     );

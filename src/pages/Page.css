@@ -64,12 +64,23 @@ div.article-title{
     left: 390px;
     height: 40px;
 }
-
-.logo-slides{display: flex;
+.hero-img{
+    background-image: url(../assets/images/Dashboard\ 2.png);
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: top;
+}
+.logo-slides{
+    justify-content: center;
+    align-items: center;
+    display: flex;
     background-color: #E8E8E8;
     width: 1,440px;
     height: 136px;
-    gap: 10px;top: 1241px;
+    gap: 200px;top: 1241px;
+}
+.logos1{
+    background-image: url(..//images/book.png);
 }
 .features{
     background-color: #ffffff;
@@ -111,39 +122,54 @@ div.article-title{
 }
 
 .colabration{
-    background-color: aqua;
+    
     display: flex;
     flex-direction: row;
     align-items: center;
-    top: 2034px;
-    margin: 20px;
-    padding: 30px;
+    top: 24px;
     width: 1440px;
     height: 1088px;
     gap: 10px;
 }
 .colab{
-    width: 1,126px;
-    height: 427px;
-    gap: 50px;
-    top: 60px;
-    left: 157px;
-    display: flex;
+    width: 626px;
+    height: 527px;
+    gap: 20px;
+    top: 10px;
+    left: 330px;
+    display: block;
     flex-direction: row;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
+
 .myi{
+    background-image: url(../assets/images/28\ \(1\)\ 1.png);
     background-color: #4E7BF7;
-    width: 494px;
-    height: 427px;
-    border-radius: 20px;
+    width: 500px;
+    height: 220px;
+    border-radius: 10px;
+    image-rendering: auto;
+}
+.myii{
+    background-image: url(../assets/images/15\ 1.png);
+    background-color: #4E7BF7;
+    width: 500px;
+    height: 220px;
+    border-radius: 10px;
+    image-rendering: auto;
 }
 .colo{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    text-justify: initial;
     width: 562px;
-    height: 350px;
-    gap: 50px;
+    height: 250px;
+    gap: 20px;
 }
+
 .learners-goals{
     align-items: center;
     text-align: center;
@@ -151,7 +177,7 @@ div.article-title{
     height: 1090px;
     background-color: #000000;
     color: seashell;
-    
+    justify-content: center;
 }
 
 .knowledge{
@@ -159,14 +185,38 @@ div.article-title{
     width: 1,440px;
     height: 400px;
 }
-.knowledge-exp{
-    display: block;
-    justify-self: start;
+.kn
+.goals{
+    justify-content: center;
     align-items: center;
+    padding: 10px;
+    display: flex;
+    gap: 20px;
+}
+.learner-card{
+    border: 1px solid gray;
+    border-radius: 10px;
+    display: block;
+    width: 230px;
+    height: 230px;
+    flex-wrap: wrap;
+}
+.lent1{
+    background-image: url(../assets/react.svg);
+}
+.knowledge-exp{
+    
     background-color: #F7CA4E;
     width: 800px;
-    height: 300px;
+    height: 250px;
     left: 200px;
+    top: 80px;
+    position: relative;
+}
+.kta{
+    bottom: 500px;
+    justify-content: center;
+    align-items: center;
 }
 .bt{
     background-color: #000000;

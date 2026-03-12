@@ -10,7 +10,7 @@ export default function Login() {
       <div>
         <div>
           <div>
-            <Notebook className="h-12 w-12 text-indigo-50 md-2" />
+            <Notebook className="h-12 w-12 text-indigo-50 md-2 bg-indigo-700" />
             <h2>Welcome Back</h2>
             <p>Signin to access your course</p>
             <form action="#">

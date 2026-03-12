@@ -1,11 +1,12 @@
 import React from 'react'
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Notebook, UserIcon } from 'lucide-react'
 import "../pages/Page.css";
 
 export default function Login() {
-  const email = "";
-  const password = "";
+    const [email] = useState();
+    const [password] = useState();
   return (
     <div className="login-container">
       <div className="login-logo">

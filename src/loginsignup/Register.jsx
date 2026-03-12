@@ -1,11 +1,15 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
-import { Notebook, UserIcon } from 'lucide-react'
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { Notebook, UserIcon } from "lucide-react";
+
 import "../pages/Page.css";
 
 export default function Register() {
-  const email = "";
-  const password = "";
+  const [username] = useState();
+  const [email] = useState();
+  const [password] = useState();
+  const [confirmpassword] = useState();
+ 
   return (
     <div className="login-container">
       <div className="login-logo">
@@ -18,7 +22,7 @@ export default function Register() {
           <div className="loginpage">
             <div className="Login-logo">
               <p>Welcome!</p>
-              <h2>Sign in to</h2>
+              <h2>Sign up to</h2>
               <p>Lorem Ipsum is simply</p>
               <form action="#">
                 <div className="Login-logo">
@@ -37,8 +41,8 @@ export default function Register() {
                     Username:
                     <input
                       type="text"
-                      id="email"
-                      value={email}
+                      id="username"
+                      value={username}
                       placeholder="Enter your  name"
                       required
                       className="inp"
@@ -59,8 +63,8 @@ export default function Register() {
                     Confirm Password:
                     <input
                       type="password"
-                      id="password"
-                      value={password}
+                      id="confirmpassword"
+                      value={confirmpassword}
                       placeholder="Confirm your Password"
                       required
                       className="inp"

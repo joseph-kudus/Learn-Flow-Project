@@ -69,9 +69,8 @@ export default function Login() {
       <div className="team-discu">
         <h1>Team discu </h1>
       </div>
-      </div>
-      <div />
-      </div>
+    </div>
+  ); 
+  
 
-  );
 };

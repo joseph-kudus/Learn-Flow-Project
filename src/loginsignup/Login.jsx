@@ -13,12 +13,6 @@ export default function Login() {
         
 
         <div>
-
-          <div>
-            <Notebook className="h-12 w-12 text-indigo-50 md-2" />
-  
-
-
           <div className="loginpage">
             <div className="Login-logo">
               <p>Welcome!</p>
@@ -69,7 +63,6 @@ export default function Login() {
                 </div>
               </form>
             </div>
-
           </div>
         </div>
       </div>

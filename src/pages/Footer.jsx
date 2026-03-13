@@ -7,7 +7,7 @@ export default function () {
     <footer>
       <div className="footer-container">
         <div className="logo">
-          <Link to="/" className="logo-l">
+          <Link to="/Landing" className="logo-l">
             <Notebook/>
             <p>LearnFlow</p>
           </Link>

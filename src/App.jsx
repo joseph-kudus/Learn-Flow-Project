@@ -6,6 +6,7 @@ import Features from "./pages/Features";
 import Pricing from "./pages/Pricing"
 import Footer from "./pages/Footer";
 import Login from "./loginsignup/Login";
+import Register from "./loginsignup/Register";
 function App() {
   return (
     <div>
@@ -16,6 +17,7 @@ function App() {
           <Route path="/features" element={<Features/>} />
           <Route path="/pricing" element={<Pricing />} />
         <Route path="/login" element={ <Login/>}/>
+        <Route path="/register" element={ <Register/>}/>
       </Routes>
       <Footer/>
     </div>

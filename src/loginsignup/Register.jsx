@@ -1,15 +1,47 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Notebook, UserIcon } from "lucide-react";
 
 import "../pages/Page.css";
+import { useAuth } from "../context/AuthContext";
 
 export default function Register() {
   const [username] = useState();
   const [email] = useState();
   const [password] = useState();
   const [confirmpassword] = useState();
- 
+  const [loading, setLoading] = useState();
+  const [error, setError] = useState();
+  
+  const { signup } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefualt();
+    setError('');
+    if (!email || !password || !confirmpassword) {
+      return setError("Please fill all the fields");
+    }
+
+    if (password ==!confirmpassword) {
+      return setError("Passwords do not match");
+    }
+    if (password.length <6) {
+      return setError("Password must be 6 characters");
+    }
+    
+    try {
+      setLoading(true);
+      await signup(email, password);
+      navigate("/dashboard");
+    } catch (err) {
+      setError('Fail to create account: ' + (err.message || 'Please try again'))
+    }finally{
+      setLoading(false)
+    }
+
+  }
+
   return (
     <div className="login-container">
       <div className="login-logo">
@@ -24,7 +56,7 @@ export default function Register() {
               <p>Welcome!</p>
               <h2>Sign up to</h2>
               <p>Lorem Ipsum is simply</p>
-              <form action="#">
+              <form action="#" onSubmit={handleSubmit}>
                 <div className="Login-logo">
                   <label htmlFor="#">
                     Email:
@@ -32,6 +64,7 @@ export default function Register() {
                       type="email"
                       id="email"
                       value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       placeholder="Enter your  email"
                       required
                       className="inp"
@@ -43,6 +76,7 @@ export default function Register() {
                       type="text"
                       id="username"
                       value={username}
+                      onChange={(e) => setUsername(e.target.value)}
                       placeholder="Enter your  name"
                       required
                       className="inp"
@@ -54,6 +88,7 @@ export default function Register() {
                       type="password"
                       id="password"
                       value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       placeholder="Enter your Password"
                       required
                       className="inp"
@@ -65,6 +100,7 @@ export default function Register() {
                       type="password"
                       id="confirmpassword"
                       value={confirmpassword}
+                      onChange={(e) => setconfirmpassword(e.target.value)}
                       placeholder="Confirm your Password"
                       required
                       className="inp"
@@ -80,17 +116,23 @@ export default function Register() {
                         <p>Forgot Password?</p>
                       </div>
                     </div>
-                    <button type="submit" className="inpi">
-                      Register
+                    <button type="submit" className="inpi" disabled={loading}>
+                      {loading ? "Register" : "Login"}
                     </button>
                     <div>
                       <p className="texts-indigo-600">
-                        Don’y have an Account ?{" "}
+                        Don’t have an Account ?{" "}
                         <Link to="/login" className="reg">
                           Login
                         </Link>
                       </p>
                     </div>
+                    {error && (
+                      <div>
+                        {error}
+                        {}
+                      </div>
+                    )}
                   </div>
                 </div>
               </form>

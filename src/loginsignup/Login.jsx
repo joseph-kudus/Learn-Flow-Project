@@ -10,10 +10,7 @@ export default function Login() {
   return (
     <div className="login-container">
       <div className="login-logo">
-        <div className="Login-log flex items-center space-x-4 text-indigo-500">
-          <Notebook className="h-12 w-12 text-indigo-50 md-2" />
-          <p>LearnFlow</p>
-        </div>
+        
 
         <div>
           <div className="loginpage">
@@ -72,6 +69,9 @@ export default function Login() {
       <div className="team-discu">
         <h1>Team discu </h1>
       </div>
-    </div>
+      </div>
+      <div />
+      </div>
+
   );
-}
+};

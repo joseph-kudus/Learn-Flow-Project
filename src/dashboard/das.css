@@ -1,0 +1,109 @@
+/* Base Style*/
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root{
+    --primary: #000000;
+    --secondary: #FFFFFF;
+    --accent: #F7CA4E;
+    --success: #4cc9f0;
+    --warning: #f27585;
+    --dark: #2b2d42;
+    --gray: #8d99ae;
+    --sidebar: #1e1f3a;
+    --sidebar-width: 280px;
+    --sidebar-minimized-width: 80px;
+    --header-height: 80px;
+
+    /* Light theme variables*/
+    --body-bg: Linear-gradient(135deg, #f0f2f5, #e4e7f0);
+    --text-color: #2b2d42;
+    --header-bg: #white;
+    --view-all-color: #4361ee;
+    --grid-line: #e9ecef;
+    --footer-bg: #2b2d42;
+
+}
+
+/* dark theme variables*/
+.dark-mode{
+    --body-bg: Linear-gradient(135deg, #121212, #1a1a1a);
+    --text-color: #f8f9fa;
+    --card-bg: #1e1f3a;
+    --header-bg: #1e1f1a;
+}
+body{
+    background-color: red;
+    color: #000000;
+    color: var(--text-color);
+    min-height: 100vh;
+    transition: 0.3s ease, color 0.3s ease;
+}
+/*Main grid layout*/
+.dashboard{
+    display: grid;
+    grid-template-columns: var(--sidebar-width) 1fr;
+    grid-template-rows: var(--header-height) 1fr auto;
+    grid-template-areas: 
+    "sidebar header"
+    "sidebar content"
+    "sidebar footer";
+    min-height:  100vh;
+    transition:  all 0.3s ease;
+}
+
+/* Mobile oer lay*/
+.main-overlay{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 150;
+    opacity: 0;
+    transition: opacit 0.3s ease;
+}
+/* Target each of the grid templet*/
+/*header area*/
+.header{
+    grid-area: header;
+    background: var(--header-bg);
+}   
+.header-left{
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+.mobile-toggle{
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-color);
+}
+.search-bar{
+    display: flex;
+    align-items: center;
+    background: var(--time-bg);
+    border-radius: 30px;
+    padding: 0.5rem 1rem;
+    width: 300px;
+}
+/*sidebar area*/
+.sidebar{
+
+}
+/*content area*/
+.content{
+
+}
+/*footer area*/
+.footer{
+
+}

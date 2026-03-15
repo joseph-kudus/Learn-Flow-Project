@@ -17,8 +17,7 @@ footer{
 }
 .logo{
     display: block;
-    flex: 1;
-    
+    flex: 1;   
 }
 .footer-c{
     padding-top: 10px;
@@ -42,4 +41,8 @@ footer{
 .footer-sec{
     display: flex;
     gap: 10px;
+}
+.errorms{
+    background-color: red;
+    color: #ffffff;
 }

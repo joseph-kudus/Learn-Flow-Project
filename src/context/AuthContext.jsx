@@ -10,7 +10,6 @@ import {
 import { auth } from "../../firebaseconfig";
 import { LogOut, User } from "lucide-react";
 
-
 const AuthContext = createContext();
 export function useAuth() {
   return useContext(AuthContext);
@@ -50,20 +49,18 @@ export function AuthProvider({ children }) {
   async function logout() {
     setError("");
     try {
-      return await LogOut(auth);
+      return await signOut(auth);
     } catch (err) {
       setError(err.message);
       throw err;
     }
   }
+
   /**
    * forgot password
    */
   const forgotPassword = async (email) => {
-    if (!email.trim) {
-      alert("Please enter email to reset password");
-      return;
-    }
+    if (!email) throw new error("Please enter email to reset password");
     try {
       await sendPasswordResetEmail(auth, email);
       alert("Check your email for reset link");

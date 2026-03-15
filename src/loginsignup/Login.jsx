@@ -3,24 +3,23 @@ import { Link, useNavigate } from "react-router-dom";
 import { Notebook } from "lucide-react";
 import "../pages/Page.css";
 import { useAuth } from "../context/AuthContext";
-const { forgotPassword } = useAuth;
-export default function Register() {
+
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [rememberme, setRememberMe] = useState("");
-  const { signup } = useAuth();
+  const { login, forgotPassword } = useAuth();
   const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    if (!email || !password || !confirmpassword) {
+    if (!email || !password) {
       return setError("Please fill all the fields yoo");
     }
-    if (password !== confirmpassword) {
-      return setError("Passwords do not match");
-    }
+
     if (password.length < 6) {
       return setError("Password must be 6 characters");
     }
@@ -29,7 +28,7 @@ export default function Register() {
     }
     try {
       setLoading(true);
-      await signup(email, password);
+      await login(email, password);
       navigate("/dashboard");
     } catch (err) {
       err.message;
@@ -38,6 +37,15 @@ export default function Register() {
       );
     } finally {
       setLoading(false);
+    }
+  };
+  const handleForgot = async () => {
+    if (!email) return alert("Enter email first");
+    try {
+      await forgotPassword(email);
+      alert("Check email for reset link");
+    } catch (err) {
+      alert(err.message);
     }
   };
 
@@ -92,7 +100,7 @@ export default function Register() {
                       <div className="forgot">
                         <button type="reset">
                           <p
-                            onClick={() => forgotPassword(email)}
+                            onClick={handleForgot}
                             style={{ cursor: "pointer" }}
                           >
                             Forgot Password?
@@ -105,7 +113,7 @@ export default function Register() {
                     </button>
                     <div>
                       <p className="texts-indigo-600">
-                        Don’t have an Account ?{" "}
+                        Don’t have an Account?{" "}
                         <Link to="/register" className="reg">
                           Register
                         </Link>

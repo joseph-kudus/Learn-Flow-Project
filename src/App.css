@@ -46,3 +46,10 @@ footer{
     background-color: red;
     color: #ffffff;
 }
+.dashboard-container{
+    background-color: aqua;
+    color: blueviolet;
+    width: 300px;
+    height: 300px;
+    padding: 20px;
+}

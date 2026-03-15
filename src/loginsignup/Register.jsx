@@ -11,7 +11,7 @@ export default function Register() {
   const [confirmpassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [rememberme, setRememberMe] = useState("");
+
   const { signup } = useAuth();
   const navigate = useNavigate();
 
@@ -26,9 +26,6 @@ export default function Register() {
     }
     if (password.length < 6) {
       return setError("Password must be 6 characters");
-    }
-    if (rememberme) {
-      localStorage.setItem("email:", email);
     }
     try {
       setLoading(true);
@@ -68,7 +65,6 @@ export default function Register() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Enter your  email"
-                      required
                       className="inp"
                     />
                   </label>
@@ -108,10 +104,7 @@ export default function Register() {
                 </div>
                 <div>
                   <div>
-                    <button
-                      className="inpi" type="submit"
-                      disabled={loading}
-                    >
+                    <button className="inpi" type="submit" disabled={loading}>
                       {loading ? "Creating Account..." : "Register"}
                     </button>
                     <div>

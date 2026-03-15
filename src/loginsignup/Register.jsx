@@ -1,15 +1,46 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Notebook, UserIcon } from "lucide-react";
-
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Notebook } from "lucide-react";
 import "../pages/Page.css";
+import { useAuth } from "../context/AuthContext";
 
 export default function Register() {
-  const [username] = useState();
-  const [email] = useState();
-  const [password] = useState();
-  const [confirmpassword] = useState();
- 
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmpassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const { signup } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    if (!email || !password || !confirmpassword) {
+      return setError("Please fill all the fields yoo");
+    }
+    if (password !== confirmpassword) {
+      return setError("Passwords do not match");
+    }
+    if (password.length < 6) {
+      return setError("Password must be 6 characters");
+    }
+    try {
+      setLoading(true);
+      await signup(email, password);
+      navigate("/dashboard");
+    } catch (err) {
+      err.message;
+      setError(
+        "Fail to create account: " + (err.message || "Please try again"),
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="login-container">
       <div className="login-logo">
@@ -24,7 +55,7 @@ export default function Register() {
               <p>Welcome!</p>
               <h2>Sign up to</h2>
               <p>Lorem Ipsum is simply</p>
-              <form action="#">
+              <form onSubmit={handleSubmit}>
                 <div className="Login-logo">
                   <label htmlFor="#">
                     Email:
@@ -32,8 +63,8 @@ export default function Register() {
                       type="email"
                       id="email"
                       value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       placeholder="Enter your  email"
-                      required
                       className="inp"
                     />
                   </label>
@@ -43,8 +74,8 @@ export default function Register() {
                       type="text"
                       id="username"
                       value={username}
+                      onChange={(e) => setUsername(e.target.value)}
                       placeholder="Enter your  name"
-                      required
                       className="inp"
                     />
                   </label>
@@ -54,8 +85,8 @@ export default function Register() {
                       type="password"
                       id="password"
                       value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       placeholder="Enter your Password"
-                      required
                       className="inp"
                     />
                   </label>
@@ -65,32 +96,31 @@ export default function Register() {
                       type="password"
                       id="confirmpassword"
                       value={confirmpassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="Confirm your Password"
-                      required
                       className="inp"
                     />
                   </label>
                 </div>
                 <div>
                   <div>
-                    <div className="checkbox">
-                      <input type="checkbox" name="checkbox" id="" />
-                      <p>Remember me</p>
-                      <div className="forgot">
-                        <p>Forgot Password?</p>
-                      </div>
-                    </div>
-                    <button type="submit" className="inpi">
-                      Register
+                    <button className="inpi" type="submit" disabled={loading}>
+                      {loading ? "Creating Account..." : "Register"}
                     </button>
                     <div>
                       <p className="texts-indigo-600">
-                        Don’y have an Account ?{" "}
+                        Already have an Account ?{" "}
                         <Link to="/login" className="reg">
                           Login
                         </Link>
                       </p>
                     </div>
+                    {error && (
+                      <div className="bg-red-50 text-red-700 p-3 round-md mb-4 text-sm errorms">
+                        {error}
+                        {}
+                      </div>
+                    )}
                   </div>
                 </div>
               </form>

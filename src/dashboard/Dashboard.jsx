@@ -52,16 +52,29 @@ export default function Dashboard() {
           </div>
           <div className="nav-title">MENU</div>
           <div className="nav-links">
-            <Link className='nav-item active'>
+            <Link className="nav-item active">
               <i className="fas fa-home"></i>
               <span>Dashboard</span>
             </Link>
-            <Link className='nav-item'>
+            <Link className="nav-item">
               <i className="fas fa-project-diagram"></i>
-              <span>Project</span>
+              <span>All Courses</span>
+            </Link>
+            <Link className="nav-item">
+              <i className="fas fa-project-diagram"></i>
+              <span>Course Builder</span>
+            </Link>
+            <Link className="nav-item">
+              <i className="fas fa-project-diagram"></i>
+              <span>Setting</span>
+            </Link>
+            <Link className="nav-item">
+              <i className="fas fa-project-diagram"></i>
+              <span>
+                <button onClick={() => logout()}>Logout</button>
+              </span>
             </Link>
           </div>
-          <button onClick={() => logout()}>Logout</button>
         </aside>
 
         {/*--content-- */}

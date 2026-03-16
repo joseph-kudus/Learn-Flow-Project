@@ -70,6 +70,10 @@ export default function Dashboard() {
             </Link>
             <Link className="nav-item">
               <i className="fas fa-project-diagram"></i>
+              <span>Support</span>
+            </Link>
+            <Link className="nav-item">
+              <i className="fas fa-project-diagram"></i>
               <span>
                 <button onClick={() => logout()}>Logout</button>
               </span>
@@ -78,7 +82,15 @@ export default function Dashboard() {
         </aside>
 
         {/*--content-- */}
-        <main className="content"></main>
+        <section className="content-section">
+          {/*--Welecome Banner-- */}
+          <div className="welcome-banner">
+            <h1>Welcome to Learnflow</h1>
+            <p>
+              Learn at your own pace with lifetime access on mobile and desktop.
+            </p>
+          </div>
+        </section>
         {/*--footer-- */}
         <footer className="footer"></footer>
       </div>

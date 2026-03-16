@@ -14,7 +14,7 @@
     --warning: #f27585;
     --dark: #2b2d42;
     --gray: #8d99ae;
-    --sidebar: #1e1f3a;
+    --sidebar: #FFFFFF;
     --sidebar-width: 280px;
     --sidebar-minimized-width: 80px;
     --header-height: 80px;
@@ -38,7 +38,7 @@
 }
 main-ce{
     
-    color: #d3c8c8;
+    color: #2A2A2A;
     color: var(--text-color);
     min-height: 100vh;
     transition: 0.3s ease, color 0.3s ease;
@@ -77,7 +77,7 @@ main-ce{
     padding: 0 2rem;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     box-shadow:  var(--shadow);
     z-index: 100;
     transition: background-color 0.3s ease;
@@ -179,6 +179,16 @@ main-ce{
     color: white;
 }
 /*sidebar area*/
+.logo{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color: #121212;
+    
+    gap: 5px;
+    
+}
 .nav-links{
     display: flex;
     flex-direction: column;
@@ -196,9 +206,16 @@ main-ce{
     font-weight: 500;
     overflow: hidden;
 }
+.nav-item.active{
+    width: 132px;
+    height: 40px;
+}
 .nav-item :hover, .nav-item.active{
-    background: rgba(67, 97, 238, 0.2);
+    background: #000000;
     color: #FFFFFF;
+    border-radius: 6px;
+    
+
 }
 .nav-item i{
     margin-right: 1rem;
@@ -208,14 +225,32 @@ main-ce{
     transition: 0.3s ease;
 }
 /*content area*/
-.content{
+section.content-section{
 grid-area: content;
 padding: 2rem;
 display: grid;
-grid-template-columns: 2fr 1fr;
+grid-template-columns: 3fr 1fr;
 grid-template-rows: auto auto auto auto;
 gap: 2rem;
-grid-template-areas: "Welecome profile" "Project stst" "Time line" "Users Users";
+grid-template-areas: 
+"Welecome profile" 
+"Project stst" 
+"Time line" 
+"Users Users";
+}
+.welcome-banner{
+    grid-area: welcome;
+    background: linear-gradient(135deg, var(--primary, --secondary));
+    border-radius: 16px;
+    padding: 2rem;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.welcome-banner h1{
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
 }
 /*footer area*/
 .footer{

@@ -1,5 +1,8 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
+
+import Sidebar from "./dashboard/Sidebar";
+
 import Landing from "./pages/Landing";
 import Navbar from "./Navbar/Navbar";
 import About from "./pages/About";
@@ -12,6 +15,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import Dashboard from "./dashboard/Dashboard";
 import ProtectedRoute from "./component/ProtectedRoute";
 import "./App.css";
+
 function App() {
   const { loading, currentUser } = useAuth();
 
@@ -69,7 +73,7 @@ function App() {
                 <Navigate to="/dashboard" replace />
               ) : (
                 <Layout>
-                  <About/>
+                  <About />
                 </Layout>
               )
             }
@@ -118,6 +122,18 @@ function App() {
               ) : (
                 <Layout>
                   <Register />
+                </Layout>
+              )
+            }
+          />
+          <Route
+            path="/courses"
+            element={
+              currentUser ? (
+                <Navigate to="/dashboard" replace />
+              ) : (
+                <Layout>
+                  <Courses />
                 </Layout>
               )
             }

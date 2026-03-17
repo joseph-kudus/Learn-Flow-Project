@@ -22,27 +22,27 @@
     /* Light theme variables*/
     --body-bg: Linear-gradient(135deg, #f0f2f5, #e4e7f0);
     --text-color: #cccdd3;
+    --card-bg: white;
+    --progress-bar-bg:#1853a1;
+    --time-bg: #f0f2f5;
     --header-bg: #white;
-    --view-all-color: #4361ee;
-    --grid-line: #e9ecef;
+    --border-color: #e2e2e2;
+    --shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
     --footer-bg: #2b2d42;
+    --footer-text: white;
+    --grid-line: #e9ecef;
 
+     --card-shadow: 0 4px 12px rgba(0, 0, 0 0.8);
 }
 
 /* dark theme variables*/
 .dark-mode{
     --body-bg: Linear-gradient(135deg, #121212, #1a1a1a);
-    --text-color: #c1d7ec;
+    --text-color: #FFFFFF;
     --card-bg: #1e1f3a;
     --header-bg: #1e1f1a;
 }
-main-ce{
-    
-    color: #2A2A2A;
-    color: var(--text-color);
-    min-height: 100vh;
-    transition: 0.3s ease, color 0.3s ease;
-}
+
 /*Main grid layout*/
 .dashboard{
     display: grid;
@@ -55,6 +55,23 @@ main-ce{
     min-height:  100vh;
     transition:  all 0.3s ease;
 }
+/*
+.dashboard {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  grid-template-rows: var(--header-height) 1fr;
+  grid-template-areas: 
+    "sidebar header"
+    "sidebar content";
+  height: 100vh;
+  overflow: hidden;
+  
+  gap: 0; /* remove gap */
+*/
+ 
+
+
+
 
 /* Mobile oer lay*/
 .main-overlay{
@@ -64,7 +81,7 @@ main-ce{
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(163, 157, 157, 0.5);
+    background: rgba(0, 0, 0, 0.5);
     z-index: 150;
     opacity: 0;
     transition: opacit 0.3s ease;
@@ -72,26 +89,36 @@ main-ce{
 /* Target each of the grid templet*/
 /*header area*/
 .header{
+    padding: 10px;
     grid-area: header;
     background: var(--header-bg);
-    padding: 0 2rem;
     display: flex;
     align-items: center;
-    justify-content: center;
-    box-shadow:  var(--shadow);
+    justify-content: space-between;
+    box-shadow:  rgb(193, 8, 193);
     z-index: 100;
     transition: background-color 0.3s ease;
-    gap: 100px;
+    gap: 150px;
+    position: fixed;
+    top: 50;
+    left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+    z-index: 100;
+    border-bottom: 2px solid rgba(93, 88, 88, 0.1);
+
 }   
 .header-left{
     display: flex;
     align-items: center;
     gap: 1.5rem;
+    padding-left: 20px;
 }
 .header-right {
     display: flex;
     align-items: center;
     gap: 1.5rem;
+    float: right;
+    padding-right: 10px;
 }
 .mobile-toggle{
     display: none;
@@ -114,33 +141,34 @@ main-ce{
 }
 .search-bar input{
     border: none;
-    background: var(--gray);
+    background: transparent;
     padding: 0.5rem;
     width: 100%;
     font-size: 0.9rem;
     color:  var(--text-color);
 }
 .sidebar{
+    padding-left: 40px;
+    padding-bottom: 40px;
     grid-area: sidebar;
     background: var(--sidebar);
-    color: #FFFFFF;
-    padding: 1.5rem;
-    box-sizing:  var(--card-shadow);
-    z-index: 200;
+    color: black;
+    z-index: 100;
     overflow-y: auto;
     height: 100vb;
-    position: sticky;
-    top: 0;
-    transition: all 0.3s ease;
+    position: fixed;
+    transition: all 0.3s ease;  left: 20;
+    width: var(--sidebar-width);
+    height: 100vh;
 }
 .theme-toggle{
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: var(--accent);
+    background: var(--card-bg);
     color: var(--text-color);
     border: none;
     cursor: pointer;
@@ -149,7 +177,7 @@ main-ce{
 }
 .theme-toggle :hover{
     transform: translateY(-3px);
-    box-shadow: 0 4px 15px rgba(170, 14, 14, 0.15);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 .notification, .user-profile{
     position: relative;
@@ -160,8 +188,8 @@ main-ce{
     position: absolute;
     top: -5px;
     right: -5px;
-     background: var(--grid-line);
-    color: white;
+    background: var(--warning);
+    color: rgb(197, 72, 72);
     font-size: 0.7rem;
     width: 18px;
     height: 18px;
@@ -181,18 +209,22 @@ main-ce{
 /*sidebar area*/
 .logo{
     display: flex;
-    flex-direction: row;
-    justify-content: center;
     align-items: center;
     color: #121212;
-    
-    gap: 5px;
-    
+    border-bottom: 2px solid rgba(93, 88, 88, 0.1);
+    gap: 0.1rem;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+.logob{
+    width: 30px;
+    height: 30px;
 }
 .nav-links{
     display: flex;
     flex-direction: column;
-    padding: 0 1rem;
+    gap: 0px;
 }
 .nav-item{
     display: flex;
@@ -200,7 +232,7 @@ main-ce{
     padding: 0.9rem 1.5rem;
     border-radius: 8px;
     margin-bottom: 0.5rem;
-    color: #bbb;
+    color: #361616;
     text-decoration: none;
     transition: all 0.3s ease;
     font-weight: 500;
@@ -214,8 +246,10 @@ main-ce{
     background: #000000;
     color: #FFFFFF;
     border-radius: 6px;
-    
-
+}
+.nav-title{
+    top: 30px;
+    padding-bottom: 20px;
 }
 .nav-item i{
     margin-right: 1rem;
@@ -225,6 +259,7 @@ main-ce{
     transition: 0.3s ease;
 }
 /*content area*/
+/*
 section.content-section{
 grid-area: content;
 padding: 2rem;
@@ -237,7 +272,28 @@ grid-template-areas:
 "Project stst" 
 "Time line" 
 "Users Users";
+
+grid-area: content;
+  margin-left: var(--sidebar-width);
+  margin-top: var(--header-height);
+  padding: 2rem;
+  overflow-y: auto;
+  height: calc(100vh - var(--header-height));
 }
+
+*/
+.content-section {
+  grid-area: content;
+  margin-left: var(--sidebar-width);
+  margin-top: var(--header-height);
+  padding: 2rem;
+
+  height: calc(100vh - var(--header-height));
+overflow-y: scroll !important; /* force scrollbar */
+ margin-top: -20px; /* adjust px */
+ padding-left: 0; 
+}
+
 .welcome-banner{
     grid-area: welcome;
     background: linear-gradient(135deg, var(--primary, --secondary));
@@ -254,7 +310,7 @@ grid-template-areas:
 }
 /*footer area*/
 .footer{
-    grid-area: footer;
+   /* grid-area: footer;
     background: var(--footer-bg);
     color: var(footer-text);
     padding: 1.5rem 2rem;
@@ -262,4 +318,15 @@ grid-template-areas:
     text-align: center;
     transition: background-color 0.3s ease, color 0.3s ease;
 
+      position: fixed;
+  bottom: 0;
+  left: var(--sidebar-width);
+  width: calc(100% - var(--sidebar-width));
+  display: none; /* or position it outside grid 
+  */
+   grid-area: footer;
+  background: var(--footer-bg);
+  color: var(--text-color);
+  padding: 1rem;
+  margin-left: var(--sidebar-width);
 }

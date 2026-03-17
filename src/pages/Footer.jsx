@@ -1,14 +1,15 @@
-import React from 'react'
-import {Notebook} from 'lucide-react'
-import '../App.css'
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Notebook } from "lucide-react";
+import "../App.css";
+import { Link } from "react-router-dom";
 export default function () {
   return (
     <footer>
       <div className="footer-container">
-        <div className="logo">
+        <div>
+          {" "}
           <Link to="/Landing" className="logo-l">
-            <Notebook/>
+            <Notebook />
             <p>LearnFlow</p>
           </Link>
           <div className="footer-c">
@@ -17,26 +18,44 @@ export default function () {
             </p>
           </div>
         </div>
+
         <div className="footer-socila-links">
           <div>
-            <h1>Links</h1>
-            <div className="footer-socila-links-c">
-              <p>About</p>
-              <p>Program</p>
-              <p>Contact us</p>
-              <p>FAQ</p>
-            </div>
+            <h1>Links</h1>{" "}
+            <Link to="/About" className="logo-l">
+              About
+            </Link>
+            <Link to="/About" className="logo-l">
+              Program
+            </Link>
+            <Link to="/About" className="logo-l">
+              Contact Us
+            </Link>
+            <Link to="/About" className="logo-l">
+              FAQs
+            </Link>
           </div>
+
           <div>
             <h1>Social</h1>
-            <p>Twitter</p>
-            <p>Linkind</p>
-            <p>Facebook</p>
+            <Link to="/About" className="logo-l">
+              Twitter
+            </Link>
+            <Link to="/About" className="logo-l">
+              Linkedin
+            </Link>
+            <Link to="/About" className="logo-l">
+              Facebook
+            </Link>
           </div>
           <div>
             <h1>Legal</h1>
-            <p>Tearm</p>
-            <p>Privacy</p>
+            <Link to="/About" className="logo-l">
+              Term
+            </Link>
+            <Link to="/About" className="logo-l">
+              Privacy
+            </Link>
           </div>
         </div>
       </div>

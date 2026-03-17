@@ -1,40 +1,35 @@
+import React from "react";
+import "./nav.css";
 import { Link } from "react-router-dom";
 import { Notebook } from "lucide-react";
-import "./Nav.css";
-import About from "../pages/About";
-import Features from "../pages/Features";
-import Login from "../loginsignup/Login";
 
 function Navbar() {
   return (
-    <div className="header">
-      <div className="nav-container">
-        <div className="logo">
-          <Link to="/" className="logo-l">
+    <header class="header">
+      <nav class="nav">
+        <div class="logo">
+          <Link to="/" className="logo-icon">
             <Notebook />
-            <p>LearnFlow</p>
+            <span class="logo-text">LearnFlow</span>
           </Link>
         </div>
-        <div className="navba">
-          <ul>
-            <Link to="/About" className="li-ul">
-              About
-            </Link>
-            <Link to="/Features" className="li-ul">
-              Features
-            </Link>
-            <Link to="/Pricing" className="li-ul">
-              Pricing
-            </Link>
-          </ul>
-        </div>
-        <button className="button-header">
-          <Link to="/login" className="li-ul-e">
-            start your learning journey
+        <ul class="nav-links flex flex-center text-red">
+          <Link to="/about" className="a">
+            About
           </Link>
-        </button>
-      </div>
-    </div>
+          <Link to="/features" className="a">
+            Features
+          </Link>
+          <Link to="/pricing" className="a">
+            Pricing
+          </Link>
+        </ul>
+        <Link to="/login" className="cta-button">
+          Lets start your learning journey
+        </Link>
+      </nav>
+    </header>
   );
 }
+
 export default Navbar;

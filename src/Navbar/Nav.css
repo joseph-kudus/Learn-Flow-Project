@@ -1,104 +1,59 @@
-*{
-    padding: 0px;
-    margin: 0px;
-    box-sizing: border-box;
-}
 .header{
-    background-color: #000000;
-    font-size: 16px;
-    padding: 20px;
+    padding: 20px 40px;
+    background: linear-gradient(grey);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular';
 }
-.nav-container{
+.nav{
+    margin: 0 auto;
     display: flex;
-    flex-direction: row;
-    justify-items: center;
+    justify-content: space-between;
     align-items: center;
 }
 .logo{
     display: flex;
-    text-align: center;
     align-items: center;
-    color: #FFFFFF;
-}
-.logo-l{
-    text-decoration: none;
-    display: flex;
-   
-    text-align: center;
-    align-items: center;
-    color: #FFFFFF;
-}
-
-ul{
-    
-    display: flex;
-    list-style: none;
-    justify-content: space-around;
-    align-items: center;
+    color: rgb(14, 14, 181);
     gap: 10px;
-   
-}
-.li-ul{
-    color: #FFFFFF;
-    text-decoration: none;
-    justify-content: center; 
-}
-.li-ul-e{
-    color: #F7CA4E;
-    text-decoration: none;
-    justify-content: center;
-}
-
-.button-header{
-    background-color: #000000;
-    color: #F7CA4E;
-    border: 1px solid #F7CA4E;
-    border-radius: 14px;
-    height: 30px;
-    width: 200px;
-}
-/*
-.main-container{
-    display: grid;
-    grid-template-columns: repeat(5, minmax(200px, 1fr));
-    grid-template-rows: auto;
-}
-.nav-header{
-    grid-column: 1/ 6;
-    background-color: #ac4040;
-    font-size: 16px;
-    padding: 10px;
-}
-ul{
-    display: flex;
-    list-style: none;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
-
-.sidebar-menu{
-    background: linear-gradient(#FFFFFF, #555555 20%);
-    width: 240px;
-    height: 1088px;
+    font-size: 24px;
+    font: bold;
     
 }
-.section-sidebar{
-    width: 240px;
-    height: 1,088px;
-    background-color: #19231b;
-    grid-column: 1/2;
-}
-.section-article{
-    background-color: #1a1e7f;
-    color: #f1ecec;
-    grid-column: 2/6;
-}
-.footer{
-    grid-column: 1/6;
-    background-color: blueviolet;
-    width: 1,350px;
-    height: 358px;
-}
-*/
+.logo-icon{
+  
+    
 
+}
+.nav-links{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+.nav-links {
+  color: #94a3b8;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+Link {
+    color: red;
+}
+.nav-links a:hover {
+  color: white;
+}
+
+.cta-button {
+  background: #3b82f6;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.cta-button:hover {
+  background: #2563eb;
+}

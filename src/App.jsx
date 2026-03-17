@@ -1,8 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-
-import Sidebar from "./dashboard/Sidebar";
-
 import Landing from "./pages/Landing";
 import Navbar from "./Navbar/Navbar";
 import About from "./pages/About";
@@ -15,7 +12,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import Dashboard from "./dashboard/Dashboard";
 import ProtectedRoute from "./component/ProtectedRoute";
 import "./App.css";
-
+import SettingsPage from "./dashboard/SettingsPage";
 function App() {
   const { loading, currentUser } = useAuth();
 
@@ -127,15 +124,32 @@ function App() {
             }
           />
           <Route
-            path="/courses"
+            path="/dashboard"
             element={
-              currentUser ? (
-                <Navigate to="/dashboard" replace />
-              ) : (
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          >
+            <Route
+              index
+              element={
+                <div className="welcome-banner">
+                  <h1>Welcome to Learnflow</h1>
+                  <p>Learn at your own pace...</p>
+                </div>
+              }
+            />
+            <Route path="settings" element={<SettingsPage />} />
+          </Route>
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
                 <Layout>
-                  <Courses />
+                  <SettingsPage />
                 </Layout>
-              )
+              </ProtectedRoute>
             }
           />
           <Route

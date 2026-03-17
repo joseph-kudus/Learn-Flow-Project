@@ -1,9 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../pages/Page.css";
-
+import land from "../assets/images/Ellipse 1.png"
 function Landing() {
-
   return (
     <main>
       <div className="Container">
@@ -24,7 +23,7 @@ function Landing() {
               <div className="join">
                 <button className="newc">Start a new course!</button>
                 <div className="groupimg">
-                  <img src="" alt="gr" />
+                  <img src={land} alt="gr" />
                   <img src="" alt="gr" />
                   <img src="" alt="gr" />
                 </div>
@@ -32,9 +31,7 @@ function Landing() {
               </div>
             </div>
           </div>
-          <div className="hero-img">
-            
-          </div>
+          <div className="hero-img"></div>
         </div>
 
         {/**Logo slide */}
@@ -203,6 +200,3 @@ function Landing() {
 }
 
 export default Landing;
-
- 
-                      

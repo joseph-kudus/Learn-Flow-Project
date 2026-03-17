@@ -141,7 +141,7 @@ div.article-title{
 }
 
 .myi{
-    background-image: url(../assets/images/28\ \(1\)\ 1.png);
+    background-image: url("../assets/images/28\ \(1\)\ 1.png");
     background-color: #4E7BF7;
     width: 500px;
     height: 220px;

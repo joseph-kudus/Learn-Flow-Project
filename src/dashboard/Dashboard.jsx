@@ -25,14 +25,9 @@ import {
   UserIcon,
 } from "lucide-react";
 import { Outlet } from "react-router-dom";
-export default function Dashboard() {
-  const { logout } = useAuth();
-  console.log(logout);
+import Sidebar from "../Sidebar/Sidebar";
 
-  const handleLogout = () => {
-    logout();
-    Navigate("/login");
-  };
+export default function Dashboard() {
 
   return (
     <div className="dashboard">
@@ -69,57 +64,14 @@ export default function Dashboard() {
         </div>
       </header>
       {/* -- sidebar -- */}
-      <aside className="sidebar">
-        <div className="logo">
-          <Notebook  className="logob"/>
-          <p>LearnFlow</p>
-        </div>
-        <div className="nav-title">MENU</div>
-        <div className="nav-links">
-          <Link className="nav-item active">
-            <LayoutDashboard />
-            <span>Dashboard</span>
-          </Link>
-          <Link className="nav-item">
-            <ScrollText />
-            <span>All Courses</span>
-          </Link>
-          <Link className="nav-item">
-            <PenLineIcon />
-            <span>Course Builder</span>
-          </Link>
-          <Link className="nav-item" to="/settings">
-            <Settings />
-            <span>Settings</span>{" "}
-          </Link>
-          <Link className="nav-item">
-            <HardDriveUpload />
-            <span>Support</span>
-          </Link>
-          <Link className="nav-item">
-            <button onClick={() => logout()}>
-              <LogOut />
-              <span>Logout</span>
-            </button>
-          </Link>
-        </div>
-      </aside>
-
+      <Sidebar/>
       {/*--content-- */}
       <section className="content-section">
         {/*--Welecome Banner-- */}
         <Outlet />
         <h1>ler dfbfhsdh nsdbsdh</h1>
         <h5>jddfdg</h5>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio
-          laboriosam nisi aliquam quidem ad saepe, dolorem exercitationem magnam
-          porro, velit, ullam facilis recusandae illum. Consequuntur delectus
-          numquam magni ea blanditiis? Lorem, ipsum dolor sit amet consectetur
-          adipisicing elit. Fuga ipsum iure incidunt unde neque molestias.
-          Saepe, delectus temporibus eos dicta minus tempore fuga
-          necessitatibus, tenetur, facere odit nulla? Corrupti, dignissimos.
-        </p>
+       
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora
           nesciunt possimus eligendi nobis architecto expedita hic magni, illo

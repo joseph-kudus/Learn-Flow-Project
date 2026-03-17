@@ -67,10 +67,12 @@ function App() {
             path="/About"
             element={
               currentUser ? (
-                <Navigate to="/dashboard" replace />
-              ) : (
                 <Layout>
                   <About />
+                </Layout>
+              ) : (
+                <Layout>
+                  <Login />
                 </Layout>
               )
             }

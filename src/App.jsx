@@ -13,6 +13,8 @@ import Dashboard from "./dashboard/Dashboard";
 import ProtectedRoute from "./component/ProtectedRoute";
 import "./App.css";
 import SettingsPage from "./dashboard/SettingsPage";
+import Support from "./dashboard/Support";
+
 function App() {
   const { loading, currentUser } = useAuth();
 
@@ -89,6 +91,15 @@ function App() {
               )
             }
           />
+          <Route path="/Support" element={ 
+            currentUser ? (
+              <Navigate to="/Dashboard" replace/>
+            ) : (
+                <Layout>
+                  <Support/> 
+                </Layout>
+            )
+          } />
           <Route
             path="/pricing"
             element={
@@ -132,17 +143,7 @@ function App() {
                 <Dashboard />
               </ProtectedRoute>
             }
-          >
-            <Route
-              index
-              element={
-                <div className="welcome-banner">
-                  <h1>Welcome to Learnflow</h1>
-                  <p>Learn at your own pace...</p>
-                </div>
-              }
-            />
-            <Route path="settings" element={<SettingsPage />} />
+          > 
           </Route>
           <Route
             path="/settings"

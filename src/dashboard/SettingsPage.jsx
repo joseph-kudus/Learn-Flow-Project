@@ -2,7 +2,9 @@ import React from 'react'
 
 function SettingsPage() {
   return (
-    <div>SettingsPage</div>
+    <div>
+      <h1>Profile Setting</h1>
+    </div>
   )
 }
 

@@ -34,6 +34,15 @@ main{
     font-size: 20px;
     letter-spacing: 0%;
 }
+.hero-img{
+    width: 979px;
+    height: 690px;
+    padding-top: 85px;
+    left: 130px;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    position: relative;
+}
 div.article-title{
     justify-content: center;
     align-items: center;
@@ -50,6 +59,11 @@ div.article-title{
     height: 55px;
     padding: 18px 16px;
     gap: 10px;
+    position: relative;
+    font-weight: 500;
+    font-size: 16px;
+    font-style: medium;
+    font-family: DM sans;
 }
 .join{
     justify-content: center;
@@ -64,6 +78,17 @@ div.article-title{
     left: 390px;
     height: 40px;
 }
+.gr{
+    width: 45px;
+    height: 45px;
+    left: 388.08px;
+    border: 1.9px;
+}
+.gr-h{
+    padding-top: 70px;
+    padding-bottom: 0px;
+    color: darkgray;
+}
 
 .logo-slides{
     justify-content: center;
@@ -74,8 +99,9 @@ div.article-title{
     height: 136px;
     gap: 200px;top: 1241px;
 }
-.logos1{
-    background-image: url(..//images/book.png);
+.userf{
+    background-color: #F5F5F5;
+    float: right;
 }
 .features{
     background-color: #ffffff;

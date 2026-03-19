@@ -28,7 +28,6 @@ import { Outlet } from "react-router-dom";
 import Sidebar from "../Sidebar/Sidebar";
 
 export default function Dashboard() {
-
   return (
     <div className="dashboard">
       {/*Movile overlay */}
@@ -64,14 +63,16 @@ export default function Dashboard() {
         </div>
       </header>
       {/* -- sidebar -- */}
-      <Sidebar/>
+      <Sidebar />
       {/*--content-- */}
       <section className="content-section">
         {/*--Welecome Banner-- */}
-        <Outlet />
+        <div className="welcome-banner">
+          <h1>Welcome to Learnflow</h1>
+          <p>Learn at your own pace...</p>
+        </div>
         <h1>ler dfbfhsdh nsdbsdh</h1>
         <h5>jddfdg</h5>
-       
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora
           nesciunt possimus eligendi nobis architecto expedita hic magni, illo

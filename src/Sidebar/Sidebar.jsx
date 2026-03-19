@@ -50,7 +50,7 @@ export default function Sidebar() {
             <ScrollText />
             <span>All Courses</span>
           </Link>
-          <Link className="nav-item">
+          <Link className="nav-item" to="/coursebuilder">
             <PenLineIcon />
             <span>Course Builder</span>
           </Link>
@@ -58,7 +58,7 @@ export default function Sidebar() {
             <Settings />
             <span>Settings</span>{" "}
           </Link>
-          <Link className="nav-item">
+          <Link className="nav-item" to="Support">
             <HardDriveUpload />
             <span>Support</span>
           </Link>

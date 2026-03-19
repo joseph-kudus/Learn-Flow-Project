@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../pages/Page.css";
-import land from "../assets/images/Ellipse 1.png"
+import land from "../assets/images/Ellipse 1.png";
+import ato from "../assets/images/Ellipse 5.png";
+import hero from "../assets/images/Dashboard 2.png"
+import { Badge, BadgeHelpIcon, User, User2Icon, UserCircleIcon, UserCog, UserRoundCog } from "lucide-react";
 function Landing() {
   return (
     <main>
@@ -18,20 +21,21 @@ function Landing() {
                 desktop.
               </p>
             </div>
-
             <div className="article">
               <div className="join">
                 <button className="newc">Start a new course!</button>
                 <div className="groupimg">
                   <img src={land} alt="gr" />
-                  <img src="" alt="gr" />
-                  <img src="" alt="gr" />
+                  <img src={ato} alt="gr" />
+                  <img src={ato} alt="gr" />
                 </div>
-                <h3>Join thousands of students to start coding now!</h3>
+                <h3 className="gr-h">Join thousands of students to start coding now!</h3>
               </div>
             </div>
           </div>
-          <div className="hero-img"></div>
+          <div className="hero-img">
+            <img src={hero} alt="img" />
+          </div>
         </div>
 
         {/**Logo slide */}
@@ -70,6 +74,7 @@ function Landing() {
                 taught by industry experts who bring years of practical
                 experience
               </p>
+              <UserRoundCog className="userf"/>
             </div>
             <div className="f-card">
               <div className="title">
@@ -79,9 +84,10 @@ function Landing() {
                 Benefit from our job placement assistance services that connects
                 qualified learners with relevant career path
               </p>
+              <BadgeHelpIcon className="userf"/>
             </div>
             <div></div>
-            <div className="f-card">
+            <div className="f-card"> 
               <div className="title">
                 <h3>Collaboration</h3>
               </div>

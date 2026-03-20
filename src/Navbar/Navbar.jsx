@@ -1,19 +1,19 @@
 import React from "react";
-import "./nav.css";
+import "./Nav.css";
 import { Link } from "react-router-dom";
 import { Notebook } from "lucide-react";
 
 function Navbar() {
   return (
-    <header class="header">
+    <header class="header-container">
       <nav class="nav">
-        <div class="logo">
-          <Link to="/" className="logo-icon">
+        <div className="navbar">
+          <Link to="/Landing" className="logo-l">
             <Notebook />
-            <span class="logo-text">LearnFlow</span>
+            <p>LearnFlow</p>
           </Link>
         </div>
-        <ul class="nav-links flex flex-center text-red">
+        <div className="nav-li">
           <Link to="/about" className="a">
             About
           </Link>
@@ -23,7 +23,8 @@ function Navbar() {
           <Link to="/pricing" className="a">
             Pricing
           </Link>
-        </ul>
+        </div>
+        
         <Link to="/login" className="cta-button">
           Lets start your learning journey
         </Link>

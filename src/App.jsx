@@ -14,7 +14,7 @@ import ProtectedRoute from "./component/ProtectedRoute";
 import "./App.css";
 import SettingsPage from "./dashboard/SettingsPage";
 import Support from "./dashboard/Support";
-
+import Sidebar from "./Sidebar/Sidebar";
 function App() {
   const { loading, currentUser } = useAuth();
 
@@ -66,15 +66,27 @@ function App() {
           />
 
           <Route
-            path="/About"
+            path="/coursebuilder"
             element={
               currentUser ? (
                 <Layout>
-                  <About />
+                  <Dashboard />
                 </Layout>
               ) : (
                 <Layout>
-                  <Login />
+                  <Support />
+                </Layout>
+              )
+            }
+          />
+          <Route
+            path="/about"
+            element={
+              currentUser ? (
+                <Navigate to="/dashboard" replace />
+              ) : (
+                <Layout>
+                  <About />
                 </Layout>
               )
             }
@@ -91,15 +103,18 @@ function App() {
               )
             }
           />
-          <Route path="/Support" element={ 
-            currentUser ? (
-              <Navigate to="/Dashboard" replace/>
-            ) : (
+          <Route
+            path="/Support"
+            element={
+              currentUser ? (
+                <Navigate to="/Dashboard" replace />
+              ) : (
                 <Layout>
-                  <Support/> 
+                  <Support />
                 </Layout>
-            )
-          } />
+              )
+            }
+          />
           <Route
             path="/pricing"
             element={
@@ -143,8 +158,7 @@ function App() {
                 <Dashboard />
               </ProtectedRoute>
             }
-          > 
-          </Route>
+          ></Route>
           <Route
             path="/settings"
             element={

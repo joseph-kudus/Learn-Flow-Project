@@ -1,10 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../pages/Page.css";
 import land from "../assets/images/Ellipse 1.png";
 import ato from "../assets/images/Ellipse 5.png";
-import hero from "../assets/images/Dashboard 2.png"
-import { Badge, BadgeHelpIcon, User, User2Icon, UserCircleIcon, UserCog, UserRoundCog } from "lucide-react";
+import hero from "../assets/images/Dashboard 2.png";
+import bes from "../assets/images/281.png";
+import bes1 from "../assets/images/151.png";
+
+import {
+  Badge,
+  BadgeHelpIcon,
+  User,
+  User2Icon,
+  UserCircleIcon,
+  UserCog,
+  UserRoundCog,
+} from "lucide-react";
 function Landing() {
   return (
     <main>
@@ -23,13 +33,15 @@ function Landing() {
             </div>
             <div className="article">
               <div className="join">
-                <button className="newc">Start a new course!</button>
+                <button className="newc1">Start a new course!</button>
                 <div className="groupimg">
                   <img src={land} alt="gr" />
                   <img src={ato} alt="gr" />
                   <img src={ato} alt="gr" />
                 </div>
-                <h3 className="gr-h">Join thousands of students to start coding now!</h3>
+                <h3 className="gr-h">
+                  Join thousands of students to start coding now!
+                </h3>
               </div>
             </div>
           </div>
@@ -74,7 +86,7 @@ function Landing() {
                 taught by industry experts who bring years of practical
                 experience
               </p>
-              <UserRoundCog className="userf"/>
+              <UserRoundCog className="userf" />
             </div>
             <div className="f-card">
               <div className="title">
@@ -84,10 +96,10 @@ function Landing() {
                 Benefit from our job placement assistance services that connects
                 qualified learners with relevant career path
               </p>
-              <BadgeHelpIcon className="userf"/>
+              <BadgeHelpIcon className="userf" />
             </div>
             <div></div>
-            <div className="f-card"> 
+            <div className="f-card">
               <div className="title">
                 <h3>Collaboration</h3>
               </div>
@@ -100,7 +112,11 @@ function Landing() {
           <div className="colabration">
             <div className="colab">
               <div className="colo">
-                <div className="myi">{/*image here* */}</div>
+                <div className="myi">
+                  {/*image here* */}
+                  <img src={bes} alt="" className="myi" />
+                </div>
+
                 <div className="cols">
                   <h1>Collaborate & learn with our platform</h1>
                   <p>
@@ -122,7 +138,10 @@ function Landing() {
                   </p>
                   <button className="newc">Get Started</button>
                 </div>
-                <div className="myii">{/*image here* */}</div>
+                <div className="myii">
+                  {/*image here* */}
+                  <img src={bes1} alt="" className="myi" />
+                </div>
               </div>
             </div>
           </div>
@@ -130,17 +149,64 @@ function Landing() {
       </div>
 
       <div className="learners-goals">
-        <h1>Learners like you achieve their goals through our courses</h1>
-        <p>
-          We believe everyone has something to give. Share your skills &
-          experience with students around the world by teaching free or paid.
-        </p>
+        <div className="Lean">
+          <h1>Learners like you achieve their goals through our courses</h1>
+          <p>
+            We believe everyone has something to give. Share your skills &
+            experience with students around the world by teaching free or paid.
+          </p>
+        </div>
+
         <div className="goals">
           <div className="learner-card">
-            <img src="" alt="ikj" className="lent1" />
-            <div className="lent">
-              <h3>Joe Doe</h3>
-              <p>Web Developer</p>
+            <div className="learner-bio">
+              <img src={ato} alt="ikj" className="lent1" />
+              <div className="lent">
+                <h3>Joe Doe</h3>
+                <h5>Web Developer</h5>
+              </div>
+            </div>
+
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
+              possimus reprehenderit ut qui at earum. Totam aperiam voluptatum
+              officia quia quis error pariatur nihil quidem, necessitatibus
+              ratione dolore. Id, corrupti?
+            </p>
+          </div>
+          <div className="learner-card">
+            <div className="learner-bio">
+              <img src={ato} alt="ikj" className="lent1" />
+              <div className="lent">
+                <h3>Joe Doe</h3>
+                <h5>Web Developer</h5>
+              </div>
+            </div>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
+              possimus reprehenderit ut qui at earum. Totam aperiam voluptatum
+            </p>
+          </div>
+          <div className="learner-card">
+            <div className="learner-bio">
+              <img src={ato} alt="ikj" className="lent1" />
+              <div className="lent">
+                <h3>Joe Doe</h3>
+                <h5>Web Developer</h5>
+              </div>
+            </div>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
+              possimus reprehenderit ut qui at earum. Totam aperiam voluptatum
+            </p>
+          </div>
+          <div className="learner-card">
+            <div className="learner-bio">
+              <img src={ato} alt="ikj" className="lent1" />
+              <div className="lent">
+                <h3>Joe Doe</h3>
+                <h5>Web Developer</h5>
+              </div>
             </div>
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
@@ -150,10 +216,12 @@ function Landing() {
             </p>
           </div>
           <div className="learner-card">
-            <img src="" alt="" />
-            <div>
-              <h3>Joe Doe</h3>
-              <p>Web Developer</p>
+            <div className="learner-bio">
+              <img src={ato} alt="ikj" className="lent1" />
+              <div className="lent">
+                <h3>Joe Doe</h3>
+                <h5>Web Developer</h5>
+              </div>
             </div>
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
@@ -163,10 +231,12 @@ function Landing() {
             </p>
           </div>
           <div className="learner-card">
-            <img src="" alt="" />
-            <div>
-              <h3>Joe Doe</h3>
-              <p>Web Developer</p>
+            <div className="learner-bio">
+              <img src={ato} alt="ikj" className="lent1" />
+              <div className="lent">
+                <h3>Joe Doe</h3>
+                <h5>Web Developer</h5>
+              </div>
             </div>
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
@@ -176,10 +246,159 @@ function Landing() {
             </p>
           </div>
           <div className="learner-card">
-            <img src="" alt="" />
-            <div>
-              <h3>Joe Doe</h3>
-              <p>Web Developer</p>
+            <div className="learner-bio">
+              <img src={ato} alt="ikj" className="lent1" />
+              <div className="lent">
+                <h3>Joe Doe</h3>
+                <h5>
+                  <title>Google dev</title>
+                </h5>
+                <h5>Web Developer</h5>
+              </div>
+            </div>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
+              possimus reprehenderit ut qui at earum. Totam aperiam voluptatum
+              officia quia quis error pariatur nihil quidem, necessitatibus
+              ratione dolore. Id, corrupti?
+            </p>
+          </div>
+          <div className="learner-card">
+            <div className="learner-bio">
+              <img src={ato} alt="ikj" className="lent1" />
+              <div className="lent">
+                <h3>Joe Doe</h3>
+                <h5>Web Developer</h5>
+              </div>
+            </div>
+
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
+              possimus reprehenderit ut qui at earum. Totam aperiam voluptatum
+              officia quia quis error pariatur nihil quidem, necessitatibus
+              ratione dolore. Id, corrupti?
+            </p>
+          </div>
+
+          <div className="learner-card">
+            <div className="learner-bio">
+              <img src={ato} alt="ikj" className="lent1" />
+              <div className="lent">
+                <h3>Joe Doe</h3>
+                <h5>Web Developer</h5>
+              </div>
+            </div>
+
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
+              possimus reprehenderit ut qui at earum. Totam aperiam voluptatum
+              officia quia quis error pariatur nihil quidem, necessitatibus
+              ratione dolore. Id, corrupti?
+            </p>
+          </div>
+          <div className="learner-card">
+            <div className="learner-bio">
+              <img src={ato} alt="ikj" className="lent1" />
+              <div className="lent">
+                <h3>Joe Doe</h3>
+                <h5>Web Developer</h5>
+              </div>
+            </div>
+
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
+              possimus reprehenderit ut qui at earum. Totam aperiam voluptatum
+              officia quia quis error pariatur nihil quidem, necessitatibus
+              ratione dolore. Id, corrupti?
+            </p>
+          </div>
+          <div className="learner-card">
+            <div className="learner-bio">
+              <img src={ato} alt="ikj" className="lent1" />
+              <div className="lent">
+                <h3>Joe Doe</h3>
+                <h5>Web Developer</h5>
+              </div>
+            </div>
+
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
+              possimus reprehenderit ut qui at earum. Totam aperiam voluptatum
+              officia quia quis error pariatur nihil quidem, necessitatibus
+              ratione dolore. Id, corrupti?
+            </p>
+          </div>
+          <div className="learner-card">
+            <div className="learner-bio">
+              <img src={ato} alt="ikj" className="lent1" />
+              <div className="lent">
+                <h3>Joe Doe</h3>
+                <h5>Web Developer</h5>
+              </div>
+            </div>
+
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
+              possimus reprehenderit ut qui at earum. Totam aperiam voluptatum
+              officia quia quis error pariatur nihil quidem, necessitatibus
+              ratione dolore. Id, corrupti?
+            </p>
+          </div>
+          <div className="learner-card">
+            <div className="learner-bio">
+              <img src={ato} alt="ikj" className="lent1" />
+              <div className="lent">
+                <h3>Joe Doe</h3>
+                <h5>Web Developer</h5>
+              </div>
+            </div>
+
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
+              possimus reprehenderit ut qui at earum. Totam aperiam voluptatum
+              officia quia quis error pariatur nihil quidem, necessitatibus
+              ratione dolore. Id, corrupti?
+            </p>
+          </div>
+          <div className="learner-card">
+            <div className="learner-bio">
+              <img src={ato} alt="ikj" className="lent1" />
+              <div className="lent">
+                <h3>Joe Doe</h3>
+                <h5>Web Developer</h5>
+              </div>
+            </div>
+
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
+              possimus reprehenderit ut qui at earum. Totam aperiam voluptatum
+              officia quia quis error pariatur nihil quidem, necessitatibus
+              ratione dolore. Id, corrupti?
+            </p>
+          </div>
+          <div className="learner-card">
+            <div className="learner-bio">
+              <img src={ato} alt="ikj" className="lent1" />
+              <div className="lent">
+                <h3>Joe Doe</h3>
+                <h5>Web Developer</h5>
+              </div>
+            </div>
+
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
+              possimus reprehenderit ut qui at earum. Totam aperiam voluptatum
+              officia quia quis error pariatur nihil quidem, necessitatibus
+              ratione dolore. Id, corrupti?
+            </p>
+          </div>
+          <div className="learner-card">
+            <div className="learner-bio">
+              <img src={ato} alt="ikj" className="lent1" />
+              <div className="lent">
+                <h3>Joe Doe</h3>
+                <h5>Web Developer</h5>
+              </div>
             </div>
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
@@ -197,7 +416,11 @@ function Landing() {
             <p>
               Learn at your own pace with lifetime access on mobile and desktop.
             </p>
-            <button className="bt">Get started</button>
+
+            <button className="newc2">Get started</button>
+          </div>
+          <div className="imi" >
+            <img src={hero} alt="" className="im" />
           </div>
         </div>
       </div>

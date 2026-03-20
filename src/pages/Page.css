@@ -52,18 +52,48 @@ div.article-title{
     width: 400px;
     height: 400px;
 }
-.newc{
+.newc1{
     background-color: #F7CA4E;
+    border: #F7CA4E;
     border-radius: 20px;
-    width: 195px;
-    height: 55px;
-    padding: 18px 16px;
-    gap: 10px;
-    position: relative;
-    font-weight: 500;
-    font-size: 16px;
+    width: 160px;
+    height: 40px;
+    font-weight: 400;
+    font-size: 18px;
     font-style: medium;
     font-family: DM sans;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+.newc2{
+    background-color: #000000;
+    border: #000000;
+    color: #FFFFFF;
+    border-radius: 20px;
+    width: 130px;
+    height: 30px;
+    font-weight: 400;
+    font-size: 18px;
+    font-style: medium;
+    font-family: DM sans;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+.newc{
+    background-color: #F7CA4E;
+    border: #F7CA4E;
+    border-radius: 20px;
+    width: 130px;
+    height: 30px;
+    font-weight: 400;
+    font-size: 18px;
+    font-style: medium;
+    font-family: DM sans;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
 }
 .join{
     justify-content: center;
@@ -112,12 +142,21 @@ div.article-title{
     align-content: center;
 }
 .feature-c{
-    width: 676px; height: 100px; top: 100px; left: 382px;
+    width: 676px; 
+    height: 100px; 
+    top: 40px; 
+    left: 82px;
+    position: relative;
     text-align: center;
-    font-family: DM Sans; font-weight: 700; font-size: 25px; font-style: Bold; line-height: 50px; letter-spacing: 0%;
+    font-family: DM Sans; 
+    font-weight: 600; 
+    font-size: 25px; 
+    font-style: Bold; 
+    line-height: 50px; 
+    letter-spacing: 0%;
 }
 .features-card{
-    padding: 50px;
+    padding: 50px 0px;
     display: flex;
     justify-content: center;
     flex-direction: row;
@@ -143,13 +182,13 @@ div.article-title{
 }
 
 .colabration{
-    
     display: flex;
     flex-direction: row;
     align-items: center;
-    top: 24px;
+    top: 1px;
+    position: relative;
     width: 1440px;
-    height: 1088px;
+    height: 808px;
     gap: 10px;
 }
 .colab{
@@ -167,28 +206,27 @@ div.article-title{
 }
 
 .myi{
-    background-image: url("../assets/images/28\ \(1\)\ 1.png");
     background-color: #4E7BF7;
-    width: 500px;
-    height: 220px;
+    width: 300px;
+    height: 250px;
     border-radius: 10px;
     image-rendering: auto;
+    
 }
-.myii{
-    background-image: url(../assets/images/15\ 1.png);
-    background-color: #4E7BF7;
-    width: 500px;
-    height: 220px;
-    border-radius: 10px;
-    image-rendering: auto;
-}
+
 .colo{
     display: flex;
     flex-direction: row;
-    text-justify: initial;
-    width: 562px;
-    height: 250px;
+    justify-content: flex-start;
+    align-content: center;
+    width: 750px;
+    height: 350px;
     gap: 20px;
+}
+.cols{
+    justify-content: center;
+    align-content: center;
+    text-align: start;
 }
 
 .learners-goals{
@@ -199,54 +237,93 @@ div.article-title{
     background-color: #000000;
     color: seashell;
     justify-content: center;
+    align-items: center;
+    text-align: center;
 }
-
-.knowledge{
-    background-color: #ffffff;
-    width: 1,440px;
-    height: 400px;
+.Lean{
+width: 520px;
+top: 80px;
+left: 360px;
+position: relative;
 }
-.kn
+.Lean p{
+    color: darkgrey;
+    gap: 20px;
+    flex-wrap: wrap;
+}
 .goals{
     justify-content: center;
     align-items: center;
     padding: 10px;
     display: flex;
-    gap: 20px;
+    flex-wrap: wrap;
+    gap: 8px;
+    top: 100px;
+    left: 140px;
+    position: relative;
+    width: 1050px;
 }
 .learner-card{
     border: 1px solid gray;
     border-radius: 10px;
     display: block;
-    width: 230px;
-    height: 230px;
+    width: 240px;
+    height: 200px;
     flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    text-align: start;
+    
 }
-.lent1{
-    background-image: url(../assets/react.svg);
+.learner-card p{
+    color: gray;
+    left: 10px;
+    position: relative;
+    font-size: 13px;
+}
+.learner-bio{
+    display: flex;
+    gap: 10px;
+}
+.knowledge{
+    background-color: #ffffff;
+    width: 1,440px;
+    height: 400px;
 }
 .knowledge-exp{
-    
+    display: flex;
     background-color: #F7CA4E;
-    width: 800px;
-    height: 250px;
-    left: 200px;
+    width: 1060px;
+    height: 280px;
     top: 80px;
+    left: 160px;
     position: relative;
+    border-radius: 20px;
+    gap: 90px;
 }
 .kta{
-    bottom: 500px;
+
     justify-content: center;
     align-items: center;
+    left: 50px;
+    top: 30px;
+    flex-direction: column;
+    position: relative;
+    width: 360px;height: 65px;
 }
-.bt{
-    background-color: #000000;
-    color: #ffffff;
-    height: 30px;
-    width: 100px;
-    border: 2px solid black;
-    border-radius: 8px;
+.im{
+    top: 70px;
+    width: 400px;
+    height: 150px;
+
 }
+.imi{
+    top: 60px;
+    left: 50px;
+    position: relative;
+    aspect-ratio: 60px;
+}
+
 /*Login Page style */
 .login-2{
     width: 1,440px;

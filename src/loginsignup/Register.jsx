@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Notebook } from "lucide-react";
 import "../pages/Page.css";
+import "./Mylogin.css";
+import smte from "../assets/images/small-team.png";
 import { useAuth } from "../context/AuthContext";
 
 export default function Register() {
@@ -128,9 +130,9 @@ export default function Register() {
           </div>
         </div>
       </div>
-      <div className="team-discu">
-        <h1>Team discu </h1>
-      </div>
+       <div className="team-discu">
+              <img src={smte} alt="" className="team-pic" />
+            </div>
     </div>
   );
 }

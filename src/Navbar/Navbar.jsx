@@ -14,17 +14,16 @@ function Navbar() {
           </Link>
         </div>
         <div className="nav-li">
-          <Link to="/about" className="a">
+          <Link to="/about" className="navbara">
             About
           </Link>
-          <Link to="/features" className="a">
+          <Link to="/features" className="navbara">
             Features
           </Link>
-          <Link to="/pricing" className="a">
+          <Link to="/pricing" className="navbara">
             Pricing
           </Link>
         </div>
-        
         <Link to="/login" className="cta-button">
           Lets start your learning journey
         </Link>

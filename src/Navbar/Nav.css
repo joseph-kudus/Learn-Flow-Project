@@ -13,14 +13,16 @@
     justify-content: space-around;
     align-items: center;
 }
-.navbar{
-  text-decoration: none;
-  display: flex;  
+.nav-li{
+  
+  gap: 15px; 
 }
-
-
-
-
+.navbara{
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
 
 .cta-button {
   color: #F7CA4E;
@@ -33,5 +35,5 @@
 }
 
 .cta-button:hover {
-  background: #2563eb;
+  background: #a9b6b6;
 }

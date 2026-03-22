@@ -305,13 +305,20 @@ position: relative;
     width: 360px;height: 65px;
 }
 .im{
-    top: 70px;
+    top: 20px;
     width: 400px;
-    height: 150px;
+    height: 200px;
+    left: 10px;
+    position: relative;
+    
 }
 .imi{
     top: 60px;
-    left: 50px;
+    left: 200px;
     position: relative;
     aspect-ratio: 60px;
+    transform: rotate(-15deg);
+    border-radius: 70px;
+    
 }
+

@@ -15,6 +15,7 @@ import {
   UserCog,
   UserRoundCog,
 } from "lucide-react";
+
 function Landing() {
   return (
     <main>
@@ -419,7 +420,8 @@ function Landing() {
 
             <button className="newc2">Get started</button>
           </div>
-          <div className="imi" >
+          
+          <div className="imi">
             <img src={hero} alt="" className="im" />
           </div>
         </div>

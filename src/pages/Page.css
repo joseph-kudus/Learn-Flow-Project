@@ -1,15 +1,27 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
 *{
     padding: 0px;
     margin: 0px;
-    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
 }
 main{
     background-color: #000000;
 }
 .CTA{
     color: #FFFFFF;
-    justify-content: center;
-    align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     text-align: center;
     width: 900px;
     height: 392px;
@@ -45,8 +57,12 @@ main{
     position: relative;
 }
 div.article-title{
-    justify-content: center;
-    align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     text-align: center;
     color: #ffffff;
     font-family: Times New Roman, Times, serif;
@@ -63,8 +79,12 @@ div.article-title{
     font-size: 18px;
     font-style: medium;
     font-family: DM sans;
-    justify-content: center;
-    align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     margin-top: 20px;
 }
 .newc2{
@@ -78,8 +98,12 @@ div.article-title{
     font-size: 18px;
     font-style: medium;
     font-family: DM sans;
-    justify-content: center;
-    align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     margin-top: 20px;
 }
 .newc{
@@ -92,17 +116,29 @@ div.article-title{
     font-size: 18px;
     font-style: medium;
     font-family: DM sans;
-    justify-content: center;
-    align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     margin-top: 20px;
 }
 .join{
-    justify-content: center;
-    align-items: center;   
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;   
 }
 .groupimg{
-    justify-content: center;
-    align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     width: 123px;
     position: relative;
     left: 390px;
@@ -120,8 +156,14 @@ div.article-title{
     color: darkgray;
 }
 .logo-slides{
-    justify-content: center;
-    align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     background-color: #E8E8E8;
     width: 1,440px;
@@ -134,11 +176,20 @@ div.article-title{
 }
 .features{
     background-color: #ffffff;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-content: center;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -ms-flex-line-pack: center;
+        align-content: center;
 }
 .feature-c{
     width: 676px; 
@@ -156,9 +207,16 @@ div.article-title{
 }
 .features-card{
     padding: 50px 0px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: center;
-    flex-direction: row;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
     top: 282.51px;
     left: 121px;
     width: 1,197px;
@@ -169,8 +227,11 @@ div.article-title{
 }
 .f-card{
     background-color: #F5F5F5;
-    justify-content: center;
-    align-content: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -ms-flex-line-pack: center;
+        align-content: center;
     text-align: center;
     width: 300px;
     height: 184px;
@@ -179,9 +240,16 @@ div.article-title{
     gap: 26px;
 }
 .colabration{
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     top: 1px;
     position: relative;
     width: 1440px;
@@ -195,10 +263,17 @@ div.article-title{
     top: 10px;
     left: 330px;
     display: block;
-    flex-direction: row;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
     position: relative;
-    justify-content: center;
-    align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     text-align: center;
 }
 .myi{
@@ -210,27 +285,42 @@ div.article-title{
 }
 
 .colo{
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-content: center;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    -ms-flex-line-pack: center;
+        align-content: center;
     width: 750px;
     height: 350px;
     gap: 20px;
 }
 .cols{
-    justify-content: center;
-    align-content: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -ms-flex-line-pack: center;
+        align-content: center;
     text-align: start;
 }
 .learners-goals{
-    align-items: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     text-align: center;
     width: 1,440px;
     height: 1090px;
     background-color: #000000;
     color: seashell;
-    justify-content: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
     align-items: center;
     text-align: center;
 }
@@ -243,14 +333,22 @@ position: relative;
 .Lean p{
     color: darkgrey;
     gap: 20px;
-    flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
 }
 .goals{
-    justify-content: center;
-    align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     padding: 10px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
     gap: 8px;
     top: 100px;
     left: 140px;
@@ -263,9 +361,13 @@ position: relative;
     display: block;
     width: 240px;
     height: 200px;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-content: center;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -ms-flex-line-pack: center;
+        align-content: center;
     text-align: start;
 }
 .learner-card p{
@@ -275,6 +377,8 @@ position: relative;
     font-size: 13px;
 }
 .learner-bio{
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     gap: 10px;
 }
@@ -284,6 +388,8 @@ position: relative;
     height: 400px;
 }
 .knowledge-exp{
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     background-color: #F7CA4E;
     width: 1060px;
@@ -296,11 +402,20 @@ position: relative;
 }
 .kta{
 
-    justify-content: center;
-    align-items: center;
+    -webkit-box-pack: center;
+
+        -ms-flex-pack: center;
+
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     left: 50px;
     top: 30px;
-    flex-direction: column;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
     position: relative;
     width: 360px;height: 65px;
 }
@@ -317,8 +432,9 @@ position: relative;
     left: 200px;
     position: relative;
     aspect-ratio: 60px;
-    transform: rotate(-15deg);
+    -webkit-transform: rotate(-15deg);
+        -ms-transform: rotate(-15deg);
+            transform: rotate(-15deg);
     border-radius: 70px;
     
 }
-

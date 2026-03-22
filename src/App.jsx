@@ -15,6 +15,7 @@ import "./App.css";
 import SettingsPage from "./dashboard/SettingsPage";
 import Support from "./dashboard/Support";
 import Sidebar from "./Sidebar/Sidebar";
+
 function App() {
   const { loading, currentUser } = useAuth();
 
@@ -74,7 +75,7 @@ function App() {
                 </Layout>
               ) : (
                 <Layout>
-                  <Support />
+                 
                 </Layout>
               )
             }

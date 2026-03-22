@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./das.css";
 import { useAuth } from "../context/AuthContext";
 import { Navigate } from "react-router-dom";
@@ -27,7 +27,12 @@ import {
 import { Outlet } from "react-router-dom";
 import Sidebar from "../Sidebar/Sidebar";
 
+
+
 export default function Dashboard() {
+  const navigate=useNavigate();
+  const {currentUser}=useAuth();
+  
   return (
     <div className="dashboard">
       {/*Movile overlay */}
@@ -57,9 +62,14 @@ export default function Dashboard() {
             </i>
             <span className="notification-bag">3</span>
           </div>
-          <div className="user-profile">
-            <User />
-          </div>
+          {currentUser ? (
+            <div className="user-profile flex items-center text-sm text-gray-600">
+              <User />
+              <span>{currentUser.email}</span>
+            </div>
+          ) : (
+            <p>welcome</p>
+          )}
         </div>
       </header>
       {/* -- sidebar -- */}

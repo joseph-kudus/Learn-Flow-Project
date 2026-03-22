@@ -8,7 +8,7 @@
 }
 
 :root{
-    --primary: #5c3a3a;
+    --primary: #000000;
     --secondary: #FFFFFF;
     --accent: #F7CA4E;
     --success: #4cc9f0;
@@ -16,8 +16,8 @@
     --dark: #2b2d42;
     --gray: #8d99ae;
     --sidebar: #FFFFFF;
-    --sidebar-width: 280px;
-    --sidebar-minimized-width: 80px;
+    --sidebar-width: 140px;
+    --sidebar-minimized-width: 50px;
     --header-height: 80px;
 
     /* Light theme variables*/
@@ -84,7 +84,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(163, 17, 17, 0.5);
     z-index: 150;
     opacity: 0;
     -webkit-transition: opacit 0.3s ease;
@@ -96,7 +96,7 @@
 .header{
     grid-row: 1;
     grid-column: 1;
-    padding: 10px;
+    padding: 8px;
     grid-area: header;
     background: var(--header-bg);
     display: -webkit-box;
@@ -114,7 +114,7 @@
     -webkit-transition: background-color 0.3s ease;
     -o-transition: background-color 0.3s ease;
     transition: background-color 0.3s ease;
-    gap: 150px;
+    gap: 20px;
     position: fixed;
     top: 50;
     left: var(--sidebar-width);
@@ -131,7 +131,7 @@
         -ms-flex-align: center;
             align-items: center;
     gap: 1.5rem;
-    padding-left: 20px;
+    padding-left: 250px;
 }
 .header-right {
     display: -webkit-box;
@@ -142,7 +142,7 @@
             align-items: center;
     gap: 1.5rem;
     float: right;
-    padding-right: 10px;
+    padding-right: 20px;
 }
 .mobile-toggle{
     display: none;
@@ -179,20 +179,19 @@
     grid-row: 1;
     grid-row: 3;
     grid-column: 1;
-    padding-left: 10px;
-    padding-bottom: 10px;
     grid-area: sidebar;
     background: var(--sidebar);
     color: black;
     z-index: 100;
     overflow-y: auto;
+    overflow-x: hidden;
     height: 100vb;
     position: fixed;
     -webkit-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;
     transition: all 0.3s ease;  left: 20;
     width: var(--sidebar-width);
-    height: 100vh;
+    height: 100dvh;
 }
 .theme-toggle{
     display: -webkit-box;
@@ -273,7 +272,7 @@
         -ms-flex-pack: center;
             justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 19px;
 }
 .logob{
     width: 30px;
@@ -296,7 +295,7 @@
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    padding: 0.9rem 1.5rem;
+   
     border-radius: 8px;
     margin-bottom: 0.5rem;
     color: #361616;
@@ -305,7 +304,7 @@
     -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
     font-weight: 500;
-    overflow: hidden;
+    
 }
 .nav-item.active{
     width: 132px;
@@ -330,50 +329,18 @@
     transition: 0.3s ease;
 }
 /*content area*/
-/*
+
 section.content-section{
 grid-area: content;
-padding: 2rem;
-display: grid;
-grid-template-columns: 3fr 1fr;
-grid-template-rows: auto auto auto auto;
-gap: 2rem;
-grid-template-areas: 
-"Welecome profile" 
-"Project stst" 
-"Time line" 
-"Users Users";
-
-grid-area: content;
   margin-left: var(--sidebar-width);
-  margin-top: var(--header-height);
-  padding: 2rem;
-  overflow-y: auto;
   height: calc(100vh - var(--header-height));
+
 }
-
-*/
-.content-section {
-  grid-row: 2;
-  grid-column: 2;
-  grid-area: content;
-  margin-left: var(--sidebar-width);
-  margin-top: var(--header-height);
-  padding: 2rem;
-
-  height: calc(100vh - var(--header-height));
-overflow-y: scroll !important; /* force scrollbar */
- margin-top: -20px; /* adjust px */
- padding-left: 0; 
-}
-
 .welcome-banner{
     grid-area: welcome;
     background: -o-linear-gradient(315deg, var(--primary, --secondary));
-    background: linear-gradient(135deg, var(--primary, --secondary));
-    border-radius: 16px;
-    padding: 2rem;
-    color: white;
+    background: White;
+    color: #000000;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;

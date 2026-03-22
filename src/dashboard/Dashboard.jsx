@@ -79,30 +79,11 @@ export default function Dashboard() {
         {/*--Welecome Banner-- */}
         <div className="welcome-banner">
           <h1>Welcome to Learnflow</h1>
-          <p>Learn at your own pace...</p>
+          <h3>Learn at your own pace with lifetime access on mobile and desktop</h3>
+          <hr />
+          
         </div>
-        <h1>ler dfbfhsdh nsdbsdh</h1>
-        <h5>jddfdg</h5>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora
-          nesciunt possimus eligendi nobis architecto expedita hic magni, illo
-          commodi voluptas? Beatae similique quasi porro quaerat magni?
-          Dignissimos neque nulla accusamus? Lorem ipsum dolor sit, amet
-          consectetur adipisicing elit. Veritatis, iste. Veritatis perspiciatis
-          reiciendis nobis porro est molestiae, libero quod quos quibusdam iste
-          veniam ducimus vitae. Quasi similique dolor dolorem doloremque. Lorem
-          ipsum, dolor sit amet consectetur adipisicing elit. Fugit ab ad
-          laudantium placeat enim aliquam nisi voluptatem tempora non porro
-          inventore libero eveniet, nemo repellendus reiciendis ipsam adipisci
-          qui dicta.
-        </p>
-        <h3>iiururherh</h3>
-        <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nesciunt
-          eaque doloremque reprehenderit reiciendis enim adipisci, excepturi
-          quaerat soluta libero nemo voluptates odit distinctio quo quibusdam et
-          ullam suscipit nulla expedita?
-        </p>
+        
       </section>
       {/*--footer-- */}
       <footer className="footer"></footer>

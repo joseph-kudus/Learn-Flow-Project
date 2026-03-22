@@ -2,6 +2,9 @@ import React from 'react'
 import { Link, Navigate } from 'react-router-dom';
 import {
   Bell,
+  Book,
+  BookCheckIcon,
+  BookIcon,
   HardDriveUpload,
   LayoutDashboard,
   LogOut,
@@ -37,7 +40,7 @@ export default function Sidebar() {
     <div>
       <aside className="sidebar">
         <div className="logo">
-          <Notebook className="logob" />
+          <BookIcon className="logob" />
           <p>LearnFlow</p>
         </div>
         <div className="nav-title">MENU</div>

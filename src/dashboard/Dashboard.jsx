@@ -78,10 +78,13 @@ export default function Dashboard() {
       <section className="content-section">
         {/*--Welecome Banner-- */}
         <div className="welcome-banner">
-          <h1>Welcome to Learnflow</h1>
-          <p>
-            Learn at your own pace with lifetime access on mobile and desktop
-          </p>
+          <div className="welcome-banner1">
+            <h1>Welcome to Learnflow</h1>
+            <p>
+              Learn at your own pace with lifetime access on mobile and desktop
+            </p>
+          </div>
+
           <hr />
           <p>Let’s continue Learning!</p>
           <div className="course-conti">

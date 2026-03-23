@@ -81,7 +81,8 @@ export default function Dashboard() {
           <h1>Welcome to Learnflow</h1>
           <h3>Learn at your own pace with lifetime access on mobile and desktop</h3>
           <hr />
-          
+          <h2>Languages courses</h2>
+          <p>Chose from one over many of courses and learn with industry leading expert </p>
         </div>
         
       </section>

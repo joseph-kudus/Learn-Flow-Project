@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./das.css";
 import { useAuth } from "../context/AuthContext";
 import { Navigate } from "react-router-dom";
+
 import {
   Bell,
   HardDriveUpload,
@@ -27,7 +28,7 @@ import {
 import { Outlet } from "react-router-dom";
 import Sidebar from "../Sidebar/Sidebar";
 
-
+import { image1, unsplash, image2, image3, image4, image5 } from "../assets/images/Myimg";
 export default function Dashboard() {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
@@ -85,14 +86,14 @@ export default function Dashboard() {
           <p>Let’s continue Learning!</p>
           <div className="course-conti">
             <div className="conti">
-              <img src="" alt="img" />
+              <img src={unsplash} alt="img" />
               <div className="conti-q">
                 <h3>Introduction to CSS language</h3>
                 <p>Learn different programming languages and its usefulness</p>
               </div>
             </div>
             <div className="conti">
-              <img src="" alt="img" />
+              <img src={image1} alt="imgs" />
               <div className="conti-q">
                 <h3>Introduction to JavaScript language</h3>
                 <p>Learn different programming languages and its usefulness</p>
@@ -107,7 +108,7 @@ export default function Dashboard() {
             </p>
             <div className="expert-cart">
               <div className="card-wrap">
-                <img src="" alt="to css" />
+                <img src={image2} alt="to css" className="imgr" />
                 <div className="expert1">
                   <div className="expert11">
                     <h1>Introduction to CSS language</h1>
@@ -127,7 +128,7 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="card-wrap">
-                <img src="" alt="to css" />
+                <img src={image3} alt="to css" className="imgr" />
                 <div className="expert1">
                   <div className="expert11">
                     <h1>Introduction to Python language</h1>
@@ -149,7 +150,7 @@ export default function Dashboard() {
             </div>
             <div className="expert-cart">
               <div className="card-wrap">
-                <img src="" alt="to css" />
+                <img src={image5} alt="to css" className="imgr"/>
                 <div className="expert1">
                   <div className="expert11">
                     <h1>Introduction to Javascript language</h1>
@@ -169,7 +170,7 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="card-wrap">
-                <img src="" alt="to css" />
+                <img src={image4} alt="to css" className="imgr" />
                 <div className="expert1">
                   <div className="expert11">
                     <h1>Introduction to HTML language</h1>
@@ -192,8 +193,8 @@ export default function Dashboard() {
           </div>
         </div>
       </section>
-      {/*--footer-- */}
-      <footer className="footer"></footer>
+      {/*--footer-- 
+      <footer className="footer"></footer> */}
     </div>
   );
 }

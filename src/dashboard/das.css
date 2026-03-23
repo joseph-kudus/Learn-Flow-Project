@@ -334,12 +334,12 @@ section.content-section{
 grid-area: content;
   margin-left: var(--sidebar-width);
   height: calc(100vh - var(--header-height));
+  background-color:  var(--text-color);
 
 }
 .welcome-banner{
     grid-area: welcome;
     background: -o-linear-gradient(315deg, var(--primary, --secondary));
-    background: White;
     color: #000000;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -362,14 +362,13 @@ grid-area: content;
 }
 .conti{
     display: flex;
-   
     width: 450px;
     height: 80px;
     top:  310px;
     left: 290px;
     border-radius: 20px;
     background-color: #FFFFFF;
-    gap: 20px;
+    
 }
 .conti-q{
     display: block;
@@ -382,24 +381,42 @@ grid-area: content;
 .expert-cart{
     display: flex;
     flex-direction: flex;
+    width: 900px;
+    height: 400px;
+    background-color: var(--text-color);
 }
 .expert1{
     display: flex;
+    background-color: #FFFFFF;
 }
 .expert11{
     display: flex;
     flex-direction: column;
 }
+.imgr{
+    width: 435px;
+    height: 200px;
+    top: 10px;
+    left: 10px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    position: relative;
+}
+.card-wrap{
+    width: 549px;
+    height: 533px;
+}
 .ato{
     display: flex;
     gap: 250px;
 }
-/*footer area*/
+/*footer area
+
 .footer{
     grid-row: 3;
     grid-column: 2;
     grid-area: footer;
-    background: var(--footer-bg);
+    
     color: var(--footer-bg);
     padding: 1.5rem 2rem;
     font-size: 0.9rem;
@@ -407,5 +424,7 @@ grid-area: content;
     -webkit-transition: background-color 0.3s ease, color 0.3s ease;
     -o-transition: background-color 0.3s ease, color 0.3s ease;
     transition: background-color 0.3s ease, color 0.3s ease;
-    position: sticky;
+    
 }
+
+*/

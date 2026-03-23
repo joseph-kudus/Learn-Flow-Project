@@ -79,9 +79,9 @@ export default function Dashboard() {
         {/*--Welecome Banner-- */}
         <div className="welcome-banner">
           <h1>Welcome to Learnflow</h1>
-          <h3>
+          <p>
             Learn at your own pace with lifetime access on mobile and desktop
-          </h3>
+          </p>
           <hr />
           <p>Let’s continue Learning!</p>
           <div className="course-conti">
@@ -150,7 +150,7 @@ export default function Dashboard() {
             </div>
             <div className="expert-cart">
               <div className="card-wrap">
-                <img src={image5} alt="to css" className="imgr"/>
+                <img src={image5} alt="to css" className="imgr" />
                 <div className="expert1">
                   <div className="expert11">
                     <h1>Introduction to Javascript language</h1>
@@ -178,6 +178,7 @@ export default function Dashboard() {
                       Learn the basics of HTML, and its usefulness in the
                       programming world
                     </p>
+                    <hr />
                     <div className="ato">
                       <p>
                         By <strong>ATO</strong>
@@ -191,6 +192,7 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
+          <button className="News">view all courses</button>
         </div>
       </section>
       {/*--footer-- 

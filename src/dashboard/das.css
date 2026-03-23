@@ -334,12 +334,13 @@ section.content-section{
 grid-area: content;
   margin-left: var(--sidebar-width);
   height: calc(100vh - var(--header-height));
-  background-color:  var(--text-color);
+  background-color:  rgb(242, 241, 241);
+  padding: 5px;
 
 }
 .welcome-banner{
     grid-area: welcome;
-    background: -o-linear-gradient(315deg, var(--primary, --secondary));
+   
     color: #000000;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -352,8 +353,12 @@ grid-area: content;
         justify-content: space-around;
 }
 .welcome-banner h1{
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
+    font-family: DM Sans;
+    font-weight: 700px;
+    font-style: Bold;
+
+    font-size: 32px;
+    
 }
 
 .course-conti{
@@ -389,6 +394,21 @@ grid-area: content;
     display: flex;
     background-color: #FFFFFF;
 }
+.expert1 h1{
+    color: #000000;
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 20px;
+}
+.expert1 p{
+    color: #50515a;
+    font-size: 18px;
+    font-weight: 400;
+    font-style: Regular;
+    letter-spacing: 0px;
+    line-height: 100%;
+    padding: 10px;
+}
 .expert11{
     display: flex;
     flex-direction: column;
@@ -409,6 +429,28 @@ grid-area: content;
 .ato{
     display: flex;
     gap: 250px;
+}
+
+.News{
+    background-color: #F7CA4E;
+    border: #F7CA4E;
+    border-radius: 20px;
+    width: 190px;
+    height: 50px;
+    font-weight: 400;
+    font-size: 18px;
+    font-style: medium;
+    font-family: DM sans;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    margin-top: 20px;
+    top: 50px;
+    left: 300px;
+    position: relative;
 }
 /*footer area
 

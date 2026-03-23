@@ -355,6 +355,45 @@ grid-area: content;
     font-size: 1.8rem;
     margin-bottom: 1rem;
 }
+
+.course-conti{
+    display: flex;
+    gap: 10px;
+}
+.conti{
+    display: flex;
+   
+    width: 450px;
+    height: 80px;
+    top:  310px;
+    left: 290px;
+    border-radius: 20px;
+    background-color: #FFFFFF;
+    gap: 20px;
+}
+.conti-q{
+    display: block;
+}
+
+.experts{
+    display: flex;
+    flex-direction: column;
+}
+.expert-cart{
+    display: flex;
+    flex-direction: flex;
+}
+.expert1{
+    display: flex;
+}
+.expert11{
+    display: flex;
+    flex-direction: column;
+}
+.ato{
+    display: flex;
+    gap: 250px;
+}
 /*footer area*/
 .footer{
     grid-row: 3;

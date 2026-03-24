@@ -12,5 +12,4 @@ function coursebuilder() {
     </div>
   );
 }
-
 export default coursebuilder;

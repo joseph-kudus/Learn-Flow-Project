@@ -1,63 +1,64 @@
-import { Building, Building2, Home, LogsIcon, LucideClipboardPlus, Search,
-   Settings, SunDim, SunDimIcon, User2Icon,
-    UserRound } from 'lucide-react';
-
+import {
+  Building,
+  Building2,
+  Home,
+  LogsIcon,
+  LucideClipboardPlus,
+  Search,
+  Settings,
+  SunDim,
+  SunDimIcon,
+  User2Icon,
+  UserRound,
+} from "lucide-react";
 
 function SettingsPage() {
   return (
-    <div className="dashboard">
-      <nav className="sidebar">
-        <div className="logo">
-          <div className="logoicon">
-            <LogsIcon />
+    <section className="SETTING">
+      <form action="#" className="container-main col-span-2 min-h-dvh md:45px">
+        <div className="form-container">
+          <div className="SETTIN">
+            <button type="submit">Edit Profile</button>
+            <p>Login Information</p>
           </div>
-          <span>kudovia</span>
+          <h4>Edit Details</h4>
+          <label htmlFor="Name" className="editpro">
+            First Name (required)
+            <input type="text" placeholder="ATO" required />
+          </label>
+          <label>
+            Last Name (required)
+            <input type="text" placeholder="ATO" required />
+          </label>
+          <label htmlFor="#">
+            Nickname (required)
+            <input type="text" placeholder="Endlesslove" required />
+          </label>
+          <h5>Login Information</h5>
+          <label htmlFor="#">
+            Current Password (required)
+            <input type="text" />
+          </label>
+          <label htmlFor="">
+            Account Email
+            <input
+              type="text"
+              placeholder="Ag834054@gmail.com ..............."
+            />
+          </label>
+          <label htmlFor="">
+            Add your new password
+            <input type="text" required />
+          </label>
+          <label htmlFor="">
+            Confirm new password
+            <input type="text" required />
+          </label>
         </div>
-        <ul>
-          <li className="active">
-            <Home />
-            <span>Dashboard</span>
-          </li>
-          <li className="active">
-            <Building2 />
-            <span>Analytic</span>
-          </li>
-          <li className="active">
-            <Settings />
-            <span>Setting</span>
-          </li>
-        </ul>
-        <div className="user-profile">
-          <UserRound />
-        </div>
-      </nav>
-      <div className="main-content">
-        <header>
-          <div className="search-bar">
-            <Search />
-            <input type="text" id="searchinput" placeholder="search ,,,,,," />
-          </div>
-          <div className="header-action">
-            <button id="themetoggle" className="themetoggle">
-              <SunDimIcon />
-              <SunDim />
-            </button>
-            <button className='btn-primary'>
-              <LucideClipboardPlus/>
-              <span>Load Users</span>
-            </button>
-          </div>
-        </header>
-        <div className="user-stats">
-          <div className="stat-card">
-            <div className="stat-icon">
-              <User2Icon/>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+        <button type="button">View all courses</button>
+      </form>
+    </section>
   );
 }
 
-export default SettingsPage
+export default SettingsPage;

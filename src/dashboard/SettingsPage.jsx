@@ -1,6 +1,31 @@
 import {} from /* icons */ "lucide-react";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
+import { useState, useEffect } from "react";
+
 
 function SettingsPage() {
+  const [userData, setUserData] = useState;
+  const userId = "currentUserId";
+   useEffect(() => {
+     const fetchData = async () => {
+       const docRef = doc(db, "users", userId);
+       const docSnap = await getDoc(docRef);
+       setUserData(docSnap.data());
+     };
+     fetchData();
+   }, [userId]);
+
+   const handleSubmit = async (e) => {
+     e.preventDefault();
+     const updatedData = {
+       firstName: e.target["First-Name"].value,
+       lastName: e.target["Last-Name"].value,
+       // ...
+     };
+     await updateDoc(doc(db, "users", userId), updatedData);
+   };
+
+
   return (
     <section className="SETTING">
       <form className="container-main col-span-2 min-h-dvh md:45px">
@@ -36,7 +61,8 @@ function SettingsPage() {
               <input
                 type="password"
                 id="Current-Password"
-                placeholder="Current Password" autoComplete="off"
+                placeholder="Current Password"
+                autoComplete="off"
               />
             </label>
             <label htmlFor="Account-Email">

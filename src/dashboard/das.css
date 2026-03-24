@@ -14,15 +14,15 @@
     --success: #4cc9f0;
     --warning: #f27585;
     --dark: #2b2d42;
-    --gray: #8d99ae;
+    --gray: #969799;
     --sidebar: #FFFFFF;
-    --sidebar-width: 180px;
-    --sidebar-minimized-width: 50px;
+    --sidebar-width: 150px;
+    --sidebar-minimized-width: 30px;
     --header-height: 80px;
 
     /* Light theme variables*/
     --body-bg: Linear-gradient(135deg, #f0f2f5, #e4e7f0);
-    --text-color: #cccdd3;
+    --text-color: #e7e7ea;
     --card-bg: white;
     --progress-bar-bg:#1853a1;
     --time-bg: #f0f2f5;
@@ -192,6 +192,7 @@
     transition: all 0.3s ease;  left: 20;
     width: var(--sidebar-width);
     height: 100dvh;
+    left: 80px;
 }
 .theme-toggle{
     display: -webkit-box;
@@ -233,7 +234,7 @@
     top: -5px;
     right: -5px;
     background: var(--warning);
-    color: rgb(197, 72, 72);
+    color: var(--text-color);
     font-size: 0.7rem;
     width: 18px;
     height: 18px;
@@ -334,8 +335,8 @@ section.content-section{
 grid-area: content;
   margin-left: var(--sidebar-width);
   height: calc(100vh - var(--header-height));
-  background-color:  rgb(242, 241, 241);
-  padding: 5px;
+  background-color:  var(--text-color);
+
 
 }
 .welcome-banner{
@@ -367,25 +368,20 @@ grid-area: content;
     gap: 14px;
     position: relative;
 }
-
 .course-conti{
     display: flex;
-    gap: 10px;
+    gap: 8px;
 }
 .conti{
     display: flex;
     width: 450px;
     height: 80px;
-    top:  310px;
-    left: 290px;
     border-radius: 20px;
     background-color: #FFFFFF;
-    
 }
 .conti-q{
     display: block;
 }
-
 .experts{
     display: flex;
     flex-direction: column;
@@ -393,12 +389,10 @@ grid-area: content;
 .expert-cart{
     display: flex;
     flex-direction: flex;
-    width: 900px;
-    height: 400px;
-    background-color: var(--text-color);
 }
 .expert1{
     display: flex;
+    flex-direction: row;
     background-color: #FFFFFF;
 }
 .expert1 h1{
@@ -428,10 +422,13 @@ grid-area: content;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     position: relative;
+    padding-bottom: 15px;
 }
 .card-wrap{
-    width: 549px;
-    height: 533px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-grow: 1;
 }
 .ato{
     display: flex;

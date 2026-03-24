@@ -28,7 +28,14 @@ import {
 import { Outlet } from "react-router-dom";
 import Sidebar from "../Sidebar/Sidebar";
 
-import { image1, unsplash, image2, image3, image4, image5 } from "../assets/images/Myimg";
+import {
+  image1,
+  unsplash,
+  image2,
+  image3,
+  image4,
+  image5,
+} from "../assets/images/Myimg";
 export default function Dashboard() {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
@@ -194,8 +201,8 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
+            <button className="News">view all courses</button>
           </div>
-          <button className="News">view all courses</button>
         </div>
       </section>
       {/*--footer-- 

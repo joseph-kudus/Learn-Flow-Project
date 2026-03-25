@@ -42,33 +42,35 @@ export default function Sidebar() {
         <p>LearnFlow</p>
       </div>
       <div className="nav-title">MENU</div>
-      <div className="nav-links">
-        <Link className="nav-item active" to="/dashboard">
-          <LayoutDashboard className="logob" />
-          <span>Dashboard</span>
-        </Link>
-        <Link className="nav-item" to="/About">
-          <ScrollText />
-          <span>All Courses</span>
-        </Link>
-        <Link className="nav-item" to="/coursebuilder">
-          <PenLineIcon />
-          <span>Course Builder</span>
-        </Link>
-        <Link className="nav-item" to="/settings">
-          <Settings />
-          <span>Settings</span>{" "}
-        </Link>
-        <Link className="nav-item" to="support">
-          <HardDriveUpload />
-          <span>Support</span>
-        </Link>
-        <Link className="nav-item">
-          <button onClick={handleLogout}>
-            <LogOut />
-            <span>Logout</span>
-          </button>
-        </Link>
+      <div className="navigation-sidebar">
+        <div className="nav-links">
+          <Link className="nav-item active" to="/dashboard">
+            <LayoutDashboard className="logob" />
+            <span>Dashboard</span>
+          </Link>
+          <Link className="nav-item" to="/About">
+            <ScrollText />
+            <span>All Courses</span>
+          </Link>
+          <Link className="nav-item" to="/coursebuilder">
+            <PenLineIcon />
+            <span>Course Builder</span>
+          </Link>
+          <Link className="nav-item" to="/settings">
+            <Settings />
+            <span>Settings</span>{" "}
+          </Link>
+          <Link className="nav-item" to="support">
+            <HardDriveUpload />
+            <span>Support</span>
+          </Link>
+          <Link className="nav-item">
+            <button onClick={handleLogout}>
+              <LogOut />
+              <span>Logout</span>
+            </button>
+          </Link>
+        </div>
       </div>
     </aside>
   );

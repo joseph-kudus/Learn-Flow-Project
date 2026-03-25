@@ -47,9 +47,9 @@ export default function Dashboard() {
       {/*header */}
       <header className="header">
         <div className="header-left">
-          <button className="theme-toggle" id="menuToggle">
+         { /*<button className="theme-toggle" id="menuToggle">
             <i className="fas fa-bars"></i>
-          </button>
+          </button>*/}
           <div className="search-bar">
             <i className="fas fa-search">
               <SearchIcon />

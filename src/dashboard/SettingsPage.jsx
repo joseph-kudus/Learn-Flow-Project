@@ -1,34 +1,36 @@
 import {} from /* icons */ "lucide-react";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
-import { useState, useEffect } from "react";
-
+import React, { useState, useEffect } from "react";
+import { db } from "../../firebaseconfig"; // Import db
 
 function SettingsPage() {
-  const [userData, setUserData] = useState;
+  const [userData, setUserData] = useState({});
   const userId = "currentUserId";
-   useEffect(() => {
-     const fetchData = async () => {
-       const docRef = doc(db, "users", userId);
-       const docSnap = await getDoc(docRef);
-       setUserData(docSnap.data());
-     };
-     fetchData();
-   }, [userId]);
 
-   const handleSubmit = async (e) => {
-     e.preventDefault();
-     const updatedData = {
-       firstName: e.target["First-Name"].value,
-       lastName: e.target["Last-Name"].value,
-       // ...
-     };
-     await updateDoc(doc(db, "users", userId), updatedData);
-   };
+  useEffect(() => {
+    const fetchData = async () => {
+      const docRef = doc(db, "users", userId);
+      const docSnap = await getDoc(docRef);
+      setUserData(docSnap.data());
+    };
+    fetchData();
+  }, [userId]);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const updatedData = {
+      firstName: e.target["First-Name"].value,
+      lastName: e.target["Last-Name"].value,
+    };
+    await updateDoc(doc(db, "users", userId), updatedData);
+  };
 
   return (
     <section className="SETTING">
-      <form className="container-main col-span-2 min-h-dvh md:45px">
+      <form
+        onSubmit={handleSubmit}
+        className="container-main col-span-2 min-h-dvh md:45px"
+      >
         <div className="form-container">
           <div className="SETTIN">
             <button type="onSubmit">Edit Profile</button>
@@ -94,7 +96,7 @@ function SettingsPage() {
           </fieldset>
         </div>
       </form>
-      <button>Update Profile</button>
+      <button>View all courses</button>
     </section>
   );
 }

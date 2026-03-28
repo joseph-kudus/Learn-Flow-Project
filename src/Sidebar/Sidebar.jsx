@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import "../dashboard/das.css";
 import { useAuth } from "../context/AuthContext";
+import Support from "../dashboard/Support";
 
 export default function Sidebar() {
   const { logout } = useAuth();
@@ -60,8 +61,9 @@ export default function Sidebar() {
             <Settings />
             <span>Settings</span>{" "}
           </Link>
-          <Link className="nav-item" to="support">
+          <Link className="nav-item" to="/Support">
             <HardDriveUpload />
+            <Support/>
             <span>Support</span>
           </Link>
           <Link className="nav-item">

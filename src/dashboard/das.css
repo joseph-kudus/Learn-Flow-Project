@@ -301,8 +301,10 @@
         -ms-flex-direction: column;
             flex-direction: column;
     gap: 0px;
+    
 }
 .nav-item{
+    line-height: 10px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;

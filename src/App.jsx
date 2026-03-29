@@ -115,18 +115,6 @@ function App() {
             }
           />
           <Route
-            path="/Setting"
-            element={
-              !currentUser ? (
-                <Navigate to="/Dashboard" replace />
-              ) : (
-                <Layout>
-                  <SettingsPage />
-                </Layout>
-              )
-            }
-          />
-          <Route
             path="/pricing"
             element={
               currentUser ? (
@@ -162,8 +150,22 @@ function App() {
               )
             }
           />
-          
-          
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <SettingsPage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/dashboard"
             element={

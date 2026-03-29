@@ -29,7 +29,7 @@ import { useAuth } from "../context/AuthContext";
 
 export default function Sidebar() {
   const { logout } = useAuth();
-  console.log(logout);
+
 
   const handleLogout = () => {
     logout();

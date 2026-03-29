@@ -115,6 +115,18 @@ function App() {
             }
           />
           <Route
+            path="/Setting"
+            element={
+              !currentUser ? (
+                <Navigate to="/Dashboard" replace />
+              ) : (
+                <Layout>
+                  <SettingsPage />
+                </Layout>
+              )
+            }
+          />
+          <Route
             path="/pricing"
             element={
               currentUser ? (

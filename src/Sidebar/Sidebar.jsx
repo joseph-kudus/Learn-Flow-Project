@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Bell,
   Book,
@@ -30,12 +30,17 @@ import Support from "../dashboard/Support";
 
 export default function Sidebar() {
   const { logout } = useAuth();
-  console.log(logout);
+  const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
-    Navigate("/login");
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/login");
+    } catch (err) {
+      console.log(err);
+    }
   };
+
   return (
     <aside className="sidebar">
       <div className="logo">
@@ -63,14 +68,19 @@ export default function Sidebar() {
           </Link>
           <Link className="nav-item" to="/Support">
             <HardDriveUpload />
-            <Support/>
+
             <span>Support</span>
           </Link>
-          <Link className="nav-item">
-            <button onClick={handleLogout}>
-              <LogOut />
-              <span>Logout</span>
-            </button>
+          <Link
+            className="nav-item"
+            to="#"
+            onClick={(e) => {
+              e.preventDefault();
+              handleLogout();
+            }}
+          >
+            <LogOut />
+            <span>Logout</span>
           </Link>
         </div>
       </div>

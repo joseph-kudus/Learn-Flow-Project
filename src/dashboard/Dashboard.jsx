@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./das.css";
 import { useAuth } from "../context/AuthContext";
-import { Navigate } from "react-router-dom";
+
 
 import {
   Bell,
@@ -47,9 +47,9 @@ export default function Dashboard() {
       {/*header */}
       <header className="header">
         <div className="header-left">
-          <button className="theme-toggle" id="menuToggle">
+          {/*<button className="theme-toggle" id="menuToggle">
             <i className="fas fa-bars"></i>
-          </button>
+          </button>*/}
           <div className="search-bar">
             <i className="fas fa-search">
               <SearchIcon />

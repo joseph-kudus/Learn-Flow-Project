@@ -74,9 +74,7 @@ function App() {
                   <Dashboard />
                 </Layout>
               ) : (
-                <Layout>
-                 
-                </Layout>
+                <Layout></Layout>
               )
             }
           />
@@ -164,9 +162,7 @@ function App() {
             path="/settings"
             element={
               <ProtectedRoute>
-                <Layout>
-                  <SettingsPage />
-                </Layout>
+                <SettingsPage />
               </ProtectedRoute>
             }
           />

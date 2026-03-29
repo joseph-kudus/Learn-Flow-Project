@@ -59,7 +59,7 @@ export default function Register() {
               <p>Lorem Ipsum is simply</p>
               <form onSubmit={handleSubmit}>
                 <div className="Login-logo">
-                  <label htmlFor="#">
+                  <label htmlFor="email">
                     Email:
                     <input
                       type="email"
@@ -130,9 +130,9 @@ export default function Register() {
           </div>
         </div>
       </div>
-       <div className="team-discu">
-              <img src={smte} alt="" className="team-pic" />
-            </div>
+      <div className="team-discu">
+        <img src={smte} alt="" className="team-pic" />
+      </div>
     </div>
   );
 }

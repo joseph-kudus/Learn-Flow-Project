@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Bell,
   Book,
@@ -26,15 +26,21 @@ import {
 } from "lucide-react";
 import "../dashboard/das.css";
 import { useAuth } from "../context/AuthContext";
+import Support from "../dashboard/Support";
 
 export default function Sidebar() {
   const { logout } = useAuth();
+  const navigate = useNavigate();
 
-
-  const handleLogout = () => {
-    logout();
-    Navigate("/login");
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/login");
+    } catch (err) {
+      console.log(err);
+    }
   };
+
   return (
     <aside className="sidebar">
       <div className="logo">
@@ -42,33 +48,41 @@ export default function Sidebar() {
         <p>LearnFlow</p>
       </div>
       <div className="nav-title">MENU</div>
-      <div className="nav-links">
-        <Link className="nav-item active" to="/dashboard">
-          <LayoutDashboard className="logob" />
-          <span>Dashboard</span>
-        </Link>
-        <Link className="nav-item" to="/About">
-          <ScrollText />
-          <span>All Courses</span>
-        </Link>
-        <Link className="nav-item" to="/coursebuilder">
-          <PenLineIcon />
-          <span>Course Builder</span>
-        </Link>
-        <Link className="nav-item" to="/settings">
-          <Settings />
-          <span>Settings</span>{" "}
-        </Link>
-        <Link className="nav-item" to="support">
-          <HardDriveUpload />
-          <span>Support</span>
-        </Link>
-        <Link className="nav-item">
-          <button onClick={handleLogout}>
+      <div className="navigation-sidebar">
+        <div className="nav-links">
+          <Link className="nav-item active" to="/dashboard">
+            <LayoutDashboard className="logob" />
+            <span>Dashboard</span>
+          </Link>
+          <Link className="nav-item" to="/About">
+            <ScrollText />
+            <span>All Courses</span>
+          </Link>
+          <Link className="nav-item" to="/coursebuilder">
+            <PenLineIcon />
+            <span>Course Builder</span>
+          </Link>
+          <Link className="nav-item" to="/settings">
+            <Settings />
+            <span>Settings</span>{" "}
+          </Link>
+          <Link className="nav-item" to="/Support">
+            <HardDriveUpload />
+
+            <span>Support</span>
+          </Link>
+          <Link
+            className="nav-item"
+            to="#"
+            onClick={(e) => {
+              e.preventDefault();
+              handleLogout();
+            }}
+          >
             <LogOut />
             <span>Logout</span>
-          </button>
-        </Link>
+          </Link>
+        </div>
       </div>
     </aside>
   );

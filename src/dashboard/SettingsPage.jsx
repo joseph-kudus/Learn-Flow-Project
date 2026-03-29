@@ -1,62 +1,102 @@
-import {
-  Building,
-  Building2,
-  Home,
-  LogsIcon,
-  LucideClipboardPlus,
-  Search,
-  Settings,
-  SunDim,
-  SunDimIcon,
-  User2Icon,
-  UserRound,
-} from "lucide-react";
+import {} from /* icons */ "lucide-react";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
+import React, { useState, useEffect } from "react";
+import { db } from "../../firebaseconfig"; // Import db
 
 function SettingsPage() {
+  const [userData, setUserData] = useState({});
+  const userId = "currentUserId";
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const docRef = doc(db, "users", userId);
+      const docSnap = await getDoc(docRef);
+      setUserData(docSnap.data());
+    };
+    fetchData();
+  }, [userId]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const updatedData = {
+      firstName: e.target["First-Name"].value,
+      lastName: e.target["Last-Name"].value,
+    };
+    await updateDoc(doc(db, "users", userId), updatedData);
+  };
+
   return (
     <section className="SETTING">
-      <form action="#" className="container-main col-span-2 min-h-dvh md:45px">
+      <form
+        onSubmit={handleSubmit}
+        className="container-main col-span-2 min-h-dvh md:45px"
+      >
         <div className="form-container">
           <div className="SETTIN">
-            <button type="submit">Edit Profile</button>
+            <button type="onSubmit">Edit Profile</button>
             <p>Login Information</p>
           </div>
           <h4>Edit Details</h4>
-          <label htmlFor="Name" className="editpro">
+          <label htmlFor="First-Name" className="editpro">
             First Name (required)
-            <input type="text" placeholder="ATO" required />
+            <input type="text" placeholder="ATO" id="First-Name" required />
           </label>
-          <label>
+          <label htmlFor="Last-Name">
             Last Name (required)
-            <input type="text" placeholder="ATO" required />
+            <input type="text" placeholder="ATO" id="Last-Name" required />
           </label>
-          <label htmlFor="#">
+          <label htmlFor="Nickname">
             Nickname (required)
-            <input type="text" placeholder="Endlesslove" required />
-          </label>
-          <h5>Login Information</h5>
-          <label htmlFor="#">
-            Current Password (required)
-            <input type="text" />
-          </label>
-          <label htmlFor="">
-            Account Email
             <input
               type="text"
-              placeholder="Ag834054@gmail.com ..............."
+              placeholder="Endlesslove"
+              id="Nickname"
+              required
             />
           </label>
-          <label htmlFor="">
-            Add your new password
-            <input type="text" required />
-          </label>
-          <label htmlFor="">
-            Confirm new password
-            <input type="text" required />
-          </label>
+          <fieldset>
+            <legend>
+              <h5>Login Information</h5>
+            </legend>
+            <label htmlFor="Current-Password">
+              Current Password (required)
+              <input
+                type="password"
+                id="Current-Password"
+                placeholder="Current Password"
+                autoComplete="off"
+              />
+            </label>
+            <label htmlFor="Account-Email">
+              Account Email
+              <input
+                type="email"
+                id="Account-Email"
+                placeholder="Ag834054@gmail.com"
+              />
+            </label>
+            <label htmlFor="new-password">
+              Add your new password
+              <input
+                type="password"
+                placeholder="Add your new password"
+                id="new-password"
+                required
+              />
+            </label>
+            <label htmlFor="Confirm-new-password">
+              Confirm new password
+              <input
+                type="password"
+                required
+                id="Confirm-new-password"
+                placeholder="Confirm new password"
+              />
+            </label>
+          </fieldset>
         </div>
-        <button type="button">View all courses</button>
       </form>
+      <button>View all courses</button>
     </section>
   );
 }

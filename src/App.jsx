@@ -150,22 +150,8 @@ function App() {
               )
             }
           />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          ></Route>
-          <Route
-            path="/settings"
-            element={
-              <ProtectedRoute>
-                <SettingsPage />
-              </ProtectedRoute>
-            }
-          />
+          
+          
           <Route
             path="/dashboard"
             element={

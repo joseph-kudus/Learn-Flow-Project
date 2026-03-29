@@ -30,7 +30,6 @@ import Support from "../dashboard/Support";
 
 export default function Sidebar() {
   const { logout } = useAuth();
-  console.log(logout);
 
   const handleLogout = () => {
     logout();
@@ -58,7 +57,7 @@ export default function Sidebar() {
             <span>Course Builder</span>
           </Link>
           <Link className="nav-item" to="/settings">
-            <Settings />
+           
             <span>Settings</span>{" "}
           </Link>
           <Link className="nav-item" to="/Support">

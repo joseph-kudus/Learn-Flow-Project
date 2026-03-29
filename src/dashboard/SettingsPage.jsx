@@ -1,20 +1,29 @@
-import {} from /* icons */ "lucide-react";
-import { doc, updateDoc, getDoc } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
-import { db } from "../../firebaseconfig"; // Import db
+import { doc, updateDoc, getDoc } from "firebase/firestore";
+import { db, auth } from "../../firebaseconfig";
+import { } from "../../firebaseconfig";
 
 function SettingsPage() {
+  const userId = auth.currentUser?.uid;
   const [userData, setUserData] = useState({});
-  const userId = "currentUserId";
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const docRef = doc(db, "users", userId);
-      const docSnap = await getDoc(docRef);
-      setUserData(docSnap.data());
-    };
-    fetchData();
-  }, [userId]);
+
+ useEffect(() => {
+   const fetchData = async () => {
+     try {
+       const docRef = doc(db, "users", userId);
+       const docSnap = await getDoc(docRef);
+       if (docSnap.exists()) {
+         setUserData(docSnap.data());
+       } else {
+         console.log("No user data");
+       }
+     } catch (e) {
+       console.error(e);
+     }
+   };
+   fetchData();
+ }, [userId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,7 +42,7 @@ function SettingsPage() {
       >
         <div className="form-container">
           <div className="SETTIN">
-            <button type="onSubmit">Edit Profile</button>
+            <button type="submit">Edit Profile</button>
             <p>Login Information</p>
           </div>
           <h4>Edit Details</h4>
@@ -95,8 +104,8 @@ function SettingsPage() {
             </label>
           </fieldset>
         </div>
+        <button type="submit">Update Profile</button>
       </form>
-      <button>View all courses</button>
     </section>
   );
 }

@@ -5,7 +5,33 @@ import { Notebook } from "lucide-react";
 
 function Navbar() {
   return (
-    <header class="header-container">
+    
+      <div className="header-container">
+        <div className="navbar">
+          <Link to="/Landing" className="logo-l">
+            <Notebook />
+            <p>LearnFlow</p>
+          </Link>
+        </div>
+        <div className="nav-center">
+          <Link to="/about" className="navbara">
+            About
+          </Link>
+          <Link to="/features" className="navbara">
+            Features
+          </Link>
+          <Link to="/pricing" className="navbara">
+            Pricing
+          </Link>
+        </div>
+  
+        <Link to="/login" className="cta-button">
+          Lets start your learning journey
+        </Link>
+      </div>
+    
+    
+      /* <header class="header-container">
       <nav class="nav">
         <div className="navbar">
           <Link to="/Landing" className="logo-l">
@@ -29,6 +55,8 @@ function Navbar() {
         </Link>
       </nav>
     </header>
+    */
+    
   );
 }
 

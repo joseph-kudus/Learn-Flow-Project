@@ -10,6 +10,9 @@
   margin: 0;
 }
 .header-container{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   padding: 20px 0px;
   background-color: #000000;
 }
@@ -28,15 +31,21 @@
         -ms-flex-align: center;
             align-items: center;
 }
-.nav-li{
-  
-  gap: 15px; 
+
+.nav-center{
+  gap: 30px;
+  display: flex;
+  justify-content:center;
+  align-items: center;
 }
 .navbara{
   color: white;
   text-decoration: none;
   font-size: 1rem;
   letter-spacing: 1px;
+}
+.nav-center :hover{
+  background: #a9b6b6;
 }
 
 .cta-button {

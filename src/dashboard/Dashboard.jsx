@@ -45,40 +45,7 @@ export default function Dashboard() {
       {/*Movile overlay */}
       <div className="Movile-overlay"></div>
       {/*header */}
-      <header className="header">
-        <div className="header-left">
-          {/*<button className="theme-toggle" id="menuToggle">
-            <i className="fas fa-bars"></i>
-          </button>*/}
-          <div className="search-bar">
-            <i className="fas fa-search">
-              <SearchIcon />
-            </i>
-            <input type="text" placeholder="search....." />
-          </div>
-        </div>
-        <div className="header-right">
-          <button className="theme-toggle" id="theme-Toggle">
-            <i className="fas fas-moon">
-              <MoonIcon />
-            </i>
-          </button>
-          <div className="notification">
-            <i className="fas fas-bell">
-              <Bell />
-            </i>
-            <span className="notification-bag">3</span>
-          </div>
-          {currentUser ? (
-            <div className="user-profile flex items-center text-sm text-gray-600">
-              <User />
-              <span>{currentUser.email}</span>
-            </div>
-          ) : (
-            <p>welcome</p>
-          )}
-        </div>
-      </header>
+     
       {/* -- sidebar -- */}
       <Sidebar />
       {/*--content-- */}

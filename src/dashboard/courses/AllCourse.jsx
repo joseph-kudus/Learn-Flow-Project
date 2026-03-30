@@ -1,6 +1,14 @@
 import React from "react";
+import {
+  unsplash,
+  image1,
+  image2,
+  image3,
+  image4,
+  image5,
+} from "../../assets/images/Myimg";
 
-function Allcourses() {
+function AllCourse() {
   return (
     <div className="allcourses-container">
       <h1>Courses</h1>
@@ -122,4 +130,5 @@ function Allcourses() {
   );
 }
 
-export default Allcourses;
+export default AllCourse;
+

@@ -15,7 +15,10 @@ import "./App.css";
 import SettingsPage from "./dashboard/SettingsPage";
 import Support from "./dashboard/Support";
 import Sidebar from "./Sidebar/Sidebar";
-
+import DashboardLayout from "./dashboard/DashboardLayout";
+import AllCourse from "./dashboard/courses/AllCourse";
+import Coursebuilder from "./dashboard/courses/Coursebuilder";
+import DashboardContent from "./dashboard/DashboardContent";
 function App() {
   const { loading, currentUser } = useAuth();
 
@@ -62,19 +65,6 @@ function App() {
                 <Layout>
                   <Landing />
                 </Layout>
-              )
-            }
-          />
-
-          <Route
-            path="/coursebuilder"
-            element={
-              currentUser ? (
-                <Layout>
-                  <Dashboard />
-                </Layout>
-              ) : (
-                <Layout></Layout>
               )
             }
           />
@@ -150,27 +140,22 @@ function App() {
               )
             }
           />
+
           <Route
             path="/dashboard"
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <DashboardLayout />
               </ProtectedRoute>
             }
-          ></Route>
+          >
+            <Route index element={<DashboardContent />} />
+          </Route>
           <Route
-            path="/settings"
+            path="/allcourses"
             element={
               <ProtectedRoute>
-                <SettingsPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
+                <AllCourse />
               </ProtectedRoute>
             }
           />

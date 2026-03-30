@@ -28,12 +28,12 @@ import "../dashboard/das.css";
 import { useAuth } from "../context/AuthContext";
 import Support from "../dashboard/Support";
 import SettingsPage from "../dashboard/SettingsPage";
+import Coursebuilder from "../dashboard/courses/Coursebuilder";
 
 export default function Sidebar() {
   const { logout } = useAuth();
 
   const navigate = useNavigate();
-
 
   const handleLogout = async () => {
     try {
@@ -57,7 +57,7 @@ export default function Sidebar() {
             <LayoutDashboard className="logob" />
             <span>Dashboard</span>
           </Link>
-          <Link className="nav-item" to="/About">
+          <Link className="nav-item" to="/dashboard/allcourses">
             <ScrollText />
             <span>All Courses</span>
           </Link>
@@ -65,8 +65,8 @@ export default function Sidebar() {
             <PenLineIcon />
             <span>Course Builder</span>
           </Link>
-          <Link className="nav-item" to="/settings">
-           <SettingsPage/>
+          <Link className="nav-item" to="/setting">
+            <Settings />
             <span>Settings</span>{" "}
           </Link>
           <Link className="nav-item" to="/Support">

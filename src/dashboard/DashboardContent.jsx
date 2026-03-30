@@ -10,7 +10,7 @@ import {
 
 function DashboardContent() {
   return (
-    <section className="content-section">
+    <section className="content-section bg-indigo-600">
       {/*--Welecome Banner-- */}
       <div className="welcome-banner">
         <div className="welcome-banner1">

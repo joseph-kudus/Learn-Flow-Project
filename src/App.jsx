@@ -9,7 +9,7 @@ import Footer from "./pages/Footer";
 import Login from "./loginsignup/Login";
 import Register from "./loginsignup/Register";
 import { AuthProvider, useAuth } from "./context/AuthContext";
-import Dashboard from "./dashboard/Dashboard";
+
 import ProtectedRoute from "./component/ProtectedRoute";
 import "./App.css";
 import SettingsPage from "./dashboard/SettingsPage";

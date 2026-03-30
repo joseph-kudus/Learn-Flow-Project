@@ -9,6 +9,9 @@ function coursebuilder() {
         voluptatem enim dolor minima perferendis, voluptate aliquam architecto
         fugit sit aspernatur.
       </h2>
+      <div className="md-mt-6 flex flex-col bg-black">
+        
+      </div>
     </div>
   );
 }

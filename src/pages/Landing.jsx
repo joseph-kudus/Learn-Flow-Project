@@ -5,7 +5,7 @@ import ato from "../assets/images/Ellipse 5.png";
 import hero from "../assets/images/Dashboard 2.png";
 import bes from "../assets/images/281.png";
 import bes1 from "../assets/images/151.png";
-
+import "./Page.css"
 import {
   Badge,
   BadgeHelpIcon,
@@ -46,7 +46,7 @@ function Landing() {
               </div>
             </div>
           </div>
-          <div className="hero-img">
+          <div className="hero-img width: 100%; height: auto;">
             <img src={hero} alt="img" />
           </div>
         </div>
@@ -55,23 +55,21 @@ function Landing() {
         <div className="logo-slides">
           <div className="logos">
             <Link>
-              <img src="" className="logos1" />
+              <img src="null" alt="codecov1" className="logos1" />
             </Link>
           </div>
           <div className="logos">
             <Link>
-              <img src="" alt="codecov" />
+              <img src="null" alt="codecov" />
             </Link>
           </div>
           <div className="logos">
-            <img src="" alt="usertesting" />
+            <img src="null" alt="usertesting" />
           </div>
           <div className="logos">
-            <img src="" alt="magicleaf" />
+            <img src="null" alt="magicleaf" />
           </div>
-          <div className="logos">
-            <img src="" alt="codevo" />
-          </div>
+          <div className="logos"></div>
         </div>
         <div className="features">
           <div className="feature-c">
@@ -420,7 +418,7 @@ function Landing() {
 
             <button className="newc2">Get started</button>
           </div>
-          
+
           <div className="imi">
             <img src={hero} alt="" className="im" />
           </div>

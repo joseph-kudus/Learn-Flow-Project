@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import land from "../assets/images/Ellipse 1.png";
 import ato from "../assets/images/Ellipse 5.png";
+import ata from "../assets/images/Ellipse 6.png";
 import hero from "../assets/images/Dashboard 2.png";
 import bes from "../assets/images/281.png";
 import bes1 from "../assets/images/151.png";
@@ -38,7 +39,7 @@ function Landing() {
                 <div className="groupimg">
                   <img src={land} alt="gr" />
                   <img src={ato} alt="gr" />
-                  <img src={ato} alt="gr" />
+                  <img src={ata} alt="gr" />
                 </div>
                 <h3 className="gr-h">
                   Join thousands of students to start coding now!
@@ -46,8 +47,8 @@ function Landing() {
               </div>
             </div>
           </div>
-          <div className="hero-img width: 100%; height: auto;">
-            <img src={hero} alt="img" />
+          <div className="hero-img">
+            <img className="hero-image" src={hero} alt="img" />
           </div>
         </div>
 
@@ -420,7 +421,7 @@ function Landing() {
           </div>
 
           <div className="imi">
-            <img src={hero} alt="" className="im" />
+            <img src={hero} alt="null" className="im" />
           </div>
         </div>
       </div>

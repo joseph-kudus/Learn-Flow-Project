@@ -1,9 +1,3 @@
-/*
-* Prefixed by https://autoprefixer.github.io
-* PostCSS: v8.4.14,
-* Autoprefixer: v10.4.7
-* Browsers: last 4 version
-*/
 
 *{
     padding: 0px;
@@ -14,41 +8,7 @@
 main{
     background-color: #000000;
 }
-@media screen and(min-width: 768px){
-    main{
-        display: table;
-        table-layout: fixed;
-        width: 100%;
-    }
-    .Container .Hero-section{
-        display: table-cell;
-        width: 50%;
-        vertical-align: middle;
-        text-align: center;
-        }
-        .CTA {
-        padding: 0.5rem;
-        font-size: 2.5rem;
-        text-align: left;
-        }
-        .cta-text h1 p {
-            font-size: 0.9rem;
-            float: right;
-            padding: 1rem;
-            margin: 0 0 0.5rem 1rem;
-            border-radius: 3px;
-            background-color: #ffffdf;
-            border: 2px solid #e8cfa9;
-        }
-}
-@media (min-width: 1200px) {
-    .rwd-MastHead {
-    flex-direction: row;
-    justify-content: space-between;
-    max-width: 1000px;
-    margin: 0 auto;
-    }
-   }
+
 .CTA{
     color: #FFFFFF;
     -webkit-box-pack: center;
@@ -83,20 +43,14 @@ main{
     letter-spacing: 0%;
 }
 .hero-img{
-    width: 979px;
-    height: 690px;
-    padding-top: 85px;
-    left: 130px;
-    border-top-right-radius: 20px;
-    border-top-left-radius: 20px;
-    position: relative;
-}
-@media screen and (max-width: 768px) {
-    .hero-img img {
-        width: 100%;
-        height: auto;
-        object-fit: contain;
-    }
+  width: 100%;
+  max-width: 979px;
+  height: auto;
+  padding-top: 85px;
+  margin: 0 auto;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
+  position: relative;  
 }
 div.article-title{
     -webkit-box-pack: center;
@@ -185,6 +139,7 @@ div.article-title{
     position: relative;
     left: 390px;
     height: 40px;
+    display: flex;
 }
 .gr{
     width: 45px;
@@ -213,11 +168,6 @@ div.article-title{
     gap: 200px;top: 1241px;
     
 }
-@media (min-width: 768px) {
-    .logo-slides {
-    display: flex;
-    }
-   }
 .userf{
     background-color: #F5F5F5;
     float: right;
@@ -486,3 +436,171 @@ position: relative;
     border-radius: 70px;
     
 }
+
+/*Responsiveness*/
+@media screen and (min-width: 400px) and (max-width: 767px) {
+    /* styles for small screens */
+    .Hero-section{
+        width: 100%;
+        left: 0;
+        height: auto;
+        padding: 2px;
+    }
+    .Hero-section .CTA{
+        width: 100%;
+        left: 0;
+        height: auto;
+        padding: 1px;
+    }
+    .cta-text {
+        width: 100%;
+        left: 0;
+        padding: 0;
+        display: block;
+
+    }
+    .cta-text .cta-h1{
+        font-size: 24 px;
+    }
+    .article{
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    .join {
+        width: 100%;
+        height: auto;
+        left: 0;
+    }
+    .join .newc1 .groupimg h3{
+        width: 100%;
+        height: auto;
+        left: 0;
+        top: 0;
+        position: absolute;
+    }
+    .hero-img{
+        width: 100%;
+        left: 0;
+        height: auto;
+        padding: 5px;
+
+    }
+    .hero-img .hero-image{
+        width: 100%;
+        height: auto;
+    }
+    
+  }
+  
+  /* Medium (tablets 768-1023px) */
+  @media screen and (min-width: 768px) and (max-width: 1023px) {
+    /* styles for medium screens */
+    .Hero-section{
+        width: 100%;
+        left: 0;
+        height: auto;
+        padding: 2px;
+    }
+    .Hero-section .CTA{
+        width: 100%;
+        left: 0;
+        height: auto;
+        padding: 1px;
+    }
+    .cta-text {
+        width: 100%;
+        left: 0;
+        padding: 0;
+        display: block;
+    }
+    .cta-text .cta-h1{
+        font-size: 20px;
+    }
+    .article{
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    .join {
+        width: 100%;
+        height: auto;
+        left: 0;
+    }
+    .join .newc1 .groupimg h3{
+        width: 100%;
+        height: auto;
+        left: 0;
+        top: 0;
+        position: absolute;
+    }
+    .hero-img{
+        width: 100%;
+        left: 0;
+        height: auto;
+        padding: 5px;
+    }
+    .hero-img .hero-image{
+        width: 100%;
+        height: auto;
+    }
+  }
+  
+  /* Large (desktops 1024-1280px) */
+  @media screen and (min-width: 1024px) and (max-width: 1280px) {
+    /* styles for large screens */
+    .Hero-section{
+        width: 100%;
+        left: 0;
+        height: auto;
+        padding: 2px;
+    }
+    .Hero-section .CTA{
+        width: 100%;
+        left: 0;
+        height: auto;
+        padding: 1px;
+    }
+    .cta-text {
+        width: 100%;
+        left: 0;
+        padding: 0;
+        display: block;
+    }
+    .cta-text .cta-h1{
+        font-size: 20px;
+    }
+    .article{
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    .join {
+        width: 100%;
+        height: auto;
+        left: 0;
+    }
+    .join .newc1 .groupimg h3{
+        width: 100%;
+        height: auto;
+        left: 0;
+        top: 0;
+        position: absolute;
+    }
+    .hero-img{
+        width: 100%;
+        left: 0;
+        height: auto;
+        padding: 5px;
+    }
+    .hero-img .hero-image{
+        width: 100%;
+        height: auto;
+    }
+  }
+  
+  /* Extra large (desktops > 1280px) */
+  @media screen and (min-width: 1281px) {
+    /* styles for extra large screens */
+  }
+  

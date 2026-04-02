@@ -6,7 +6,11 @@ import ata from "../assets/images/Ellipse 6.png";
 import hero from "../assets/images/Dashboard 2.png";
 import bes from "../assets/images/281.png";
 import bes1 from "../assets/images/151.png";
-import "./Page.css"
+import dolingo from "../assets/images/Group (1).png";
+import vector2 from "../assets/images/Vector (2).png";
+import Magic from "../assets/images/Magic Leap (logoBlack).png";
+import UserT from "../assets/images/UserTesting.png";
+import "./Page.css";
 import {
   Badge,
   BadgeHelpIcon,
@@ -23,28 +27,23 @@ function Landing() {
       <div className="Container">
         {/* Hero section */}
         <div className="Hero-section">
+          <div className="cta-text">
+            <h1>The free, fun, and effective way to learn a language</h1>
+            <p>
+              Learn at your own pace with lifetime access on mobile and desktop.
+            </p>
+          </div>
           <div className="CTA">
-            <div className="cta-text">
-              <h1 className="cta-h1">
-                The free, fun, and effective way to learn a language
-              </h1>
-              <p className="cta-h1-p">
-                Learn at your own pace with lifetime access on mobile and
-                desktop.
-              </p>
-            </div>
             <div className="article">
-              <div className="join">
-                <button className="newc1">Start a new course!</button>
-                <div className="groupimg">
-                  <img src={land} alt="gr" />
-                  <img src={ato} alt="gr" />
-                  <img src={ata} alt="gr" />
-                </div>
-                <h3 className="gr-h">
-                  Join thousands of students to start coding now!
-                </h3>
+              <button className="newc1">Start a new course!</button>
+              <div className="groupimg">
+                <img src={land} alt="gr" />
+                <img src={ato} alt="gr" />
+                <img src={ata} alt="gr" />
               </div>
+              <h3 className="gr-h">
+                Join thousands of students to start coding now!
+              </h3>
             </div>
           </div>
           <div className="hero-img">
@@ -56,21 +55,22 @@ function Landing() {
         <div className="logo-slides">
           <div className="logos">
             <Link>
-              <img src="null" alt="codecov1" className="logos1" />
+              <img src={dolingo} alt="doulingo" className="logos1" />
             </Link>
-          </div>
-          <div className="logos">
+
             <Link>
-              <img src="null" alt="codecov" />
+              <img src={vector2} alt="codecov1" className="logos1" />
+            </Link>
+            <Link>
+              <img src={UserT} alt="magic" />
+            </Link>
+            <Link>
+              <img src={Magic} alt="magic" />
+            </Link>
+            <Link>
+              <img src={vector2} alt="codev1" />
             </Link>
           </div>
-          <div className="logos">
-            <img src="null" alt="usertesting" />
-          </div>
-          <div className="logos">
-            <img src="null" alt="magicleaf" />
-          </div>
-          <div className="logos"></div>
         </div>
         <div className="features">
           <div className="feature-c">

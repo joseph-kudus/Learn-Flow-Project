@@ -1,13 +1,10 @@
 import React from "react";
-import {
-  image1,
-  unsplash,
-  image2,
-  image3,
-  image4,
-  image5,
-} from "../assets/images/Myimg";
-
+import unsplash from "../assets/images/unsplash.png";
+import image1 from "../assets/images/Frame38.png";
+import image2 from "../assets/images/imageholdr.png";
+import image3 from "../assets/images/image-holdr(1).png";
+import  image4  from "../assets/images/unsplash_w.png";
+import  image5  from "../assets/images/unsplash1.png";
 function DashboardContent() {
   return (
     <section className="content-section bg-indigo-600">
@@ -16,9 +13,7 @@ function DashboardContent() {
         <div className="welcome-banner1">
           <h1>Welcome to Learnflow</h1>
           <p>
-            {" "}
-            Learn at your own pace with lifetime access on mobile and
-            desktop{" "}
+            Learn at your own pace with lifetime access on mobile and desktop
           </p>
         </div>
         <hr />
@@ -42,9 +37,8 @@ function DashboardContent() {
         <div className="experts">
           <h2>Languages courses</h2>
           <p>
-            {" "}
             Chose from one over many of courses and learn with industry leading
-            expert{" "}
+            expert
           </p>
           <div className="expert-cart">
             <div className="card-wrap">
@@ -53,18 +47,15 @@ function DashboardContent() {
                 <div className="expert11">
                   <h1>Introduction to CSS language</h1>
                   <p>
-                    {" "}
                     Learn the basics of CSS, and its usefulness in the
-                    programming world{" "}
+                    programming world
                   </p>
                   <div className="ato">
                     <p>
-                      {" "}
-                      By <strong>ATO</strong>{" "}
+                      By <strong>ATO</strong>
                     </p>
                     <p>
-                      {" "}
-                      <strong>$29</strong>{" "}
+                      <strong>$29</strong>
                     </p>
                   </div>
                 </div>
@@ -76,18 +67,15 @@ function DashboardContent() {
                 <div className="expert11">
                   <h1>Introduction to Python language</h1>
                   <p>
-                    {" "}
                     Learn the basics of python, and its usefulness in the
-                    programming world{" "}
+                    programming world
                   </p>
                   <div className="ato">
                     <p>
-                      {" "}
-                      By <strong>ATO</strong>{" "}
+                      By <strong>ATO</strong>
                     </p>
                     <p>
-                      {" "}
-                      <strong>$30</strong>{" "}
+                      <strong>$30</strong>
                     </p>
                   </div>
                 </div>
@@ -101,18 +89,15 @@ function DashboardContent() {
                 <div className="expert11">
                   <h1>Introduction to Javascript language</h1>
                   <p>
-                    {" "}
                     Learn the basics of Javascript, and its usefulness in the
-                    programming world{" "}
+                    programming world
                   </p>
                   <div className="ato">
                     <p>
-                      {" "}
-                      By <strong>ATO</strong>{" "}
+                      By <strong>ATO</strong>
                     </p>
                     <p>
-                      {" "}
-                      <strong>$50</strong>{" "}
+                      <strong>$50</strong>
                     </p>
                   </div>
                 </div>
@@ -124,19 +109,16 @@ function DashboardContent() {
                 <div className="expert11">
                   <h1>Introduction to HTML language</h1>
                   <p>
-                    {" "}
                     Learn the basics of HTML, and its usefulness in the
-                    programming world{" "}
+                    programming world
                   </p>
                   <hr />
                   <div className="ato">
                     <p>
-                      {" "}
-                      By <strong>ATO</strong>{" "}
+                      By <strong>ATO</strong>
                     </p>
                     <p>
-                      {" "}
-                      <strong>$35</strong>{" "}
+                      <strong>$35</strong>
                     </p>
                   </div>
                 </div>

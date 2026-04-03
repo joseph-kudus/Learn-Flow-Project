@@ -1,10 +1,13 @@
 import React from "react";
-import unsplash from "../assets/images/unsplash.png";
-import image1 from "../assets/images/Frame38.png";
-import image2 from "../assets/images/imageholdr.png";
-import image3 from "../assets/images/image-holdr(1).png";
-import  image4  from "../assets/images/unsplash_w.png";
-import  image5  from "../assets/images/unsplash1.png";
+import {
+  Image1,
+  unsplash,
+  Image2,
+  Image3,
+  Image4,
+  Image5,
+} from "../assets/images/Myimg";
+
 function DashboardContent() {
   return (
     <section className="content-section bg-indigo-600">
@@ -27,7 +30,7 @@ function DashboardContent() {
             </div>
           </div>
           <div className="conti">
-            <img src={image1} alt="imgs" />
+            <img src={Image1} alt="imgs" />
             <div className="conti-q">
               <h3>Introduction to JavaScript language</h3>
               <p>Learn different programming languages and its usefulness</p>
@@ -42,7 +45,7 @@ function DashboardContent() {
           </p>
           <div className="expert-cart">
             <div className="card-wrap">
-              <img src={image2} alt="to css" className="imgr" />
+              <img src={Image2} alt="to css" className="imgr" />
               <div className="expert1">
                 <div className="expert11">
                   <h1>Introduction to CSS language</h1>
@@ -62,7 +65,7 @@ function DashboardContent() {
               </div>
             </div>
             <div className="card-wrap">
-              <img src={image3} alt="to css" className="imgr" />
+              <img src={Image3} alt="to css" className="imgr" />
               <div className="expert1">
                 <div className="expert11">
                   <h1>Introduction to Python language</h1>
@@ -84,7 +87,7 @@ function DashboardContent() {
           </div>
           <div className="expert-cart">
             <div className="card-wrap">
-              <img src={image5} alt="to css" className="imgr" />
+              <img src={Image5} alt="to css" className="imgr" />
               <div className="expert1">
                 <div className="expert11">
                   <h1>Introduction to Javascript language</h1>
@@ -104,7 +107,7 @@ function DashboardContent() {
               </div>
             </div>
             <div className="card-wrap">
-              <img src={image4} alt="to css" className="imgr" />
+              <img src={Image4} alt="to css" className="imgr" />
               <div className="expert1">
                 <div className="expert11">
                   <h1>Introduction to HTML language</h1>

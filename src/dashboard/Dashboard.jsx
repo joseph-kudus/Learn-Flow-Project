@@ -70,7 +70,7 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="conti">
-              <img src={image1} alt="imgs" />
+              <img src={Image1} alt="imgs" />
               <div className="conti-q">
                 <h3>Introduction to JavaScript language</h3>
                 <p>Learn different programming languages and its usefulness</p>
@@ -168,7 +168,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-            <button className="News">view all courses</button>
+            <button className="News">view all courses T</button>
           </div>
         </div>
       </section>

@@ -352,7 +352,6 @@ function Landing() {
                 <h5>Web Developer</h5>
               </div>
             </div>
-
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
               possimus reprehenderit ut qui at earum. Totam aperiam voluptatum
@@ -368,7 +367,6 @@ function Landing() {
                 <h5>Web Developer</h5>
               </div>
             </div>
-
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
               possimus reprehenderit ut qui at earum. Totam aperiam voluptatum
@@ -384,7 +382,6 @@ function Landing() {
                 <h5>Web Developer</h5>
               </div>
             </div>
-
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
               possimus reprehenderit ut qui at earum. Totam aperiam voluptatum
@@ -421,7 +418,7 @@ function Landing() {
           </div>
 
           <div className="imi">
-            <img src={hero} alt="null" className="im" />
+            <img src={hero} alt="null" />
           </div>
         </div>
       </div>

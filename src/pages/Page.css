@@ -264,23 +264,16 @@ main{
     margin: 0 auto; 
   }
 .colab{
-    width: 626px;
-    height: 527px;
-    gap: 20px;
-    top: 10px;
-    left: 330px;
-    display: block;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: row;
-            flex-direction: row;
+    width: 100%;
+    max-width: 626px;
+    height: auto;
+    left: 190px;
     position: relative;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+    gap: 10px;
+    display: block;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     text-align: center;
 }
 .myi{
@@ -321,8 +314,9 @@ main{
         -ms-flex-align: center;
             align-items: center;
     text-align: center;
-    width: 1,440px;
-    height: 1090px;
+    width: 100%;
+    max-width: 1,440px;
+    height: auto;
     background-color: #000000;
     color: seashell;
     -webkit-box-pack: center;
@@ -330,6 +324,7 @@ main{
             justify-content: center;
     align-items: center;
     text-align: center;
+    margin-bottom: 100px;
 }
 .Lean{
 width: 520px;
@@ -368,13 +363,9 @@ position: relative;
     display: block;
     width: 240px;
     height: 200px;
-    -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-    -ms-flex-line-pack: center;
-        align-content: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
     text-align: start;
 }
 .learner-card p{
@@ -384,14 +375,13 @@ position: relative;
     font-size: 13px;
 }
 .learner-bio{
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
     gap: 10px;
 }
 .knowledge{
     background-color: #ffffff;
-    width: 1,440px;
+    width: 100%;
+    max-width: 1,440px;
     height: 400px;
 }
 .knowledge-exp{
@@ -399,7 +389,8 @@ position: relative;
     display: -ms-flexbox;
     display: flex;
     background-color: #F7CA4E;
-    width: 1060px;
+    width: 100%;
+    max-width: 950px;
     height: 280px;
     top: 80px;
     left: 160px;
@@ -408,42 +399,25 @@ position: relative;
     gap: 90px;
 }
 .kta{
-
-    -webkit-box-pack: center;
-
-        -ms-flex-pack: center;
-
-            justify-content: center;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+    justify-content: center;            align-items: center;
     left: 50px;
     top: 30px;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    flex-direction: column;
     position: relative;
     width: 360px;height: 65px;
 }
-.im{
-    top: 20px;
-    width: 400px;
-    height: 200px;
-    left: 10px;
+.imi img{
+    max-width: 382px;
+    height: auto;
+    left: 150px;
     position: relative;
-    
-}
-.imi{
-    top: 60px;
-    left: 200px;
-    position: relative;
-    aspect-ratio: 60px;
-    -webkit-transform: rotate(-15deg);
-        -ms-transform: rotate(-15deg);
-            transform: rotate(-15deg);
-    border-radius: 70px;
-    
+    aspect-ratio: 40px;
+    transform: rotate(-10deg);
+    border-top-left-radius: 11px;
+    border-top-right-radius: 11px;
+    rotate: 11;
+    border:  solid #8F8F8F1A;
+    box-shadow: #0000001A;
 }
 
 /*Responsiveness*/
@@ -526,13 +500,13 @@ position: relative;
     }
     .colabration {
         width: 100%;
-  max-width: 1440px;
-  display: flex;
-  flex-direction: column;
-  height: auto;
-  gap: 10px;
-  padding: 10px;
-  margin: 0 auto;
+        max-width: 6220px;
+        display: block;
+        flex-direction: column;
+        height: auto;
+        gap: 10px;
+        padding: 10px;
+        margin: 0 auto;
       }
   }
   

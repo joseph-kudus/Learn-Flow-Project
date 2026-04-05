@@ -7,7 +7,6 @@ export default function () {
     <footer>
       <div className="footer-container">
         <div>
-          {" "}
           <Link to="/Landing" className="logo-l">
             <Notebook />
             <p>LearnFlow</p>
@@ -21,7 +20,7 @@ export default function () {
 
         <div className="footer-socila-links">
           <div>
-            <h1>Links</h1>{" "}
+            <h1>Links</h1>
             <Link to="/About" className="logo-l">
               About
             </Link>

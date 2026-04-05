@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import land from "../assets/images/Ellipse 1.png";
 import ato from "../assets/images/Ellipse 5.png";
@@ -22,6 +22,8 @@ import {
 } from "lucide-react";
 
 function Landing() {
+  const [count, setCount] = useState(0);
+
   return (
     <main>
       <div className="Container">
@@ -44,6 +46,8 @@ function Landing() {
               <h3 className="gr-h">
                 Join thousands of students to start coding now!
               </h3>
+              <p>you have click {count} times</p>
+              <button onClick={() => setCount(count + 1)}>click me</button>
             </div>
           </div>
           <div className="hero-img">

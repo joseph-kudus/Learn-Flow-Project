@@ -1,5 +1,5 @@
 import React from "react";
-import Sidebar from "../../Sidebar/Sidebar";
+
 function coursebuilder() {
   return (
     <div className="md-5 bg-indigo-700 text-black flex">

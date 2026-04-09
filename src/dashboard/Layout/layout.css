@@ -1,0 +1,234 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+
+body {
+  font-family: "Open Sans", sans-serif;
+}
+.dashboardlayout {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  color: #000133;
+}
+
+.main-dashboardlayout .sibarwraper{
+  display: flex 0 0 20%; transition: all 0.03s ease-in-out;
+  
+}
+.main-dashboardlayout .sibarwraper .drawer{
+  width: 20%; height: 100vh;
+  position: fixed;  top: 70px;
+  left: 0px;
+  background: white; border-right: 1px solid #5e5e5e33;
+}
+
+
+.SearchBox {
+  background: #ffffff;
+  width: 20%;
+  height: 50px;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  padding: 0px 1px;
+  justify-content: center;
+}
+.SearchBox input {
+  background: transparent;
+  border: 0px;
+  outline: none;
+  padding: 0.5rem;
+  font-size: 15px;
+  color: #00a3ff;
+}
+.SearchBox input::-webkit-input-placeholder {
+  color: rgb(82, 74, 74);
+}
+
+.SearchBox svg {
+  color: #00a3ff;
+  font-size: 18px;
+}
+.message-area {
+  background: #ffffff;
+  max-width: 100px;
+  height: 50px;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  padding: 3px 15px;
+  justify-content: center;
+}
+.message-area input {
+  background: transparent;
+  border: 0px;
+  outline: none;
+  padding-left: 5px;
+  font-size: 15px;
+  color: #00a3ff;
+}
+.message-area input::-webkit-input-placeholder {
+  color: #00a3ff;
+}
+
+.message-area svg {
+  color: #00a3ff;
+  font-size: 18px;
+}
+.logo-wraper {
+  display: flex;
+  text-decoration: none;
+  width: 100%;
+  max-width: 100px;
+  text-align: center;
+  align-items: center;
+  top: 24px;
+  left: 44px;
+  color: #000000;
+  gap: 10px;
+}
+.navigation-sidebar .nav-links ul{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0px;
+  gap: 10px;
+}
+.navigation-sidebar .nav-links .nav-item{
+  text-decoration: none;
+}
+.navigation-sidebar .nav-links .nav-item button
+{
+  color: #000000; text-align: left; justify-content: left;
+  border-radius: 0px !important; display: flex; background-color: #00a3ff;
+}
+.navigation-sidebar .nav-links ul  button .nav-item .icon
+{
+  display: flex; align-items: center; justify-content: center; width: 25px;
+   height: 25px; padding: 1px;  margin-right: 1px;
+}
+
+.header,
+.footer {
+  width: 100%;
+  color: #00a3ff;
+  height: 70px;
+  border: 1px solid #5e5e5e33;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0px;
+  left: 0px; z-index: 1000;
+  background-color: white;
+}
+.message-area .input::-webkit-input-placeholder {
+  color: #abafb199;
+}
+.header-nav {
+  padding-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.myacc {
+  display: flex;
+  align-items: center;
+  text-align: left !important;
+}
+.myacc .userimg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  max-width: 40px;
+  height: 40px;
+  border: 1px solid #00a3ff;
+  border-radius: 100%;
+  padding: 3px;
+}
+.myacc .userimg .round-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+}
+.myacc .userimg .round-circle img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+.myacc .userinfo {
+  padding-left: 12px;
+}
+.myacc .userinfo h4 {
+  color: #515151;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 0px;
+}
+.myacc .userinfo p {
+  margin-top: 0px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.calls-tap {
+  display: flex;
+  gap: 10px;
+}
+
+.content-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-wraper {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 60px;
+}
+.maincontent {
+  flex: 1;
+  background: #181010;
+  color: #00a3ff;
+}
+
+.message-area {
+  display: flex;
+  align-items: center;
+}
+.attach-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.attach-area .voice svg {
+  width: 34px;
+  height: 34px;
+}
+
+.sendmsg,
+.mui,
+.mu {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  background-color: #00a3ff;
+  color: #ffffff;
+  gap: 1px;
+  width: 100%;
+  max-width: 119px;
+  height: 40px;
+  border-radius: 12px;
+  padding-left: 10px;
+  padding-right: 10px;
+}

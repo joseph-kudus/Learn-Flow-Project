@@ -6,15 +6,15 @@ import {
   Image3,
   Image4,
   Image5,
-} from "../assets/images/Myimg";
+} from "../../assets/images/Myimg";
 
 function DashboardContent() {
   return (
-    <section className="content-section bg-indigo-600">
+    <section className="content-section ">
       {/*--Welecome Banner-- */}
       <div className="welcome-banner">
         <div className="welcome-banner1">
-          <h1>Welcome to Learnflow</h1>
+          <h1>Welcome to Learnflow, </h1>
           <p>
             Learn at your own pace with lifetime access on mobile and desktop
           </p>

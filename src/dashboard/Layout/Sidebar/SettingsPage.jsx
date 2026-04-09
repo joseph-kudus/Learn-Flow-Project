@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
-import { db, auth } from "../../firebaseconfig";
-import { } from "../../firebaseconfig";
+import { db, auth } from "../../../../firebaseconfig";
+import { } from "../../../../firebaseconfig";
 
 function SettingsPage() {
   const userId = auth.currentUser?.uid;

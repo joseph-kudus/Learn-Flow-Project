@@ -9,16 +9,13 @@ import Footer from "./pages/Footer";
 import Login from "./loginsignup/Login";
 import Register from "./loginsignup/Register";
 import { AuthProvider, useAuth } from "./context/AuthContext";
-
 import ProtectedRoute from "./component/ProtectedRoute";
 import "./App.css";
-import SettingsPage from "./dashboard/SettingsPage";
-import Support from "./dashboard/Support";
-import Sidebar from "./Sidebar/Sidebar";
-import DashboardLayout from "./dashboard/DashboardLayout";
 import AllCourse from "./dashboard/courses/AllCourse";
-import Coursebuilder from "./dashboard/courses/Coursebuilder";
-import DashboardContent from "./dashboard/DashboardContent";
+import DashboardLayout from "./dashboard/Layout/DashboardLayout";
+import DashboardContent from "./dashboard/Layout/DashboardContent";
+import Support from "./dashboard/Layout/Sidebar/Support";
+
 function App() {
   const { loading, currentUser } = useAuth();
 
@@ -93,7 +90,7 @@ function App() {
             }
           />
           <Route
-            path="/Support"
+            path="/support"
             element={
               currentUser ? (
                 <Navigate to="/Dashboard" replace />

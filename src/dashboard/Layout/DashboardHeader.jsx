@@ -2,6 +2,7 @@ import { FaBook } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
 import SearchBox from "./SearchBox";
 import kudus from "../../assets/images/20250821_160921.jpg";
+import { toast } from "react-toastify";
 function DashboardHeader() {
   const { currentUser } = useAuth();
 

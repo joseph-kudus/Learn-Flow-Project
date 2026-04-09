@@ -2,6 +2,30 @@
   /*
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+zz
+zz
+zz
+zz
+zz
+zz
+zz
+zz
+zz
+zz
+zz
+zz
+zz
+zz
+zz
+zz
+zz
+zz
+zz
+zz
+zz
+zz
+zz
+zz
 import "../dashboard/das.css";
 import { useAuth } from "../context/AuthContext";
 import Support from "../dashboard/Support";
@@ -70,89 +94,113 @@ export default function Sidebar() {
 };
 */
 }
+import { useAuth } from "../../../context/AuthContext";
 import { BookIcon } from "lucide-react";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import { IoMdLogOut } from "react-icons/io";
-import { MdOutlineDashboard } from "react-icons/md";
-import { GiNotebook } from "react-icons/gi";
-import { MdOutlineLibraryBooks } from "react-icons/md";
-import { AiFillSetting } from "react-icons/ai";
-import { MdSupportAgent } from "react-icons/md";
+import {
+  Bell,
+  Book,
+  BookCheckIcon,
+  HardDriveUpload,
+  LayoutDashboard,
+  LogOut,
+  LogOutIcon,
+  MenuIcon,
+  MoonIcon,
+  Notebook,
+  NotebookPen,
+  NotebookPenIcon,
+  NotebookTabsIcon,
+  PenLineIcon,
+  ScrollIcon,
+  ScrollText,
+  SearchIcon,
+  Settings,
+  ToggleRight,
+  User,
+  UserIcon,
+} from "lucide-react";
 import "../layout.css";
 
 const Sidebar = () => {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/login");
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <aside className="drawer">
       <div className="nav-title">MENU</div>
       <div className="navigation-sidebar">
         <div className="nav-links">
           <ul>
-            <button>
-              <Link className="nav-item active" to="/dashboard">
-                <MdOutlineDashboard className="icon" />
+            <li>
+              <Link
+                className={({ isActive }) =>
+                  `nav-item ${isActive ? "active" : ""}`
+                }
+                to="/dashboard"
+              >
+                <LayoutDashboard className="icon" />
                 <span>Dashboard</span>
               </Link>
-            </button>
-            <button>
-              <Link className="nav-item" to="/allcourses">
-                <MdOutlineLibraryBooks className="icon" />
+            </li>
+            <li>
+              <Link
+                className={({ isActive }) =>
+                  `nav-item ${isActive ? "active" : ""}`
+                }
+                to="/allcourses"
+              >
+                <ScrollText className="icon" />
                 <span>All Courses</span>
               </Link>
-            </button>
-            <button>
-              <Link className="nav-item" to="/coursebuilder">
-                <GiNotebook className="icon" />
+            </li>
+            <li>
+              <Link
+                className={({ isActive }) => `nav-item $ 
+              {isActive ?  "active" : ""}`}
+                to="/coursebuilder"
+              >
+                <PenLineIcon className="icon" />
                 <span>Course Builder</span>
               </Link>
-            </button>
-            <button>
-              <Link className="nav-item" to="/setting">
-                <AiFillSetting className="icon" />
+            </li>
+            <li>
+              <Link
+                className={({ isActive }) =>
+                  `nav-item $ {isActive ? "active" :""}`
+                }
+                to="/setting"
+              >
+                <Settings className="icon" />
                 <span>Settings</span>
               </Link>
-            </button>
-            <button>
-              <Link className="nav-item" to="/Support">
-                <MdSupportAgent className="icon" />
+            </li>
+            <li>
+              <Link className={({ isActive }) => `nav-item`} to="/Support">
+                <HardDriveUpload className="icon" />
                 <span>Support</span>
               </Link>
-            </button>
-            <button className="w-100">
+            </li>
+            <li>
               <Link
-                className="nav-item"
-                to="#"
+                className={({ isActive }) => `nav-item $ {"nav-item"}`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleLogout();
                 }}
               >
-                <IoMdLogOut className="icon" />
+                <LogOut className="icon" />
                 <span>Logout</span>
               </Link>
-            </button>
+            </li>
           </ul>
         </div>
       </div>

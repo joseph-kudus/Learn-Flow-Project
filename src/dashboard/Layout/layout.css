@@ -87,6 +87,15 @@ body {
   color: #000000;
   gap: 10px;
 }
+.nav-item {
+  width: 100%;
+  display: flex !important;;
+  align-items: center;
+  gap: 8px !important;;
+  color: #000000;
+  text-decoration: none;
+}
+
 .navigation-sidebar .nav-links ul{
   display: flex;
   flex-direction: column;

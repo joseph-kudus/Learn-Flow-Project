@@ -2,30 +2,6 @@
   /*
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  Bell,
-  Book,
-  BookCheckIcon,
-  BookIcon,
-  HardDriveUpload,
-  LayoutDashboard,
-  LogOut,
-  LogOutIcon,
-  MenuIcon,
-  MoonIcon,
-  Notebook,
-  NotebookPen,
-  NotebookPenIcon,
-  NotebookTabsIcon,
-  PenLineIcon,
-  ScrollIcon,
-  ScrollText,
-  SearchIcon,
-  Settings,
-  ToggleRight,
-  User,
-  UserIcon,
-} from "lucide-react";
 import "../dashboard/das.css";
 import { useAuth } from "../context/AuthContext";
 import Support from "../dashboard/Support";
@@ -97,29 +73,34 @@ export default function Sidebar() {
 import { BookIcon } from "lucide-react";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  Bell,
-  Book,
-  BookCheckIcon,
-  HardDriveUpload,
-  LayoutDashboard,
-  LogOut,
-  LogOutIcon,
-  MenuIcon,
-  MoonIcon,
-  Notebook,
-  NotebookPen,
-  NotebookPenIcon,
-  NotebookTabsIcon,
-  PenLineIcon,
-  ScrollIcon,
-  ScrollText,
-  SearchIcon,
-  Settings,
-  ToggleRight,
-  User,
-  UserIcon,
-} from "lucide-react";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { IoMdLogOut } from "react-icons/io";
+import { MdOutlineDashboard } from "react-icons/md";
+import { GiNotebook } from "react-icons/gi";
+import { MdOutlineLibraryBooks } from "react-icons/md";
+import { AiFillSetting } from "react-icons/ai";
+import { MdSupportAgent } from "react-icons/md";
 import "../layout.css";
 
 const Sidebar = () => {
@@ -131,31 +112,31 @@ const Sidebar = () => {
           <ul>
             <button>
               <Link className="nav-item active" to="/dashboard">
-                <LayoutDashboard className="icon" />
+                <MdOutlineDashboard className="icon" />
                 <span>Dashboard</span>
               </Link>
             </button>
             <button>
               <Link className="nav-item" to="/allcourses">
-                <ScrollText className="icon" />
+                <MdOutlineLibraryBooks className="icon" />
                 <span>All Courses</span>
               </Link>
             </button>
             <button>
               <Link className="nav-item" to="/coursebuilder">
-                <PenLineIcon className="icon" />
+                <GiNotebook className="icon" />
                 <span>Course Builder</span>
               </Link>
             </button>
             <button>
               <Link className="nav-item" to="/setting">
-                <Settings className="icon" />
+                <AiFillSetting className="icon" />
                 <span>Settings</span>
               </Link>
             </button>
             <button>
               <Link className="nav-item" to="/Support">
-                <HardDriveUpload className="icon" />
+                <MdSupportAgent className="icon" />
                 <span>Support</span>
               </Link>
             </button>
@@ -168,7 +149,7 @@ const Sidebar = () => {
                   handleLogout();
                 }}
               >
-                <LogOut className="icon" />
+                <IoMdLogOut className="icon" />
                 <span>Logout</span>
               </Link>
             </button>

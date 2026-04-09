@@ -1,13 +1,4 @@
-import {
-  Bell,
-  BookIcon,
-  DotIcon,
-  FileHeadphone,
-  MoonIcon,
-  SearchIcon,
-  User,
-  VideoIcon,
-} from "lucide-react";
+import { FaBook } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
 import SearchBox from "./SearchBox";
 import kudus from "../../assets/images/20250821_160921.jpg";
@@ -47,7 +38,7 @@ function DashboardHeader() {
       <div className="header">
         <div className="header-nav">
           <div className="logo-wraper">
-            <BookIcon className="logob" />
+            <FaBook className="logob" />
             <p>LearnFlow</p>
           </div>
           <SearchBox />

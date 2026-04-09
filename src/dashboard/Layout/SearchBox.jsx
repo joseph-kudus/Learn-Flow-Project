@@ -4,10 +4,13 @@ import "./layout.css"
 
 const SearchBox = () => {
   return (
-    <div className="SearchBox">
-      <Search/>
-      <input type="text" placeholder="Type your, message" />
+    <div className="header-left">
+    <div className="search-bar">
+    <Search/>
+      <input type="text" placeholder="search....." />
     </div>
+  </div>
+  
   );
 };
 export default SearchBox;

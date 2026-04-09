@@ -21,6 +21,18 @@ body {
   left: 0px;
   background: white; border-right: 1px solid #5e5e5e33;
 }
+.header-right {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 1.5rem;
+  float: left;
+  padding-right: 20px;
+}
+
 
 
 .SearchBox {
@@ -94,6 +106,22 @@ body {
   gap: 8px !important;;
   color: #000000;
   text-decoration: none;
+}
+
+.nav-item.active{
+  width: 132px;
+  height: 40px;
+}
+.nav-item :hover, .nav-item.active{
+  background: #000000;
+  color: #FFFFFF;
+  border-radius: 6px;
+}
+.nav-title{
+  top: 10px;
+  padding-bottom: 20px;
+  left: 30px;
+  position: relative;
 }
 
 .navigation-sidebar .nav-links ul{

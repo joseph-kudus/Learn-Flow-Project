@@ -392,6 +392,7 @@ l.welcome-banner {
 }
 .course-conti {
   display: flex;
+  flex-direction: column;
   gap: 8px;
 }
 .conti {

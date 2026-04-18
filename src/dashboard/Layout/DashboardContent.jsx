@@ -15,7 +15,7 @@ function DashboardContent() {
       {/*--Welecome Banner-- */}
       <div className="welcome-banner">
         <div className="welcome-banner1">
-          <h1>Welcome to Learnflow, </h1>
+          <h1>Welcome to Learnflow </h1>
           <p>
             Learn at your own pace with lifetime access on mobile and desktop
           </p>

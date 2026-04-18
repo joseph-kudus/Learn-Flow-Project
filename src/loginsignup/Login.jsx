@@ -12,6 +12,7 @@ export default function Login() {
   const [rememberme, setRememberMe] = useState("");
   const { login, forgotPassword } = useAuth();
   const navigate = useNavigate();
+  const [showPassword, setShowPassord]=useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,6 +50,7 @@ export default function Login() {
     }
   };
 
+
   return (
     <div className="login-container">
       <div className="login-logo">
@@ -60,7 +62,7 @@ export default function Login() {
               <p>Lorem Ipsum is simply</p>
               <form onSubmit={handleSubmit}>
                 <div className="Login-logo">
-                  <label htmlFor="#">
+                  <label>
                     Email:
                     <input
                       type="email"
@@ -71,16 +73,18 @@ export default function Login() {
                       className="inp"
                     />
                   </label>
-                  <label htmlFor="#">
+                  <label>
                     Password:
                     <input
-                      type="password"
+                      type={showPassword ? "text": "password"} 
                       id="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Enter your Password"
+                      placeholder="Enter your Password" 
                       className="inp"
                     />
+                   <input type="checkbox" checked={showPassword} 
+                    onChange={(e)=>setShowPassord(e.target.checked)}/>
                   </label>
                 </div>
                 <div>

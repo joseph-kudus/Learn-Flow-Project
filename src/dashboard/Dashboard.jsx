@@ -29,7 +29,7 @@ import { Outlet } from "react-router-dom";
 import Sidebar from "../Sidebar/Sidebar";
 
 import {
-  image1,
+  Image1,
   unsplash,
   image2,
   image3,

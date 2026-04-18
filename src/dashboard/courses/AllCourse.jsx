@@ -7,10 +7,11 @@ import {
   Image4,
   Image5,
 } from "../../assets/images/Myimg";
+import "../../dashboard/courses/course.css";
 
 function AllCourse() {
   return (
-    <div className="allcourses-container">
+    <div className="allcourses-wrapper">
       <h1>Courses</h1>
       <p>
         Unlock the world of web development effortlessly with our innovative

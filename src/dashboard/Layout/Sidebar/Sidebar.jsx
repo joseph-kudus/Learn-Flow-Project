@@ -2,30 +2,7 @@
   /*
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-zz
-zz
-zz
-zz
-zz
-zz
-zz
-zz
-zz
-zz
-zz
-zz
-zz
-zz
-zz
-zz
-zz
-zz
-zz
-zz
-zz
-zz
-zz
-zz
+
 import "../dashboard/das.css";
 import { useAuth } from "../context/AuthContext";
 import Support from "../dashboard/Support";
@@ -95,8 +72,8 @@ export default function Sidebar() {
 */
 }
 import { useAuth } from "../../../context/AuthContext";
-import { BookIcon } from "lucide-react";
-import React from "react";
+import { BookIcon, icons } from "lucide-react";
+import React, { act } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Bell,
@@ -122,8 +99,9 @@ import {
   UserIcon,
 } from "lucide-react";
 import "../layout.css";
+import { MdDashboardCustomize, MdSettings } from "react-icons/md";
 
-const Sidebar = () => {
+const Sidebar = ({activeView, setActiveView}) => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const handleLogout = async () => {
@@ -134,9 +112,37 @@ const Sidebar = () => {
       console.log(err);
     }
   };
+
+
+  const navitems=[
+    {id: 'dashboard', label: "Dashboard", icons:MdDashboardCustomize},
+    {id: 'allcourse', label: "Allcourse"},
+    {id: 'coursebuilder', label: "Coursebuilder"},
+    {id: 'settingsPage', label: "Settings", icons: MdSettings},
+  ];
+
   return (
-    <aside className="drawer">
-      <div className="nav-title">MENU</div>
+    <aside className="drawer" style={{maxWidth: "220px", width:"100%", backgroundColor: '#dee0e2'}}>
+      
+      <div className="nav-title"><h3>MENU</h3></div>
+      {navitems.map(item =>(
+        
+        <button className="dasff"
+          key={item.id}
+          onClick={()=>setActiveView(item.id)}
+          style={{
+           
+            background: activeView===item.id? "hsl(180, 7%, 3%)": "transparent",
+            color: activeView ===item.id? "#FFFF" : "#334155",
+            
+            
+            fontWeight: activeView===item.id? "600":"400"
+          }}
+          >
+          {item.label}
+
+        </button>
+      ))}
       <div className="navigation-sidebar">
         <div className="nav-links">
           <ul>

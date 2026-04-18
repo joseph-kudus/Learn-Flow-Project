@@ -269,3 +269,17 @@ body {
   padding-left: 10px;
   padding-right: 10px;
 }
+
+
+.dasff{
+  text-align: left;
+  padding-left: 30px;
+  display:block;
+  width:80%;
+  height: 35px;
+  padding: 0.7 rem 1rem;
+  margin-bottom: 0.25rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}

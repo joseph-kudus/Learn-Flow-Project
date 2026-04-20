@@ -3,24 +3,22 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  getAuth,
   onAuthStateChanged,
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "../../firebaseconfig";
-import { LogOut, User } from "lucide-react";
 
 const AuthContext = createContext();
+
 export function useAuth() {
   return useContext(AuthContext);
 }
+
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  {
-    /** Sign in function*/
-  }
+
   async function signup(email, password) {
     setError("");
     try {
@@ -30,9 +28,7 @@ export function AuthProvider({ children }) {
       throw err;
     }
   }
-  {
-    /** login in function*/
-  }
+
   async function login(email, password) {
     setError("");
     try {
@@ -41,9 +37,6 @@ export function AuthProvider({ children }) {
       setError(err.message);
       throw err;
     }
-  }
-  {
-    /** logout in function*/
   }
 
   async function logout() {
@@ -56,11 +49,8 @@ export function AuthProvider({ children }) {
     }
   }
 
-  /**
-   * forgot password
-   */
   const forgotPassword = async (email) => {
-    if (!email) throw new error("Please enter email to reset password");
+    if (!email) throw new Error("Please enter email to reset password");
     try {
       await sendPasswordResetEmail(auth, email);
       alert("Check your email for reset link");
@@ -68,9 +58,7 @@ export function AuthProvider({ children }) {
       throw err;
     }
   };
-  {
-    /**usbscribe user function */
-  }
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
@@ -87,5 +75,10 @@ export function AuthProvider({ children }) {
     loading,
     forgotPassword,
   };
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+
+  return (
+    <AuthContext.Provider value={value}>
+      {!loading && children}
+    </AuthContext.Provider>
+  );
 }

@@ -1,54 +1,50 @@
-import React from "react";
-import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import React, { useState } from "react";
 import DashboardHeader from "./DashboardHeader";
 import DashboardContent from "./DashboardContent";
 import Sidebar from "../Layout/Sidebar/Sidebar";
 import "./layout.css";
 import AllCourse from "../courses/AllCourse";
-import coursebulder from "../courses/Coursebuilder";
-import SettingsPage from "../Layout/Sidebar/SettingsPage"
-import { GrDashboard } from "react-icons/gr";
+import Coursebuilder from "../courses/Coursebuilder"; // Capital C
+import SettingsPage from "../Layout/Sidebar/SettingsPage"; // check this path matches your file
 
-const DashboardLayout = () => {
-  const [activeView, setActiveView]=useState('dashboard');
+const DashboardLayout = ({ onLogout }) => {
+  const [activeView, setActiveView] = useState("dashboard");
 
-  const views={
-    dashboard: <DashboardContent/>,
-    allcourse: <AllCourse/>,
-    coursebulder: <coursebulder/>,
-    settingsPage: <SettingsPage/>,
+  const handleLogout = () => {
+    onLogout?.();
   };
+
+  const views = {
+    dashboard: <DashboardContent />,
+    allcourse: <AllCourse />,
+    coursebuilder: <Coursebuilder />,
+    settingsPage: <SettingsPage />,
+  };
+
   return (
-    <div className="dashboardlayout" style={{display:'flex', backgroundColor: 'yellow', minHeight: '100dvh'}}>
-      {/*header here */}
+    <div
+      className="dashboardlayout"
+      style={{
+        display: "flex",
+        backgroundColor: "yellow",
+        minHeight: "100dvh",
+      }}
+    >
       <DashboardHeader />
       <div className="main-dashboardlayout">
-        {/*Sidebar section start */}
-        <div className="sibarwraper"  >
-          <Sidebar activeView={activeView}setActiveView={setActiveView} />
+        <div className="sibarwraper">
+          <Sidebar
+            activeView={activeView}
+            setActiveView={setActiveView}
+            onLogout={handleLogout}
+          />
         </div>
-        <div className="content-wrap" >
-          {/**Main content here */}
-          {views[activeView]}
-          {/*Footer section start */}
-          {/*Footer section end */}
+        <div className="content-wrap">
+          {views[activeView] ?? <DashboardContent />}
         </div>
       </div>
     </div>
   );
-  {
-    /*
-        <div className="flex">
-          <DashboardHeader/>
-      <div className="p-4 border-b bg-white">
-      </div>
-      <Sidebar />
-      <div className="flex-1 p-4">
-        <Outlet />
-      </div>
-    </div>
-    */
-  }
 };
+
 export default DashboardLayout;

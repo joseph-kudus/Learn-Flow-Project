@@ -270,16 +270,47 @@ body {
   padding-right: 10px;
 }
 
-
-.dasff{
-  text-align: left;
-  padding-left: 30px;
-  display:block;
-  width:80%;
-  height: 35px;
-  padding: 0.7 rem 1rem;
-  margin-bottom: 0.25rem;
+.dasff {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 10px 16px;
   border: none;
-  border-radius: 6px;
+  background: transparent;
+  color: #334155;
+  font-weight: 400;
   cursor: pointer;
+  text-align: left;
+  border-radius: 6px;
+  transition: background 0.2s ease;
 }
+
+.dasff:hover {
+  background: #c9cbce;
+}
+
+.dasff.active {
+  background: hsl(180, 7%, 3%);
+  color: #FFFF;
+  font-weight: 800;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.dasff:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.logout-btn:disabled:hover {
+  background: transparent; /* no hover when loading */
+}
+

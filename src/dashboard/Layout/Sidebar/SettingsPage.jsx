@@ -120,12 +120,11 @@ function SettingsPage() {
 
   return (
     <div className="settings-page">
-      <h1>Settings</h1>
+      <h1>Update Profile</h1>
       <form onSubmit={handleSubmit}>
         {error && <p className="alert alert-error">{error}</p>}
         {success && <p className="alert alert-success">{success}</p>}
-
-        <h3>Profile Details</h3>
+        <h3>Edit Details</h3>
         <div className="form-group">
           <label htmlFor="First-Name">First Name (required)</label>
           <input
@@ -134,8 +133,6 @@ function SettingsPage() {
             id="First-Name"
             required
           />
-        </div>
-        <div className="form-group">
           <label htmlFor="Last-Name">Last Name (required)</label>
           <input
             type="text"
@@ -143,8 +140,6 @@ function SettingsPage() {
             id="Last-Name"
             required
           />
-        </div>
-        <div className="form-group">
           <label htmlFor="Nickname">Nickname (required)</label>
           <input
             type="text"
@@ -152,8 +147,6 @@ function SettingsPage() {
             id="Nickname"
             required
           />
-        </div>
-        <div className="form-group">
           <label htmlFor="Account-Email">Email</label>
           <input
             type="email"
@@ -162,10 +155,7 @@ function SettingsPage() {
             readOnly
           />
         </div>
-
-        <h3>Change Password</h3>
-        <p className="helper-text">Leave blank to keep current password</p>
-
+        <h3>Login information</h3>
         <div className="form-group">
           <label htmlFor="current-password">Current Password</label>
           <div className="password-wrapper">
@@ -185,9 +175,6 @@ function SettingsPage() {
               )}
             </button>
           </div>
-        </div>
-
-        <div className="form-group">
           <label htmlFor="new-password">New Password</label>
           <div className="password-wrapper">
             <input
@@ -202,12 +189,9 @@ function SettingsPage() {
             >
               {showNewPassword ? <IoMdEyeOff /> : <IoMdEye className="eye" />}
             </button>
-          </div>
-        </div>
 
-        <div className="form-group">
-          <label htmlFor="confirm-password">Confirm New Password</label>
-          <div className="password-wrapper">
+            <label htmlFor="confirm-password">Confirm New Password</label>
+
             <input
               type={showConfirmPassword ? "text" : "password"}
               id="confirm-password"
@@ -226,11 +210,9 @@ function SettingsPage() {
             </button>
           </div>
         </div>
-
         <button type="submit">Save Changes</button>
       </form>
     </div>
   );
 }
-
 export default SettingsPage;

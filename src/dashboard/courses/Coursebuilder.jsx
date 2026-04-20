@@ -1,16 +1,16 @@
 import React from "react";
 
+import { GrAdd } from "react-icons/gr";
+import "./course.css";
+
 function coursebuilder() {
   return (
-    <div className="md-5 bg-indigo-700 text-black flex">
-      <h2>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Atque,
-        consequatur. Ex omnis hic inventore pariatur magnam eos amet rem
-        voluptatem enim dolor minima perferendis, voluptate aliquam architecto
-        fugit sit aspernatur.
-      </h2>
-      <div className="md-mt-6 flex flex-col bg-black">
-        
+    <div className="course-section">
+      <div className="course-wrapper">
+        <h2>Create new course</h2>
+        <button>
+          <GrAdd className="mes" />
+        </button>
       </div>
     </div>
   );

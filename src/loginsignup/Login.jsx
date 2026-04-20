@@ -4,6 +4,8 @@ import { Notebook } from "lucide-react";
 import "./Mylogin.css";
 import { useAuth } from "../context/AuthContext";
 import smte from "../assets/images/small-team.png";
+import { IoMdEyeOff } from "react-icons/io";
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -84,7 +86,8 @@ export default function Login() {
                       className="inp"
                     />
                    <input type="checkbox" checked={showPassword} 
-                    onChange={(e)=>setShowPassord(e.target.checked)}/>
+                      onChange={(e) => setShowPassord(e.target.checked)} />
+                    <IoMdEyeOff />
                   </label>
                 </div>
                 <div>
@@ -112,7 +115,7 @@ export default function Login() {
                     </button>
                     <div>
                       <p className="texts-indigo-600">
-                        Don’t have an Account?{" "}
+                        Don’t have an Account?
                         <Link to="/register" className="reg">
                           Register
                         </Link>

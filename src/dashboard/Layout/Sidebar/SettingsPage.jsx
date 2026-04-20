@@ -5,6 +5,7 @@ import {
   reauthenticateWithCredential,
   updatePassword,
 } from "firebase/auth";
+import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { db } from "../../../../firebaseconfig";
 import { useAuth } from "../../../context/AuthContext";
 import "./SettingsPage.css";
@@ -19,6 +20,10 @@ function SettingsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
     if (!user?.uid) {
@@ -120,14 +125,14 @@ function SettingsPage() {
         {error && <p className="alert alert-error">{error}</p>}
         {success && <p className="alert alert-success">{success}</p>}
 
-        <h3>Edit Details</h3>
+        <h3>Profile Details</h3>
         <div className="form-group">
           <label htmlFor="First-Name">First Name (required)</label>
           <input
             type="text"
             defaultValue={userData.firstName}
             id="First-Name"
-            required placeholder="Ato"
+            required
           />
         </div>
         <div className="form-group">
@@ -136,7 +141,7 @@ function SettingsPage() {
             type="text"
             defaultValue={userData.lastName}
             id="Last-Name"
-            required placeholder="Ato"
+            required
           />
         </div>
         <div className="form-group">
@@ -146,15 +151,7 @@ function SettingsPage() {
             defaultValue={userData.nickname}
             id="Nickname"
             required
-            placeholder="EndlessLove"
           />
-        </div>
-
-        <h3>Login Infomation</h3>
-
-        <div className="form-group">
-          <label htmlFor="current-password">Current Password (Required)</label>
-          <input type="password" id="current-password" required/>
         </div>
         <div className="form-group">
           <label htmlFor="Account-Email">Email</label>
@@ -165,13 +162,69 @@ function SettingsPage() {
             readOnly
           />
         </div>
+
+        <h3>Change Password</h3>
+        <p className="helper-text">Leave blank to keep current password</p>
+
         <div className="form-group">
-          <label htmlFor="new-password">Add your new password</label>
-          <input type="password" id="new-password" minLength={6} />
+          <label htmlFor="current-password">Current Password</label>
+          <div className="password-wrapper">
+            <input
+              type={showCurrentPassword ? "text" : "password"}
+              id="current-password"
+            />
+            <button
+              type="button"
+              className="eye-toggle"
+              onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+            >
+              {showCurrentPassword ? (
+                <IoMdEyeOff />
+              ) : (
+                <IoMdEye className="eye" />
+              )}
+            </button>
+          </div>
         </div>
+
+        <div className="form-group">
+          <label htmlFor="new-password">New Password</label>
+          <div className="password-wrapper">
+            <input
+              type={showNewPassword ? "text" : "password"}
+              id="new-password"
+              minLength={6}
+            />
+            <button
+              type="button"
+              className="eye-toggle"
+              onClick={() => setShowNewPassword(!showNewPassword)}
+            >
+              {showNewPassword ? <IoMdEyeOff /> : <IoMdEye className="eye" />}
+            </button>
+          </div>
+        </div>
+
         <div className="form-group">
           <label htmlFor="confirm-password">Confirm New Password</label>
-          <input type="password" id="confirm-password" minLength={6} />
+          <div className="password-wrapper">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              id="confirm-password"
+              minLength={6}
+            />
+            <button
+              type="button"
+              className="eye-toggle"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? (
+                <IoMdEyeOff />
+              ) : (
+                <IoMdEye className="eye" />
+              )}
+            </button>
+          </div>
         </div>
 
         <button type="submit">Save Changes</button>

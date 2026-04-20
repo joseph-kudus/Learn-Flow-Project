@@ -120,14 +120,14 @@ function SettingsPage() {
         {error && <p className="alert alert-error">{error}</p>}
         {success && <p className="alert alert-success">{success}</p>}
 
-        <h3>Profile Details</h3>
+        <h3>Edit Details</h3>
         <div className="form-group">
           <label htmlFor="First-Name">First Name (required)</label>
           <input
             type="text"
             defaultValue={userData.firstName}
             id="First-Name"
-            required
+            required placeholder="Ato"
           />
         </div>
         <div className="form-group">
@@ -136,7 +136,7 @@ function SettingsPage() {
             type="text"
             defaultValue={userData.lastName}
             id="Last-Name"
-            required
+            required placeholder="Ato"
           />
         </div>
         <div className="form-group">
@@ -146,7 +146,15 @@ function SettingsPage() {
             defaultValue={userData.nickname}
             id="Nickname"
             required
+            placeholder="EndlessLove"
           />
+        </div>
+
+        <h3>Login Infomation</h3>
+
+        <div className="form-group">
+          <label htmlFor="current-password">Current Password (Required)</label>
+          <input type="password" id="current-password" required/>
         </div>
         <div className="form-group">
           <label htmlFor="Account-Email">Email</label>
@@ -157,16 +165,8 @@ function SettingsPage() {
             readOnly
           />
         </div>
-
-        <h3>Change Password</h3>
-        <p className="helper-text">Leave blank to keep current password</p>
-
         <div className="form-group">
-          <label htmlFor="current-password">Current Password</label>
-          <input type="password" id="current-password" />
-        </div>
-        <div className="form-group">
-          <label htmlFor="new-password">New Password</label>
+          <label htmlFor="new-password">Add your new password</label>
           <input type="password" id="new-password" minLength={6} />
         </div>
         <div className="form-group">

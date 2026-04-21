@@ -26,7 +26,7 @@ const DashboardLayout = ({ onLogout }) => {
       className="dashboardlayout"
       style={{
         display: "flex",
-        backgroundColor: "yellow",
+        backgroundColor: "white",
         minHeight: "100dvh",
       }}
     >

@@ -5,6 +5,10 @@
 }
 .allcourses-wrapper {
   width: 100%;
+  max-width: 920px;
+  top: 70px;
+  left: 250px;
+  position: absolute;
   height: auto;
   @media screen and (min-width: 400) and (max-width: 768) {
     display: flex;

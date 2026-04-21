@@ -8,32 +8,6 @@ function DashboardHeader() {
 
   return (
     <>
-      {/*}
-        <header className="header">
-      <div className="header-left">
-        <div className="search-bar">
-          <SearchIcon />
-          <input type="text" placeholder="search....." />
-        </div>
-      </div>
-      <div className="header-right">
-        <button className="theme-toggle" id="theme-Toggle">
-          <MoonIcon />
-        </button>
-        <div className="notification">
-          <Bell />
-          <span className="notification-bag">3</span>
-        </div>
-        {currentUser ? (
-          <div className="user-profile flex items-center text-sm text-gray-600">
-            <User />
-            <span>{currentUser.email}</span>
-          </div>
-        ) : (
-          <p>welcome</p>
-        )}
-      </div>
-      */}
 
       {/*new header*/}
       <div className="header">
@@ -55,7 +29,7 @@ function DashboardHeader() {
                 <h4>
                   <span>{currentUser.email}</span>
                 </h4>
-                <p>Online</p>
+                <p>Student</p>
               </div>
             </div>
           </div>

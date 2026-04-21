@@ -8,11 +8,21 @@ import {
   Image5,
 } from "../../assets/images/Myimg";
 import "../../dashboard/courses/course.css";
+import { FaArrowLeft } from "react-icons/fa";
 
 function AllCourse() {
   return (
     <div className="allcourses-wrapper">
-      <h1>Courses</h1>
+      <div className="back-to-course">
+        <button>
+          <FaArrowLeft className="arrow" />
+        </button>
+
+        <span>
+          <h1>Back Courses</h1>
+        </span>
+      </div>
+
       <p>
         Unlock the world of web development effortlessly with our innovative
         e-learning courses. Elevate your skills, build a dynamic portfolio, and
@@ -20,111 +30,43 @@ function AllCourse() {
         certifications and dedicated job placement assistance.
       </p>
       <div className="course-conti">
+        <div className="conti-q">
+          <h3>Introduction to CSS language</h3>
+          <p>
+            Lorem ipsum dolor sit amet consectetur. Tempus ultrices dui
+            vulputate pulvinar risus. Purus lacus tempus mi nibh ligula. Sit in
+            blandit eget id dictum. Dignissim tincidunt pharetra habitant mi nec
+            curabitur et justo. Tristique massa est magna auctor iaculis diam
+            mauris rhoncus. Justo dignissim odio dolor tortor adipiscing. Non
+            volutpat lacinia arcu elit dignissim at. Magna dolor fermentum ac
+            morbi. Vitae curabitur lacinia natoque turpis enim donec
+            pellentesque. Varius convallis sed ullamcorper nisl ligula pharetra.
+            Volutpat cursus et lorem ut risus in metus venenatis duis. At vitae
+            nullam at at ut. Mattis nisl amet tempus turpis donec vel viverra
+            eu. Faucibus convallis faucibus faucibus leo pretium enim euismod.
+            Elit amet volutpat pellentesque tempus dolor faucibus risus at.
+            Venenatis volutpat nam velit metus cursus ut eget tempor risus.
+            Tortor massa magna amet netus adipiscing ultrices nunc facilisi
+            eleifend. Tincidunt sit volutpat quam eu at rhoncus purus diam. Et
+            condimentum donec ut sed risus mattis metus nisl. Libero praesent
+            bibendum mauris mauris turpis.
+          </p>
+        </div>
+
         <div className="conti">
-          <img src={unsplash} alt="img" />
-          <div className="conti-q">
-            <h3>Introduction to CSS language</h3>
-            <p>Learn different programming languages and its usefulness</p>
-          </div>
-        </div>
-        <div className="conti">
-          <img src={Image1} alt="imgs" />
-          <div className="conti-q">
-            <h3>Introduction to JavaScript language</h3>
-            <p>Learn different programming languages and its usefulness</p>
-          </div>
-        </div>
-      </div>
-      <div className="experts">
-        <h2>Languages courses</h2>
-        <p>
-          Chose from one over many of courses and learn with industry leading
-          expert{" "}
-        </p>
-        <div className="expert-cart">
-          <div className="card-wrap">
-            <img src={Image2} alt="to css" className="imgr" />
-            <div className="expert1">
-              <div className="expert11">
-                <h1>Introduction to CSS language</h1>
-                <p>
-                  Learn the basics of CSS, and its usefulness in the programming
-                  world
-                </p>
-                <div className="ato">
-                  <p>
-                    By <strong>ATO</strong>
-                  </p>
-                  <p>
-                    <strong>$29</strong>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card-wrap">
-            <img src={Image3} alt="to css" className="imgr" />
-            <div className="expert1">
-              <div className="expert11">
-                <h1>Introduction to Python language</h1>
-                <p>
-                  Learn the basics of python, and its usefulness in the
-                  programming world
-                </p>
-                <div className="ato">
-                  <p>
-                    By <strong>ATO</strong>
-                  </p>
-                  <p>
-                    <strong>$30</strong>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="expert-cart">
-          <div className="card-wrap">
-            <img src={Image5} alt="to css" className="imgr" />
-            <div className="expert1">
-              <div className="expert11">
-                <h1>Introduction to Javascript language</h1>
-                <p>
-                  Learn the basics of Javascript, and its usefulness in the
-                  programming world
-                </p>
-                <div className="ato">
-                  <p>
-                    By <strong>ATO</strong>
-                  </p>
-                  <p>
-                    <strong>$50</strong>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card-wrap">
-            <img src={Image4} alt="to css" className="imgr" />
-            <div className="expert1">
-              <div className="expert11">
-                <h1>Introduction to HTML language</h1>
-                <p>
-                  Learn the basics of HTML, and its usefulness in the
-                  programming world
-                </p>
-                <hr />
-                <div className="ato">
-                  <p>
-                    By <strong>ATO</strong>
-                  </p>
-                  <p>
-                    <strong>$35</strong>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <form action="#">
+            <h3>Course Details</h3>
+            <label htmlFor="#">
+              Author:
+              <input type="text" />
+              Level:
+              <input type="text" placeholder="Beginer" />
+              Lesson:
+              <input type="text" placeholder="11" />
+            </label>
+            <button type="submit">Buy</button>
+          </form>
+          <button>Next course</button>
         </div>
       </div>
     </div>

@@ -1,43 +1,42 @@
 import { FaBook } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
-import SearchBox from "./SearchBox";
-import kudus from "../../assets/images/20250821_160921.jpg";
-import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+import defaultAvatar from "../../assets/images/default.png"; // add a default
+
+
 function DashboardHeader() {
-  const { currentUser } = useAuth();
+  const { currentUser, userData, loading } = useAuth();
+
+  if (loading) return null; // or <HeaderSkeleton />
+  if (!currentUser) return <p>Please log in</p>;
+
+  const displayName =
+    userData?.nickname || userData?.firstName || currentUser.email;
+  const avatar = userData?.photoURL || currentUser.photoURL || defaultAvatar;
 
   return (
-    <>
+    <div className="header">
+      <div className="header-nav">
+        <div className="logo-wraper">
+          <FaBook className="logob" />
+          <p>LearnFlow</p>
+        </div>
 
-      {/*new header*/}
-      <div className="header">
-        <div className="header-nav">
-          <div className="logo-wraper">
-            <FaBook className="logob" />
-            <p>LearnFlow</p>
-          </div>
-          <SearchBox />
-
-          <div className="MyAcc-wraper">
-            <div className="myacc">
-              <div className="userimg">
-                <span className="round-circle">
-                  <img src={kudus} alt="userimg" />
-                </span>
-              </div>
-              <div className="userinfo">
-                <h4>
-                  <span>{currentUser.email}</span>
-                </h4>
-                <p>Student</p>
-              </div>
+        <div className="MyAcc-wraper">
+          <Link to="/settings" className="myacc">
+            <div className="userinfo">
+              <h4>{displayName}</h4>
+              <p>Learner</p>
             </div>
-          </div>
+            <div className="userimg">
+              <span className="round-circle">
+                <img src={avatar} alt="user avatar" />
+              </span>
+            </div>
+          </Link>
         </div>
       </div>
-
-      {/*new header*/}
-    </>
+    </div>
   );
 }
 export default DashboardHeader;

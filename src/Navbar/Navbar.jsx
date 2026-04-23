@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Nav.css";
 import { Link } from "react-router-dom";
 import { BarChartHorizontal, Notebook } from "lucide-react";
+import { IoMenu } from "react-icons/io5";
 
 function Navbar() {
   const [showMenu, setShowMenu] = useState(false);
@@ -41,7 +42,7 @@ function Navbar() {
           </Link>
         </div>
         <button className="menu-toggle" onClick={() => setShowMenu(!showMenu)}>
-          <BarChartHorizontal />
+          <IoMenu />
         </button>
       </div>
       <div className={`mobile-menu ${showMenu ? "show" : ""}`}>

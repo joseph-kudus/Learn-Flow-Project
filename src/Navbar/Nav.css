@@ -87,6 +87,7 @@
   }
   .nav-right{
     display: none;
+    max-width: 250px;
   }
   .menu-toggle{
     display: block;
@@ -95,9 +96,17 @@
     padding: 0 5px;
   }
 }
+/* Tablet + Mobile */
+@media (max-width: 768px) {
+  .menu-toggle { display: block; }
+  .nav-center, .nav-right { display: none; }
+}
 
-
-
+/* Small phones only */
+@media (max-width: 480px) {
+  .navbar { padding: 0 10px; }
+  .logo { font-size: 18px; }
+}
 
 
 

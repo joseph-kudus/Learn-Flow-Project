@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
+
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -6,7 +7,8 @@ import {
   onAuthStateChanged,
   sendPasswordResetEmail,
 } from "firebase/auth";
-import { auth } from "../../firebaseconfig";
+import { doc, onSnapshot, getDoc, setDoc } from "firebase/firestore";
+import { auth, db } from "../../firebaseconfig";
 
 const AuthContext = createContext();
 
@@ -16,13 +18,24 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
+  const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   async function signup(email, password) {
     setError("");
     try {
-      return await createUserWithEmailAndPassword(auth, email, password);
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      // Create Firestore doc right after signup
+      await setDoc(doc(db, "users", cred.user.uid), {
+        email: cred.user.email,
+        firstName: "",
+        lastName: "",
+        nickname: "",
+        photoURL: "",
+        createdAt: new Date(),
+      });
+      return cred;
     } catch (err) {
       setError(err.message);
       throw err;
@@ -59,21 +72,47 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const refreshUserData = async () => {
+    if (!currentUser) return;
+    const docSnap = await getDoc(doc(db, "users", currentUser.uid));
+    if (docSnap.exists()) setUserData(docSnap.data());
+  };
+
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    let unsubscribeDoc = () => {};
+
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
-      setLoading(false);
+      unsubscribeDoc();
+
+      if (user) {
+        const userRef = doc(db, "users", user.uid);
+        unsubscribeDoc = onSnapshot(userRef, (docSnap) => {
+          setUserData(docSnap.exists() ? docSnap.data() : null);
+          setLoading(false);
+        });
+      } else {
+        setUserData(null);
+        setLoading(false);
+      }
     });
-    return unsubscribe;
+
+    return () => {
+      unsubscribeAuth();
+      unsubscribeDoc();
+    };
   }, []);
 
   const value = {
     currentUser,
-    logout,
+    userData,
+    loading,
+    error,
     signup,
     login,
-    loading,
+    logout,
     forgotPassword,
+    refreshUserData,
   };
 
   return (

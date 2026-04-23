@@ -11,7 +11,6 @@ import { doc, onSnapshot, getDoc, setDoc } from "firebase/firestore";
 import { auth, db } from "../../firebaseconfig";
 
 const AuthContext = createContext();
-
 export function useAuth() {
   return useContext(AuthContext);
 }
@@ -26,7 +25,7 @@ export function AuthProvider({ children }) {
     setError("");
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
-      // Create Firestore doc right after signup
+
       await setDoc(doc(db, "users", cred.user.uid), {
         email: cred.user.email,
         firstName: "",

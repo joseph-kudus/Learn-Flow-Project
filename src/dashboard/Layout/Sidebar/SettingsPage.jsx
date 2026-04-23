@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import {
   EmailAuthProvider,
   reauthenticateWithCredential,
@@ -11,12 +11,7 @@ import { useAuth } from "../../../context/AuthContext";
 import "./SettingsPage.css";
 
 function SettingsPage() {
-  const { currentUser: user } = useAuth();
-  const [userData, setUserData] = useState({
-    firstName: "",
-    lastName: "",
-    nickname: "",
-  });
+  const { currentUser: user, userData, refreshUserData } = useAuth();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -25,28 +20,12 @@ function SettingsPage() {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  // Use userData from context instead of fetching again
   useEffect(() => {
-    if (!user?.uid) {
+    if (userData !== null) {
       setLoading(false);
-      return;
     }
-
-    const fetchData = async () => {
-      try {
-        const docRef = doc(db, "users", user.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setUserData(docSnap.data());
-        }
-      } catch (e) {
-        console.error("Fetch error:", e);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  });
+  }, [userData]); // Only run when userData changes
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,12 +33,13 @@ function SettingsPage() {
     setError("");
     setSuccess("");
 
-    const firstName = e.target["First-Name"].value;
-    const lastName = e.target["Last-Name"].value;
-    const nickname = e.target["Nickname"].value;
-    const currentPassword = e.target["current-password"].value;
-    const newPassword = e.target["new-password"].value;
-    const confirmPassword = e.target["confirm-password"].value;
+    const form = e.target;
+    const firstName = form["First-Name"].value.trim();
+    const lastName = form["Last-Name"].value.trim();
+    const nickname = form["Nickname"].value.trim();
+    const currentPassword = form["current-password"].value;
+    const newPassword = form["new-password"].value;
+    const confirmPassword = form["confirm-password"].value;
 
     try {
       const updatedData = {
@@ -70,6 +50,9 @@ function SettingsPage() {
       };
       await setDoc(doc(db, "users", user.uid), updatedData, { merge: true });
 
+      // Update context so DashboardHeader updates instantly
+      await refreshUserData();
+
       const tryingToChangePassword =
         currentPassword || newPassword || confirmPassword;
 
@@ -77,11 +60,9 @@ function SettingsPage() {
         if (!currentPassword || !newPassword || !confirmPassword) {
           throw new Error("Fill all password fields to change password");
         }
-
         if (newPassword !== confirmPassword) {
           throw new Error("New passwords do not match");
         }
-
         if (newPassword.length < 6) {
           throw new Error("Password must be at least 6 characters");
         }
@@ -93,9 +74,9 @@ function SettingsPage() {
         await reauthenticateWithCredential(user, credential);
         await updatePassword(user, newPassword);
 
-        e.target["current-password"].value = "";
-        e.target["new-password"].value = "";
-        e.target["confirm-password"].value = "";
+        form["current-password"].value = "";
+        form["new-password"].value = "";
+        form["confirm-password"].value = "";
       }
 
       setSuccess(
@@ -129,21 +110,21 @@ function SettingsPage() {
           <label htmlFor="First-Name">First Name (required)</label>
           <input
             type="text"
-            defaultValue={userData.firstName}
+            defaultValue={userData?.firstName || ""}
             id="First-Name"
             required
           />
           <label htmlFor="Last-Name">Last Name (required)</label>
           <input
             type="text"
-            defaultValue={userData.lastName}
+            defaultValue={userData?.lastName || ""}
             id="Last-Name"
             required
           />
           <label htmlFor="Nickname">Nickname (required)</label>
           <input
             type="text"
-            defaultValue={userData.nickname}
+            defaultValue={userData?.nickname || ""}
             id="Nickname"
             required
           />
@@ -175,6 +156,7 @@ function SettingsPage() {
               )}
             </button>
           </div>
+
           <label htmlFor="new-password">New Password</label>
           <div className="password-wrapper">
             <input
@@ -189,9 +171,10 @@ function SettingsPage() {
             >
               {showNewPassword ? <IoMdEyeOff /> : <IoMdEye className="eye" />}
             </button>
+          </div>
 
-            <label htmlFor="confirm-password">Confirm New Password</label>
-
+          <label htmlFor="confirm-password">Confirm New Password</label>
+          <div className="password-wrapper">
             <input
               type={showConfirmPassword ? "text" : "password"}
               id="confirm-password"

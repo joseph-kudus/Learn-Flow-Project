@@ -3,16 +3,21 @@ import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 import defaultAvatar from "../../assets/images/default.png"; // add a default
 
-
 function DashboardHeader() {
   const { currentUser, userData, loading } = useAuth();
+  console.log("currentUser:", currentUser?.uid);
+  console.log("userData:", userData);
 
-  if (loading) return null; // or <HeaderSkeleton />
+  
+
+  if (loading) return null;
   if (!currentUser) return <p>Please log in</p>;
 
   const displayName =
     userData?.nickname || userData?.firstName || currentUser.email;
   const avatar = userData?.photoURL || currentUser.photoURL || defaultAvatar;
+
+  
 
   return (
     <div className="header">

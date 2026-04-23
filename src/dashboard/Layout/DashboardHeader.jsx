@@ -8,16 +8,12 @@ function DashboardHeader() {
   console.log("currentUser:", currentUser?.uid);
   console.log("userData:", userData);
 
-  
-
   if (loading) return null;
   if (!currentUser) return <p>Please log in</p>;
 
   const displayName =
     userData?.nickname || userData?.firstName || currentUser.email;
   const avatar = userData?.photoURL || currentUser.photoURL || defaultAvatar;
-
-  
 
   return (
     <div className="header">

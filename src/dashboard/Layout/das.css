@@ -46,21 +46,7 @@
     --header-bg: #1e1f1a;
 }
 
-/*Main grid layout*/
-/*
-.dashboard {
-  display: grid;
-  grid-template-columns: var(--sidebar-width) 1fr;
-  grid-template-rows: var(--header-height) 1fr;
-  grid-template-areas: 
-    "sidebar header"
-    "sidebar content";
-  height: 100vh;
-  overflow: hidden;
-  
-  gap: 0; /* remove gap */
 
-/* Mobile oer lay*/
 .main-overlay{
     display: none;
     position: fixed;
@@ -120,23 +106,6 @@
     font-size: 0.9rem;
     color:  var(--text-color);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 .theme-toggle{
@@ -204,35 +173,6 @@
     color: white;
 }
 /*sidebar area*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 .nav-item.active{

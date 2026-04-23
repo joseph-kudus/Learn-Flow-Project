@@ -173,15 +173,18 @@ body {
   display: flex;
   align-items: center;
   text-align: left !important;
+  text-decoration: none;
+  gap: 10px;
 }
 .myacc .userimg {
+  background-color: #55555533;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
   max-width: 40px;
   height: 40px;
-  border: 1px solid #00a3ff;
+  border: none;
   border-radius: 100%;
   padding: 3px;
 }
@@ -204,20 +207,24 @@ body {
   padding-left: 12px;
 }
 .myacc .userinfo h4 {
-  color: #515151;
-  font-size: 16px;
-  font-weight: 600;
+  font-family: inter;
+  color: #000000;
+  font-size: 14px;
+  font-weight: 700;
   margin-bottom: 0px;
 }
 .myacc .userinfo p {
+  color: #333333b2;
   margin-top: 0px;
   font-size: 12px;
   font-weight: 500;
+  line-height: 100%;
+  letter-spacing: 0px;
 }
 
 .calls-tap {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 .content-wrap {

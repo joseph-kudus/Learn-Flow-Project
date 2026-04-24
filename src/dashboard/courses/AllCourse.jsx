@@ -11,6 +11,16 @@ import "../../dashboard/courses/course.css";
 import { FaArrowLeft } from "react-icons/fa";
 
 function AllCourse() {
+  const course = {
+    author: "ATO productions",
+    level: "Beginner",
+    lessions: 14,
+    price: "",
+  };
+  const handleBuy = () => {
+    console.log("Buying course:", course.lessions);
+    //payment logic here
+  };
   return (
     <div className="allcourses-wrapper">
       <div className="back-to-course">
@@ -22,13 +32,10 @@ function AllCourse() {
           <h1>Back Courses</h1>
         </span>
       </div>
+      <div className="models">
+        <img src={Image2} alt="model-image" />
+      </div>
 
-      <p>
-        Unlock the world of web development effortlessly with our innovative
-        e-learning courses. Elevate your skills, build a dynamic portfolio, and
-        launch your web development or no-code career with our industry-aligned
-        certifications and dedicated job placement assistance.
-      </p>
       <div className="course-conti">
         <div className="conti-q">
           <h3>Introduction to CSS language</h3>
@@ -52,23 +59,28 @@ function AllCourse() {
             bibendum mauris mauris turpis.
           </p>
         </div>
-
-        <div className="conti">
-          <form action="#">
-            <h3>Course Details</h3>
-            <label htmlFor="#">
-              Author:
-              <input type="text" />
-              Level:
-              <input type="text" placeholder="Beginer" />
-              Lesson:
-              <input type="text" placeholder="11" />
-            </label>
-            <button type="submit">Buy</button>
-          </form>
-          <button>Next course</button>
+        <div className="course-card">
+          <h2>Course details</h2>
+          <div className="course-info">
+            <div className="info-row">
+              <span className="label">Author:</span>
+              <span className="value">{course.author}</span>
+            </div>
+            <div className="info-row">
+              <span className="label">Level:</span>
+              <span className="value">{course.level}</span>
+            </div>
+            <div className="info-row">
+              <span className="label">Lesson: </span>
+              <span className="value">{course.lessions}</span>
+            </div>
+            <button className="buy-btn" onClick={handleBuy}>
+              Buy Now{course.price}
+            </button>
+          </div>
         </div>
       </div>
+      <button className="next-btn">Next</button>
     </div>
   );
 }

@@ -142,7 +142,7 @@ function SettingsPage() {
           <div className="password-wrapper">
             <input
               type={showCurrentPassword ? "text" : "password"}
-              id="current-password"
+              id="current-password" placeholder="Your current password"
             />
             <button
               type="button"
@@ -162,7 +162,7 @@ function SettingsPage() {
             <input
               type={showNewPassword ? "text" : "password"}
               id="new-password"
-              minLength={6}
+              minLength={6} placeholder="New password"
             />
             <button
               type="button"
@@ -178,7 +178,7 @@ function SettingsPage() {
             <input
               type={showConfirmPassword ? "text" : "password"}
               id="confirm-password"
-              minLength={6}
+              minLength={6} placeholder="confirm new password"
             />
             <button
               type="button"
@@ -193,7 +193,7 @@ function SettingsPage() {
             </button>
           </div>
         </div>
-        <button type="submit">Save Changes</button>
+        <button className="sub" type="submit">Save Changes</button>
       </form>
     </div>
   );

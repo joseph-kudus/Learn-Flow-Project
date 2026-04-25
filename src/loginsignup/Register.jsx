@@ -171,7 +171,7 @@ export default function Register() {
             </button>
 
             <p className="register-text">
-              Already have an Account?{" "}
+              Already have an Account?
               <Link to="/login" className="reg-link">
                 Login
               </Link>
@@ -181,7 +181,8 @@ export default function Register() {
       </div>
 
       <div className="login-image">
-        <img src={smte} alt="Team discussion" className="team-pic" />
+        <img src={smte} alt="Team discussion" className="team-pic"/>
+        
       </div>
     </div>
   );

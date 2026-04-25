@@ -14,9 +14,11 @@
   flex-direction: column;
   justify-content: center;
   padding: 40px 60px;
-  max-width: 500px;
+  max-width: 505px;
+  min-height: 701px;
   margin: 0 auto;
   width: 100%;
+  border: 1px solid white;
 }
 
 .login-logo-link {
@@ -198,17 +200,21 @@
 }
 
 .login-image {
-  background-color: #111;
+  max-width: 827px;
+  height: auto;
+  background-color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 40px;
+  border: 1px solid white;
 }
 
 .team-pic {
   width: 100%;
-  max-width: 500px;
+  max-width: 450px;
   height: auto;
+  background-color: #fff;
 }
 
 /* RESPONSIVE */
@@ -218,7 +224,7 @@
   }
 
   .login-image {
-    display: none;
+    display: block;
   }
 
   .login-form-wrap {

@@ -1,7 +1,7 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Notebook } from "lucide-react";
-import "../pages/Page.css";
+import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import "./Mylogin.css";
 import smte from "../assets/images/small-team.png";
 import { useAuth } from "../context/AuthContext";
@@ -10,33 +10,50 @@ export default function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmpassword, setConfirmPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [acceptTerms, setAcceptTerms] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const { signup } = useAuth();
+  const { signup, sendEmailVerification } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    if (!email || !password || !confirmpassword) {
-      return setError("Please fill all the fields yoo");
+    setSuccess("");
+
+    if (!username || !email || !password || !confirmPassword) {
+      return setError("Please fill all the fields");
     }
-    if (password !== confirmpassword) {
+    if (password !== confirmPassword) {
       return setError("Passwords do not match");
     }
     if (password.length < 6) {
-      return setError("Password must be 6 characters");
+      return setError("Password must be 6 characters or more");
     }
+    if (!acceptTerms) {
+      return setError("You must accept the terms and conditions");
+    }
+
     try {
       setLoading(true);
-      await signup(email, password);
-      navigate("/dashboard");
+      const userCredential = await signup(email, password, username);
+
+      // Send verification email
+      if (sendEmailVerification) {
+        await sendEmailVerification(userCredential.user);
+        setSuccess("Account created! Check your email to verify your account.");
+        setTimeout(() => navigate("/login"), 3000);
+      } else {
+        navigate("/dashboard");
+      }
     } catch (err) {
-      err.message;
       setError(
-        "Fail to create account: " + (err.message || "Please try again"),
+        "Failed to create account: " + (err.message || "Please try again"),
       );
     } finally {
       setLoading(false);
@@ -45,93 +62,126 @@ export default function Register() {
 
   return (
     <div className="login-container">
-      <div className="login-logo">
-        <div className="Login-log flex items-center space-x-4 text-indigo-500">
-          <Notebook className="h-12 w-12 text-indigo-50 md-2" />
+      <div className="login-form-wrap">
+        <Link to="/" className="login-logo-link">
+          <Notebook size={24} />
           <p>LearnFlow</p>
-        </div>
+        </Link>
 
-        <div>
-          <div className="loginpage">
-            <div className="Login-logo">
-              <p>Welcome!</p>
-              <h2>Sign up to</h2>
-              <p>Lorem Ipsum is simply</p>
-              <form onSubmit={handleSubmit}>
-                <div className="Login-logo">
-                  <label htmlFor="email">
-                    Email:
-                    <input
-                      type="email"
-                      id="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Enter your  email"
-                      className="inp"
-                    />
-                  </label>
-                  <label htmlFor="#">
-                    Username:
-                    <input
-                      type="text"
-                      id="username"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      placeholder="Enter your  name"
-                      className="inp"
-                    />
-                  </label>
-                  <label htmlFor="#">
-                    Password:
-                    <input
-                      type="password"
-                      id="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Enter your Password"
-                      className="inp"
-                    />
-                  </label>
-                  <label htmlFor="#">
-                    Confirm Password:
-                    <input
-                      type="password"
-                      id="confirmpassword"
-                      value={confirmpassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      placeholder="Confirm your Password"
-                      className="inp"
-                    />
-                  </label>
-                </div>
-                <div>
-                  <div>
-                    <button className="inpi" type="submit" disabled={loading}>
-                      {loading ? "Creating Account..." : "Register"}
-                    </button>
-                    <div>
-                      <p className="texts-indigo-600">
-                        Already have an Account ?{" "}
-                        <Link to="/login" className="reg">
-                          Login
-                        </Link>
-                      </p>
-                    </div>
-                    {error && (
-                      <div className="bg-red-50 text-red-700 p-3 round-md mb-4 text-sm errorms">
-                        {error}
-                        {}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </form>
+        <div className="login-content">
+          <h1>Welcome!</h1>
+          <h2>Sign up to get started</h2>
+          <p className="subtitle">Join thousands learning with us today</p>
+
+          <form onSubmit={handleSubmit} className="login-form">
+            <div className="input-group">
+              <label htmlFor="username">Username</label>
+              <input
+                type="text"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter your name"
+                className="inp"
+                required
+              />
             </div>
-          </div>
+
+            <div className="input-group">
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                className="inp"
+                required
+              />
+            </div>
+
+            <div className="input-group">
+              <label htmlFor="password">Password</label>
+              <div className="password-wrap">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  className="inp"
+                  required
+                />
+                <button
+                  type="button"
+                  className="eye-toggle"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <IoMdEyeOff /> : <IoMdEye />}
+                </button>
+              </div>
+            </div>
+
+            <div className="input-group">
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <div className="password-wrap">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  id="confirmPassword"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Confirm your password"
+                  className="inp"
+                  required
+                />
+                <button
+                  type="button"
+                  className="eye-toggle"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? <IoMdEyeOff /> : <IoMdEye />}
+                </button>
+              </div>
+            </div>
+
+            <label className="checkbox-label terms-check">
+              <input
+                type="checkbox"
+                checked={acceptTerms}
+                onChange={(e) => setAcceptTerms(e.target.checked)}
+                required
+              />
+              <span>
+                I agree to the{" "}
+                <Link to="/terms" className="terms-link">
+                  Terms
+                </Link>{" "}
+                and{" "}
+                <Link to="/privacy" className="terms-link">
+                  Privacy Policy
+                </Link>
+              </span>
+            </label>
+
+            {error && <div className="error-msg">{error}</div>}
+            {success && <div className="success-msg">{success}</div>}
+
+            <button type="submit" className="submit-btn" disabled={loading}>
+              {loading ? "Creating Account..." : "Register"}
+            </button>
+
+            <p className="register-text">
+              Already have an Account?{" "}
+              <Link to="/login" className="reg-link">
+                Login
+              </Link>
+            </p>
+          </form>
         </div>
       </div>
-      <div className="team-discu">
-        <img src={smte} alt="" className="team-pic" />
+
+      <div className="login-image">
+        <img src={smte} alt="Team discussion" className="team-pic" />
       </div>
     </div>
   );

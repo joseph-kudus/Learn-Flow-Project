@@ -1,18 +1,22 @@
 import { FaBook } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
-import defaultAvatar from "../../assets/images/default.png"; // add a default
+import defaultAvatar from "../../assets/images/default.png";
 
 function DashboardHeader() {
   const { currentUser, userData, loading } = useAuth();
-  console.log("currentUser:", currentUser?.uid);
-  console.log("userData:", userData);
 
-  if (loading) return null;
-  if (!currentUser) return <p>Please log in</p>;
+  if (loading) return <div className="header-skeleton">Loading...</div>;
+  if (!currentUser) return null; // or redirect to /login
 
+  // Fallback chain: nickname -> firstName -> username -> email -> "User"
   const displayName =
-    userData?.nickname || userData?.firstName || currentUser.email;
+    userData?.nickname ||
+    userData?.firstName ||
+    userData?.username ||
+    currentUser.email?.split("@")[0] ||
+    "User";
+
   const avatar = userData?.photoURL || currentUser.photoURL || defaultAvatar;
 
   return (
@@ -31,7 +35,13 @@ function DashboardHeader() {
             </div>
             <div className="userimg">
               <span className="round-circle">
-                <img src={avatar} alt="user avatar" />
+                <img
+                  src={avatar}
+                  alt="user avatar"
+                  onError={(e) => {
+                    e.target.src = defaultAvatar;
+                  }}
+                />
               </span>
             </div>
           </Link>

@@ -1,0 +1,10 @@
+export { default as hero } from "../images/Dashboard 2.png";
+export { default as land } from "../images/Ellipse 1.png";
+export { default as ato } from "../images/Ellipse 5.png";
+export { default as ata } from "../images/Ellipse 6.png";
+export { default as dolingo } from "../images/Group (1).png";
+export { default as vector2 } from "../images/Vector (2).png";
+export { default as UserT } from "../images/UserTesting.png";
+export { default as Magic } from "../images/Magic.png";
+export { default as bes } from "../images/151.png";
+export { default as bes1 } from "../images/281.png";

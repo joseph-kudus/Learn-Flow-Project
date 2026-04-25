@@ -1,14 +1,16 @@
 import React from "react";
 import { Notebook } from "lucide-react";
-import "../App.css";
 import { Link } from "react-router-dom";
-export default function () {
+import "../App.css";
+
+function Footer() {
+  // <-- Add name here
   return (
     <footer>
       <div className="footer-container">
-        <div>
-          <Link to="/Landing" className="logo-l">
-            <Notebook />
+        <div className="footer-brand">
+          <Link to="/" className="logo-link">
+            <Notebook size={24} />
             <p>LearnFlow</p>
           </Link>
           <div className="footer-c">
@@ -18,59 +20,51 @@ export default function () {
           </div>
         </div>
 
-        <div className="footer-socila-links">
-          <div>
-            <h1>Links</h1>
-            <Link to="/About" className="logo-l">
-              About
-            </Link>
-            <Link to="/About" className="logo-l">
-              Program
-            </Link>
-            <Link to="/About" className="logo-l">
-              Contact Us
-            </Link>
-            <Link to="/About" className="logo-l">
-              FAQs
-            </Link>
+        <div className="footer-social-links">
+          <div className="footer-section">
+            <h4>Links</h4>
+            <Link to="/about">About</Link>
+            <Link to="/programs">Program</Link>
+            <Link to="/contact">Contact Us</Link>
+            <Link to="/faqs">FAQs</Link>
           </div>
 
-          <div>
-            <h1>Social</h1>
-            <Link to="/About" className="logo-l">
+          <div className="footer-section">
+            <h4>Social</h4>
+            <a href="https://twitter.com" target="_blank" rel="noreferrer">
               Twitter
-            </Link>
-            <Link to="/About" className="logo-l">
-              Linkedin
-            </Link>
-            <Link to="/About" className="logo-l">
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noreferrer">
+              LinkedIn
+            </a>
+            <a href="https://facebook.com" target="_blank" rel="noreferrer">
               Facebook
-            </Link>
+            </a>
           </div>
-          <div>
-            <h1>Legal</h1>
-            <Link to="/About" className="logo-l">
-              Term
-            </Link>
-            <Link to="/About" className="logo-l">
-              Privacy
-            </Link>
+
+          <div className="footer-section">
+            <h4>Legal</h4>
+            <Link to="/terms">Terms</Link>
+            <Link to="/privacy">Privacy</Link>
           </div>
         </div>
       </div>
-      <hr />
-      <div className="hr-content">
-        <div className="footer-sec">
-          <p>© 2024 Kudovia programmers University. All rights reserved.</p>
-        </div>
 
-        <div className="footer-sec">
-          <p>Twitter logo</p>
-          <p>Linkind logo</p>
-          <p>Facebook logo</p>
-          <p>Instagram logo</p>
+      <div className="footer-bottom">
+        <div className="hr-content">
+          <div className="footer-sec">
+            <p>© 2026 Kudovia programmers University. All rights reserved.</p>
+          </div>
+          <div className="footer-sec">
+            <a href="https://twitter.com">Twitter</a>
+            <a href="https://linkedin.com">LinkedIn</a>
+            <a href="https://facebook.com">Facebook</a>
+            <a href="https://instagram.com">Instagram</a>
+          </div>
         </div>
       </div>
     </footer>
   );
 }
+
+export default Footer; // <-- Export it

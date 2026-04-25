@@ -29,8 +29,8 @@ const Sidebar = ({ activeView, setActiveView }) => {
 
   const navitems = [
     { id: "dashboard", label: "Dashboard", icon: MdDashboard },
-    { id: "allcourse", label: "Allcourse", icon: MdOutlineBookOnline },
-    { id: "coursebuilder", label: "Coursebuilder", icon: MdSchool },
+    { id: "allcourse", label: "All course", icon: MdOutlineBookOnline },
+    { id: "coursebuilder", label: "Course builder", icon: MdSchool },
     { id: "settingsPage", label: "Settings", icon: MdSettings },
   ];
 

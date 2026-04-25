@@ -1,49 +1,116 @@
-footer{
-    width: 1,350px;
-    height: 358px;
-    background-color: #000000;
-    color: #ffffff;
-}
-.footer-container{
-    display: flex;
-    flex-direction: row;
-    width: 1,250px;
-    height: 272.33px;
-    padding-left: 42.67px;
-    padding-right: 42.67px;
-    gap: 249px;
-    top: 120px;
-    position: relative;
-}
-.logo{
-    display: block;
-    flex: 1;   
-}
-.footer-c{
-    padding-top: 10px;
-}
-.footer-socila-links {
-    display: flex;
-    width: 431.33px;
-    height: 272.33px;
-    gap: 42.676px;
-    line-clamp: initial;
-}
-.logo-l{
-    display: flex;
-    color: #ffffff;
-    text-decoration: none;
+footer {
+  width: 100%;
+  background-color: #000;
+  color: #fff;
+  padding: 60px 0 0;
 }
 
-.hr-content{
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    padding: 20px 32px;
-    gap: 64px;
-}
-.footer-sec{
-    display: flex;
-    gap: 10px;
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 0 42px;
+  gap: 60px;
 }
 
+.footer-brand {
+  max-width: 300px;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.footer-c {
+  color: #aaa;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.footer-social-links {
+  display: flex;
+  gap: 80px;
+}
+
+.footer-section h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #fff;
+}
+
+.footer-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-section a {
+  color: #aaa;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s;
+}
+
+.footer-section a:hover {
+  color: #fff;
+}
+
+.footer-bottom {
+  border-top: 1px solid #333;
+  margin-top: 60px;
+}
+
+.hr-content {
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 20px 42px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #666;
+  font-size: 14px;
+}
+
+.footer-sec {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-sec a {
+  color: #666;
+  text-decoration: none;
+}
+
+.footer-sec a:hover {
+  color: #aaa;
+}
+
+/* RESPONSIVE */
+@media screen and (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    gap: 40px;
+    padding: 0 20px;
+  }
+  
+  .footer-social-links {
+    flex-direction: column;
+    gap: 32px;
+  }
+  
+  .hr-content {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+    padding: 20px;
+  }
+}

@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-import Landing from "./pages/Landing";
+
 import Navbar from "./Navbar/Navbar";
 import About from "./pages/About";
 import Features from "./pages/Features";
@@ -15,6 +15,7 @@ import AllCourse from "./dashboard/courses/AllCourse";
 import DashboardLayout from "./dashboard/Layout/DashboardLayout";
 import DashboardContent from "./dashboard/Layout/DashboardContent";
 import Support from "./dashboard/Layout/Sidebar/Support";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   const { loading, currentUser } = useAuth();
@@ -48,7 +49,7 @@ function App() {
                 <Navigate to="/dashboard" />
               ) : (
                 <Layout>
-                  <Landing />
+                  <LandingPage />
                 </Layout>
               )
             }
@@ -60,7 +61,7 @@ function App() {
                 <Navigate to="/dashboard" />
               ) : (
                 <Layout>
-                  <Landing />
+                  <LandingPage />
                 </Layout>
               )
             }

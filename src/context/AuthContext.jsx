@@ -1,13 +1,14 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
   sendPasswordResetEmail,
+  sendEmailVerification,
+  updateProfile,
 } from "firebase/auth";
-import { doc, onSnapshot, getDoc, setDoc } from "firebase/firestore";
+import { doc, onSnapshot, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../firebaseconfig";
 
 const AuthContext = createContext();
@@ -21,17 +22,28 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  async function signup(email, password) {
+  async function signup(email, password, username = "") {
     setError("");
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
 
+      // 1. Update Firebase Auth profile
+      await updateProfile(cred.user, {
+        displayName: username,
+      });
+
+      // 2. Send verification email
+      await sendEmailVerification(cred.user);
+
+      // 3. Create Firestore user doc
       await setDoc(doc(db, "users", cred.user.uid), {
         email: cred.user.email,
+        username: username,
         firstName: "",
         lastName: "",
-        nickname: "",
+        nickname: username,
         photoURL: "",
+        emailVerified: false,
         createdAt: new Date(),
       });
       return cred;
@@ -44,7 +56,15 @@ export function AuthProvider({ children }) {
   async function login(email, password) {
     setError("");
     try {
-      return await signInWithEmailAndPassword(auth, email, password);
+      const cred = await signInWithEmailAndPassword(auth, email, password);
+
+      // Remove or comment this block for testing
+      // if (!cred.user.emailVerified) {
+      //   await signOut(auth);
+      //   throw new Error("Please verify your email before logging in. Check your inbox.");
+      // }
+
+      return cred;
     } catch (err) {
       setError(err.message);
       throw err;
@@ -65,7 +85,15 @@ export function AuthProvider({ children }) {
     if (!email) throw new Error("Please enter email to reset password");
     try {
       await sendPasswordResetEmail(auth, email);
-      alert("Check your email for reset link");
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  const resendVerification = async () => {
+    if (!currentUser) throw new Error("No user logged in");
+    try {
+      await sendEmailVerification(currentUser);
     } catch (err) {
       throw err;
     }
@@ -80,16 +108,56 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     let unsubscribeDoc = () => {};
 
-    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+    const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
       unsubscribeDoc();
 
       if (user) {
         const userRef = doc(db, "users", user.uid);
-        unsubscribeDoc = onSnapshot(userRef, (docSnap) => {
-          setUserData(docSnap.exists() ? docSnap.data() : null);
+
+        try {
+          // Create doc if missing - fixes old users
+          const docSnap = await getDoc(userRef);
+          if (!docSnap.exists()) {
+            await setDoc(userRef, {
+              email: user.email,
+              username: user.displayName || "",
+              firstName: "",
+              lastName: "",
+              nickname: user.displayName || "",
+              photoURL: user.photoURL || "",
+              emailVerified: user.emailVerified,
+              createdAt: new Date(),
+            });
+          }
+
+          unsubscribeDoc = onSnapshot(
+            userRef,
+            async (snap) => {
+              if (snap.exists()) {
+                const data = snap.data();
+                // Sync emailVerified
+                if (data.emailVerified !== user.emailVerified) {
+                  await updateDoc(userRef, {
+                    emailVerified: user.emailVerified,
+                  });
+                  data.emailVerified = user.emailVerified;
+                }
+                setUserData(data);
+              }
+              setLoading(false);
+            },
+            (err) => {
+              console.error("Firestore listen error:", err);
+              setError(err.message);
+              setLoading(false);
+            },
+          );
+        } catch (err) {
+          console.error("Error setting up user doc:", err);
+          setError(err.message);
           setLoading(false);
-        });
+        }
       } else {
         setUserData(null);
         setLoading(false);
@@ -101,7 +169,6 @@ export function AuthProvider({ children }) {
       unsubscribeDoc();
     };
   }, []);
-
   const value = {
     currentUser,
     userData,
@@ -111,6 +178,7 @@ export function AuthProvider({ children }) {
     login,
     logout,
     forgotPassword,
+    resendVerification,
     refreshUserData,
   };
 

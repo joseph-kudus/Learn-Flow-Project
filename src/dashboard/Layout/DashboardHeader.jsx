@@ -2,6 +2,7 @@ import { FaBook } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 import defaultAvatar from "../../assets/images/default.png";
+import { IoIosNotificationsOutline } from "react-icons/io";
 
 function DashboardHeader() {
   const { currentUser, userData, loading } = useAuth();
@@ -33,6 +34,7 @@ function DashboardHeader() {
               <h4>{displayName}</h4>
               <p>Learner</p>
             </div>
+
             <div className="userimg">
               <span className="round-circle">
                 <img

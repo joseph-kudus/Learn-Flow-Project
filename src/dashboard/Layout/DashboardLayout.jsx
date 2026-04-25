@@ -4,16 +4,15 @@ import DashboardContent from "./DashboardContent";
 import Sidebar from "../Layout/Sidebar/Sidebar";
 import "./layout.css";
 import AllCourse from "../courses/AllCourse";
-import Coursebuilder from "../courses/Coursebuilder"; // Capital C
-import SettingsPage from "../Layout/Sidebar/SettingsPage"; // check this path matches your file
+import Coursebuilder from "../courses/Coursebuilder";
+import SettingsPage from "../Layout/Sidebar/SettingsPage";
 
 const DashboardLayout = ({ onLogout }) => {
-  const [activeView, setActiveView] = useState("dashboard");
-
   const handleLogout = () => {
     onLogout?.();
   };
 
+  const [activeView, setActiveView] = useState("dashboard");
   const views = {
     dashboard: <DashboardContent />,
     allcourse: <AllCourse />,

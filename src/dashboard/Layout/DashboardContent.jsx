@@ -7,15 +7,57 @@ import {
   Image4,
   Image5,
 } from "../../assets/images/Myimg";
-import "../Layout/das.css";
 
 function DashboardContent() {
+  const continueLearning = [
+    {
+      img: unsplash,
+      title: "Introduction to CSS language",
+      desc: "Learn different programming languages and its usefulness",
+    },
+    {
+      img: Image1,
+      title: "Introduction to JavaScript language",
+      desc: "Learn different programming languages and its usefulness",
+    },
+  ];
+
+  const courses = [
+    {
+      img: Image2,
+      title: "Introduction to CSS language",
+      desc: "Learn the basics of CSS, and its usefulness in the programming world",
+      author: "ATO",
+      price: 29,
+    },
+    {
+      img: Image3,
+      title: "Introduction to Python language",
+      desc: "Learn the basics of python, and its usefulness in the programming world",
+      author: "ATO",
+      price: 30,
+    },
+    {
+      img: Image5,
+      title: "Introduction to Javascript language",
+      desc: "Learn the basics of Javascript, and its usefulness in the programming world",
+      author: "ATO",
+      price: 50,
+    },
+    {
+      img: Image4,
+      title: "Introduction to HTML language",
+      desc: "Learn the basics of HTML, and its usefulness in the programming world",
+      author: "ATO",
+      price: 35,
+    },
+  ];
+
   return (
-    <section className="content-section ">
-      {/*--Welecome Banner-- */}
+    <section className="content-section">
       <div className="welcome-banner">
         <div className="welcome-banner1">
-          <h1>Welcome to Learnflow </h1>
+          <h1>Welcome to Learnflow</h1>
           <p>
             Learn at your own pace with lifetime access on mobile and desktop
           </p>
@@ -23,116 +65,47 @@ function DashboardContent() {
         <hr />
         <p>Let’s continue Learning!</p>
         <div className="course-conti">
-          <div className="conti">
-            <img src={unsplash} alt="img" />
-            <div className="conti-q">
-              <h3>Introduction to CSS language</h3>
-              <p>Learn different programming languages and its usefulness</p>
+          {continueLearning.map((item, idx) => (
+            <div className="conti" key={idx}>
+              <img src={item.img} alt={item.title} />
+              <div className="conti-q">
+                <h3>{item.title}</h3>
+                <p>{item.desc}</p>
+              </div>
             </div>
-          </div>
-          <div className="conti">
-            <img src={Image1} alt="imgs" />
-            <div className="conti-q">
-              <h3>Introduction to JavaScript language</h3>
-              <p>Learn different programming languages and its usefulness</p>
-            </div>
-          </div>
+          ))}
         </div>
-        <div className="experts">
-          <h2>Languages courses</h2>
-          <p>
-            Chose from one over many of courses and learn with industry leading
-            expert
-          </p>
-          <div className="expert-cart">
-            <div className="card-wrap">
-              <img src={Image2} alt="to css" className="imgr" />
+      </div>
+
+      <div className="experts">
+        <h2>Languages courses</h2>
+        <p>Choose from many courses and learn with industry leading expert</p>
+        <div className="expert-cart">
+          {courses.map((course, idx) => (
+            <div className="card-wrap" key={idx}>
+              <img src={course.img} alt={course.title} className="imgr" />
               <div className="expert1">
                 <div className="expert11">
-                  <h1>Introduction to CSS language</h1>
-                  <p>
-                    Learn the basics of CSS, and its usefulness in the
-                    programming world
-                  </p>
-                  <div className="ato">
-                    <p>
-                      By <strong>ATO</strong>
-                    </p>
-                    <p>
-                      <strong>$29</strong>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="card-wrap">
-              <img src={Image3} alt="to css" className="imgr" />
-              <div className="expert1">
-                <div className="expert11">
-                  <h1>Introduction to Python language</h1>
-                  <p>
-                    Learn the basics of python, and its usefulness in the
-                    programming world
-                  </p>
-                  <div className="ato">
-                    <p>
-                      By <strong>ATO</strong>
-                    </p>
-                    <p>
-                      <strong>$30</strong>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="expert-cart">
-            <div className="card-wrap">
-              <img src={Image5} alt="to css" className="imgr" />
-              <div className="expert1">
-                <div className="expert11">
-                  <h1>Introduction to Javascript language</h1>
-                  <p>
-                    Learn the basics of Javascript, and its usefulness in the
-                    programming world
-                  </p>
-                  <div className="ato">
-                    <p>
-                      By <strong>ATO</strong>
-                    </p>
-                    <p>
-                      <strong>$50</strong>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="card-wrap">
-              <img src={Image4} alt="to css" className="imgr" />
-              <div className="expert1">
-                <div className="expert11">
-                  <h1>Introduction to HTML language</h1>
-                  <p>
-                    Learn the basics of HTML, and its usefulness in the
-                    programming world
-                  </p>
+                  <h1>{course.title}</h1>
+                  <p>{course.desc}</p>
                   <hr />
                   <div className="ato">
                     <p>
-                      By <strong>ATO</strong>
+                      By <strong>{course.author}</strong>
                     </p>
                     <p>
-                      <strong>$35</strong>
+                      <strong>${course.price}</strong>
                     </p>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <button className="News">view all courses</button>
+          ))}
+          <button className="News">View all courses</button>
         </div>
       </div>
     </section>
   );
 }
+
 export default DashboardContent;

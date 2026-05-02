@@ -1,16 +1,16 @@
 import { useState } from "react";
-import { Loader2, LogOut } from "lucide-react"; // added LogOut here
+import { Loader2, LogOut } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import "../layout.css";
 import {
   MdDashboard,
   MdSettings,
   MdSchool,
   MdOutlineBookOnline,
 } from "react-icons/md";
+import { FaBook } from "react-icons/fa";
 
-const Sidebar = ({ activeView, setActiveView }) => {
+const Sidebar = ({ activeView, setActiveView, onLogout }) => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -20,6 +20,7 @@ const Sidebar = ({ activeView, setActiveView }) => {
     setIsLoggingOut(true);
     try {
       await logout();
+      onLogout?.();
       navigate("/login");
     } catch (err) {
       console.log(err);
@@ -29,21 +30,23 @@ const Sidebar = ({ activeView, setActiveView }) => {
 
   const navitems = [
     { id: "dashboard", label: "Dashboard", icon: MdDashboard },
-    { id: "allcourse", label: "All course", icon: MdOutlineBookOnline },
-    { id: "coursebuilder", label: "Course builder", icon: MdSchool },
+    { id: "allcourse", label: "All Course", icon: MdOutlineBookOnline },
+    { id: "coursebuilder", label: "Course Builder", icon: MdSchool },
     { id: "settingsPage", label: "Settings", icon: MdSettings },
   ];
 
   return (
-    <aside
-      className="drawer"
-      style={{ maxWidth: "220px", width: "100%", backgroundColor: "#dee0e2" }}
-    >
+    <aside className="drawer">
+      <div className="logo-wraper">
+        <FaBook className="logob" />
+        <p>LearnFlow</p>
+      </div>
+
       <div className="nav-title">
         <h3>MENU</h3>
       </div>
 
-      <div className="nav-links">
+      <nav className="nav-links">
         {navitems.map((item) => {
           const Icon = item.icon;
           const isActive = activeView === item.id;
@@ -54,33 +57,33 @@ const Sidebar = ({ activeView, setActiveView }) => {
               onClick={() => setActiveView(item.id)}
               disabled={isLoggingOut}
             >
-              {Icon && <Icon size={20} />}
+              <Icon size={20} />
               <span>{item.label}</span>
             </button>
           );
         })}
-      </div>
-
-      <div className="logout-section">
-        <button
-          className="dasff logout-btn"
-          onClick={handleLogout}
-          disabled={isLoggingOut}
-        >
-          {isLoggingOut ? (
-            <>
-              <Loader2 size={20} className="spin" />
-              <span>Logging out...</span>
-            </>
-          ) : (
-            <>
-              <LogOut size={20} />
-              <span>Logout</span>
-            </>
-          )}
-        </button>
-      </div>
+        <div className="logout-section">
+          <button
+            className="dasff logout-btn"
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+          >
+            {isLoggingOut ? (
+              <>
+                <Loader2 size={20} className="spin" />
+                <span>Logging out...</span>
+              </>
+            ) : (
+              <>
+                <LogOut size={20} />
+                <span>Logout</span>
+              </>
+            )}
+          </button>
+        </div>
+      </nav>
     </aside>
   );
 };
+
 export default Sidebar;

@@ -1,18 +1,15 @@
 import React, { useState } from "react";
+
+import AllCourse from "../courses/AllCourse";
+import Coursebuilder from "../courses/Coursebuilder";
+import SettingsPage from "../Layout/Sidebar/SettingsPage";
+import "../Layout/layout.css";
+import Sidebar from "./Sidebar/Sidebar";
 import DashboardHeader from "./DashboardHeader";
 import DashboardContent from "./DashboardContent";
-import Sidebar from "../Layout/Sidebar/Sidebar";
-import "./layout.css";
-import AllCourse from "../courses/AllCourse";
-import Coursebuilder from "../courses/Coursebuilder"; // Capital C
-import SettingsPage from "../Layout/Sidebar/SettingsPage"; // check this path matches your file
 
-const DashboardLayout = ({ onLogout }) => {
+function DashboardLayout({ onLogout }) {
   const [activeView, setActiveView] = useState("dashboard");
-
-  const handleLogout = () => {
-    onLogout?.();
-  };
 
   const views = {
     dashboard: <DashboardContent />,
@@ -22,29 +19,22 @@ const DashboardLayout = ({ onLogout }) => {
   };
 
   return (
-    <div
-      className="dashboardlayout"
-      style={{
-        display: "flex",
-        backgroundColor: "#6865650c",
-        minHeight: "100dvh",
-      }}
-    >
-      <DashboardHeader />
-      <div className="main-dashboardlayout">
-        <div className="sibarwraper">
-          <Sidebar
-            activeView={activeView}
-            setActiveView={setActiveView}
-            onLogout={handleLogout}
-          />
-        </div>
+    <div className="dashboardlayout">
+      <div className="container">
+        <Sidebar
+          activeView={activeView}
+          setActiveView={setActiveView}
+          onLogout={onLogout}
+        />
         <div className="content-wrap">
-          {views[activeView] ?? <DashboardContent />}
+          <DashboardHeader />
+          <main className="main-content">
+            {views[activeView] ?? <DashboardContent />}
+          </main>
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default DashboardLayout;

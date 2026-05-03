@@ -1,5 +1,4 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { Outlet } from "react-router-dom";
 
 import Navbar from "./Navbar/Navbar";
 import About from "./pages/About";
@@ -11,9 +10,7 @@ import Register from "./loginsignup/Register";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import ProtectedRoute from "./component/ProtectedRoute";
 import "./App.css";
-import AllCourse from "./dashboard/courses/AllCourse";
 import DashboardLayout from "./dashboard/Layout/DashboardLayout";
-import DashboardContent from "./dashboard/Layout/DashboardContent";
 import Support from "./dashboard/Layout/Sidebar/Support";
 import LandingPage from "./pages/LandingPage";
 
@@ -29,6 +26,7 @@ function App() {
       </div>
     );
   }
+
   function Layout({ children }) {
     return (
       <div>
@@ -38,6 +36,7 @@ function App() {
       </div>
     );
   }
+
   return (
     <AuthProvider>
       <div className="min-h-screen bg-slate-50">
@@ -94,7 +93,7 @@ function App() {
             path="/support"
             element={
               currentUser ? (
-                <Navigate to="/Dashboard" replace />
+                <Navigate to="/dashboard" replace />
               ) : (
                 <Layout>
                   <Support />
@@ -144,16 +143,6 @@ function App() {
             element={
               <ProtectedRoute>
                 <DashboardLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<DashboardContent />} />
-          </Route>
-          <Route
-            path="/allcourses"
-            element={
-              <ProtectedRoute>
-                <AllCourse />
               </ProtectedRoute>
             }
           />

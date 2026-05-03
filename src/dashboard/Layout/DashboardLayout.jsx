@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import AllCourse from "../courses/AllCourse";
+import Courses from "../courses/Courses"; 
 import Coursebuilder from "../courses/Coursebuilder";
 import SettingsPage from "../Layout/Sidebar/SettingsPage";
 import "../Layout/layout.css";
@@ -12,7 +13,8 @@ function DashboardLayout({ onLogout }) {
   const [activeView, setActiveView] = useState("dashboard");
 
   const views = {
-    dashboard: <DashboardContent />,
+    dashboard: <DashboardContent setActiveView={setActiveView} />, // pass it here
+    courses: <Courses />,
     allcourse: <AllCourse />,
     coursebuilder: <Coursebuilder />,
     settingsPage: <SettingsPage />,
@@ -28,9 +30,7 @@ function DashboardLayout({ onLogout }) {
         />
         <div className="content-wrap">
           <DashboardHeader />
-          <main className="main-content">
-            {views[activeView] ?? <DashboardContent />}
-          </main>
+          <main className="main-content">{views[activeView]}</main>
         </div>
       </div>
     </div>

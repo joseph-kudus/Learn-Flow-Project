@@ -7,6 +7,7 @@ import {
   MdSettings,
   MdSchool,
   MdOutlineBookOnline,
+  MdLibraryBooks,
 } from "react-icons/md";
 import { FaBook } from "react-icons/fa";
 
@@ -30,6 +31,7 @@ const Sidebar = ({ activeView, setActiveView, onLogout }) => {
 
   const navitems = [
     { id: "dashboard", label: "Dashboard", icon: MdDashboard },
+    { id: "courses", label: "Courses", icon: MdLibraryBooks },
     { id: "allcourse", label: "All Course", icon: MdOutlineBookOnline },
     { id: "coursebuilder", label: "Course Builder", icon: MdSchool },
     { id: "settingsPage", label: "Settings", icon: MdSettings },

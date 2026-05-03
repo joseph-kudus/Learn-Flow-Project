@@ -8,7 +8,7 @@ import {
   Image5,
 } from "../../assets/images/Myimg";
 
-function DashboardContent() {
+function DashboardContent({setActiveView}) {
   const continueLearning = [
     {
       img: unsplash,
@@ -71,6 +71,9 @@ function DashboardContent() {
               <div className="conti-q">
                 <h3>{item.title}</h3>
                 <p>{item.desc}</p>
+                <div id="progressbar">
+                  <div></div>
+                </div>
               </div>
             </div>
           ))}
@@ -88,6 +91,7 @@ function DashboardContent() {
                 <div className="expert11">
                   <h1>{course.title}</h1>
                   <p>{course.desc}</p>
+
                   <hr />
                   <div className="ato">
                     <p>
@@ -101,7 +105,9 @@ function DashboardContent() {
               </div>
             </div>
           ))}
-          <button className="News">View all courses</button>
+          <button onClick={() => setActiveView("allcourse")} className="News">
+            View all courses
+          </button>
         </div>
       </div>
     </section>

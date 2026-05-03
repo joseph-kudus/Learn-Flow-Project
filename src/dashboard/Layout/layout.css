@@ -310,7 +310,7 @@ a:active {
   flex: 1;
   padding: 24px;
   overflow-y: auto;
-  background: #f5f7fa;
+  background: #55555524;
 }
 
 /* Dashboard Content Styles */
@@ -321,7 +321,7 @@ a:active {
 }
 
 .welcome-banner {
-  background: linear-gradient(135deg, #00a3ff 0%, #0077cc 100%);
+  background: #55555524;
   border-radius: 12px;
   padding: 32px;
   color: #ffffff;
@@ -329,6 +329,7 @@ a:active {
 }
 
 .welcome-banner1 h1 {
+  color: #000000;
   font-size: 28px;
   font-weight: 700;
   margin: 0 0 8px 0;
@@ -338,6 +339,7 @@ a:active {
   font-size: 15px;
   opacity: 0.9;
   margin: 0;
+  color: #000000B2;
 }
 
 .welcome-banner hr {
@@ -350,12 +352,14 @@ a:active {
   font-size: 16px;
   font-weight: 600;
   margin: 0 0 20px 0;
+  color: #000000;
 }
 
 .course-conti {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 16px;
+  background-color: #55555524;
 }
 
 .conti {
@@ -388,14 +392,14 @@ a:active {
   font-size: 15px;
   font-weight: 600;
   margin: 0 0 4px 0;
-  color: #ffffff;
+  color: #555555;
 }
 
 .conti-q p {
   font-size: 13px;
   opacity: 0.8;
   margin: 0;
-  color: #ffffff;
+  color: #555555;
 }
 
 .experts {
@@ -490,8 +494,8 @@ a:active {
 }
 
 .News {
-  background: #00a3ff;
-  color: #ffffff;
+  background: #F7CA4E;
+  color: #000000;
   padding: 12px 32px;
   border-radius: 8px;
   font-size: 15px;
@@ -586,4 +590,19 @@ a:active {
     flex-direction: column;
     gap: 12px;
   }
+}
+
+#progressbar {
+  background-color: black;
+  border-radius: 13px;
+  /* (height of inner div) / 2 + padding */
+  padding: 3px;
+}
+
+#progressbar>div {
+  background-color: orange;
+  width: 40%;
+  /* Adjust with JavaScript */
+  height: 20px;
+  border-radius: 10px;
 }

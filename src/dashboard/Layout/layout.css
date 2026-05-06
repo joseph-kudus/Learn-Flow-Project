@@ -6,23 +6,23 @@
 }
 :root {
   /* Colors */
-  --blue: #00A3FF;
-  --blue-dark: #0088D1;
-  --accent: #F7CA4E;
-  --primary: #1A1D29;
-  --secondary: #FFFFFF;
-  --text-muted: #6B7280;
-  
+  --blue: #00a3ff;
+  --blue-dark: #0088d1;
+  --accent: #f7ca4e;
+  --primary: #1a1d29;
+  --secondary: #ffffff;
+  --text-muted: #6b7280;
+
   /* Backgrounds */
-  --bg-main: #F5F7FA;
-  --card-bg: #FFFFFF;
-  --hover-bg: #F3F4F6;
-  --sidebar-bg: #1A1D29;
-  
+  --bg-main: #f5f7fa;
+  --card-bg: #ffffff;
+  --hover-bg: #f3f4f6;
+  --sidebar-bg: #1a1d29;
+
   /* Borders */
-  --border-color: #E5E7EB;
-  --gray-100: #F3F4F6;
-  
+  --border-color: #e5e7eb;
+  --gray-100: #f3f4f6;
+
   /* Shadows */
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -30,13 +30,13 @@
 
 /* Dark theme override */
 [data-theme="dark"] {
-  --primary: #FFFFFF;
-  --secondary: #1A1D29;
-  --text-muted: #9CA3AF;
+  --primary: #ffffff;
+  --secondary: #1a1d29;
+  --text-muted: #9ca3af;
   --bg-main: #111827;
-  --card-bg: #1F2937;
+  --card-bg: #1f2937;
   --hover-bg: #374151;
-  --sidebar-bg: #0F172A;
+  --sidebar-bg: #0f172a;
   --border-color: #374151;
   --gray-100: #374151;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
@@ -50,13 +50,13 @@
 }
 
 body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   background: var(--bg-main);
   color: var(--primary);
 }
 
-
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -117,9 +117,9 @@ a:active {
   align-items: center;
   padding: 0 24px;
   height: 70px;
-  color: #00a3ff;
+  color: #0d0d0e;
   gap: 10px;
-  border-bottom: 1px solid #e0e0e0;
+  /**border-bottom: 1px solid #e0e0e0;**/
   flex-shrink: 0;
 }
 
@@ -179,7 +179,7 @@ a:active {
 
 .logout-section {
   padding: 12px;
-  border-top: 1px solid #e0e0e0;
+  /**border-top: 1px solid #e0e0e0;**/
   flex-shrink: 0;
 }
 
@@ -198,8 +198,12 @@ a:active {
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Content Area */
@@ -339,7 +343,7 @@ a:active {
   font-size: 15px;
   opacity: 0.9;
   margin: 0;
-  color: #000000B2;
+  color: #000000b2;
 }
 
 .welcome-banner hr {
@@ -494,7 +498,7 @@ a:active {
 }
 
 .News {
-  background: #F7CA4E;
+  background: #f7ca4e;
   color: #000000;
   padding: 12px 32px;
   border-radius: 8px;
@@ -599,7 +603,7 @@ a:active {
   padding: 3px;
 }
 
-#progressbar>div {
+#progressbar > div {
   background-color: orange;
   width: 40%;
   /* Adjust with JavaScript */

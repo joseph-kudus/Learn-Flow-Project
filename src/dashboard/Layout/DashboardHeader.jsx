@@ -21,6 +21,9 @@ function DashboardHeader() {
   return (
     <div className="header">
       <div className="header-nav">
+        <div className="Notify">
+          <p>Notifiy</p>
+        </div>
         <div className="header-left"></div>
         <div className="MyAcc-wraper">
           <Link to="/settings" className="myacc">

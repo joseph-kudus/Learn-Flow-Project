@@ -270,7 +270,7 @@ a:active {
   height: 40px;
   border-radius: 100%;
   overflow: hidden;
-  border: 2px solid #00a3ff;
+  border: 2px solid #0f0f0f;
   background-color: #55555533;
   flex-shrink: 0;
 }

@@ -12,7 +12,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 24px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
 }
 
 .back-to-course {
@@ -160,7 +160,7 @@
 .buy-btn:hover {
   background: var(--blue-dark);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 163, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(11, 12, 12, 0.3);
 }
 
 .next-btn {
@@ -313,7 +313,7 @@
 }
 
 .SETTIN button {
-  color: #2222d9;
+  color: #43c51b;
   min-width: 200px;
   height: 49px;
   border-bottom: 2px solid transparent;
@@ -382,13 +382,17 @@ form {
   width: 100%;
   border-radius: 20px;
   color: var(--primary);
-  display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 10px;
+  justify-content: right;
 }
 
 .course-wrapper h2 {
   color: var(--primary);
+}
+.course-wrapper button {
+  background-color: #256911;
 }
 
 /* Mobile */
@@ -455,14 +459,14 @@ form {
   }
 }
 
-
 /* Course Builder Page Styles */
 .course-section {
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
   padding: 24px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
 }
 
 .course-wrapper {
@@ -472,9 +476,9 @@ form {
   padding: 48px 32px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
+  align-items: first baseline;
+  justify-content: left;
+  gap: 10px;
   box-shadow: var(--shadow);
   transition: all 0.3s ease;
   min-height: 300px;
@@ -482,7 +486,7 @@ form {
 
 .course-wrapper:hover {
   border-color: var(--blue);
-  box-shadow: 0 8px 24px rgba(0, 163, 255, 0.1);
+  box-shadow: 0 8px 24px rgba(9, 10, 10, 0.1);
 }
 
 .course-wrapper h2 {
@@ -510,7 +514,7 @@ form {
 .course-wrapper button:hover {
   background: var(--blue-dark);
   transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(0, 163, 255, 0.4);
+  box-shadow: 0 6px 20px rgba(12, 8, 8, 0.4);
 }
 
 .course-wrapper button:active {
@@ -538,11 +542,130 @@ form {
   }
 
   .course-wrapper button {
-    width: 56px;
+    max-width: 56px;
     height: 56px;
   }
 
   .mes {
     font-size: 24px;
   }
+}
+
+.CreateCourse {
+  min-height: 100vh;
+  padding: 40px 16px;
+  background: #f8fafc;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 600px;
+  margin: 0 auto 24px auto;
+}
+
+.CreateCourse h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.close-btn {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.close-btn:hover {
+  background: #f1f5f9;
+}
+
+.CreateCourse form {
+  display: block;
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.CreateCourse label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.CreateCourse input,
+.CreateCourse textarea {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  margin-bottom: 20px;
+  border: 1px solid #dddedf;
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: inherit;
+  background-color: #c6c7c5;
+}
+
+.CreateCourse input:focus,
+.CreateCourse textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.image-preview {
+  width: 100%;
+  max-height: 240px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin: -12px 0 20px 0;
+}
+
+.CreateCourse button[type="submit"] {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background: #747577;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.CreateCourse button[type="submit"]:hover:not(:disabled) {
+  background: #9b9c9e;
+}
+
+.CreateCourse button[type="submit"]:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+
+.error {
+  max-width: 600px;
+  margin: 0 auto 16px auto;
+  padding: 12px 16px;
+  background: #fee2e2;
+  color: #991b1b;
+  border-radius: 8px;
+  font-size: 14px;
 }

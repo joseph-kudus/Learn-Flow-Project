@@ -8,7 +8,7 @@ import {
   Image5,
 } from "../../assets/images/Myimg";
 
-function DashboardContent({setActiveView}) {
+function DashboardContent({ setActiveView }) {
   const continueLearning = [
     {
       img: unsplash,

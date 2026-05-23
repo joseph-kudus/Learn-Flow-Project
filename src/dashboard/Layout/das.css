@@ -4,7 +4,7 @@
   margin: 0 auto;
   width: 100%;
   padding: 24px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
 }
 
 .welcome-banner {
@@ -20,7 +20,7 @@
 }
 
 .welcome-banner1 h1 {
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-weight: 700;
   font-size: 32px;
   margin: 0 0 8px 0;
@@ -107,7 +107,7 @@
   margin: 0 0 8px 0;
 }
 
-.experts > p {
+.experts p {
   font-size: 14px;
   color: var(--text-muted);
   margin: 0 0 24px 0;
@@ -213,7 +213,7 @@
   height: 50px;
   font-weight: 500;
   font-size: 18px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -339,7 +339,7 @@ form {
   .News {
     background-color: #e0b93e;
     width: 100%;
-    
+
     margin: 30px 0 0;
   }
 

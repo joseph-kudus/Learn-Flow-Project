@@ -78,9 +78,9 @@ function AllCourse() {
               Buy Now{course.price}
             </button>
           </div>
+          <button className="next-btn">Next Course</button>
         </div>
       </div>
-      <button className="next-btn">Next</button>
     </div>
   );
 }

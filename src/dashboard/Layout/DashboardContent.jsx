@@ -97,7 +97,7 @@ function DashboardContent({ setActiveView }) {
                     <p>
                       By <strong>{course.author}</strong>
                     </p>
-                    <p>
+                    <p className="prr">
                       <strong>${course.price}</strong>
                     </p>
                   </div>

@@ -12,7 +12,6 @@
   --primary: #1a1d29;
   --secondary: #ffffff;
   --text-muted: #6b7280;
-
   /* Backgrounds */
   --bg-main: #f5f7fa;
   --card-bg: #ffffff;
@@ -20,7 +19,7 @@
   --sidebar-bg: #1a1d29;
 
   /* Borders */
-  --border-color: #e5e7eb;
+  --border-color: #d0d3da;
   --gray-100: #f3f4f6;
 
   /* Shadows */
@@ -110,6 +109,7 @@ a:active {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  transition: transform 0.3s ease; 
 }
 
 .logo-wraper {
@@ -316,7 +316,6 @@ a:active {
   overflow-y: auto;
   background: #55555524;
 }
-
 /* Dashboard Content Styles */
 .content-section {
   max-width: 1200px;
@@ -325,30 +324,28 @@ a:active {
 }
 
 .welcome-banner {
-  background: #55555524;
+  background: #f1f5f9;
   border-radius: 12px;
   padding: 32px;
-  color: #ffffff;
+  color: #0f172a;
   margin-bottom: 32px;
 }
 
-.welcome-banner1 h1 {
-  color: #000000;
+.welcome-banner h1 {
   font-size: 28px;
   font-weight: 700;
   margin: 0 0 8px 0;
 }
 
-.welcome-banner1 p {
+.welcome-banner p {
   font-size: 15px;
-  opacity: 0.9;
   margin: 0;
-  color: #000000b2;
+  color: #475569;
 }
 
 .welcome-banner hr {
   border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-top: 1px solid #e2e8f0;
   margin: 20px 0;
 }
 
@@ -356,32 +353,34 @@ a:active {
   font-size: 16px;
   font-weight: 600;
   margin: 0 0 20px 0;
-  color: #000000;
+  color: #0f172a;
 }
 
 .course-conti {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 16px;
-  background-color: #55555524;
+  background-color: #f8fafc;
+  padding: 16px;
+  border-radius: 12px;
 }
 
 .conti {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
   padding: 16px;
   display: flex;
   gap: 16px;
   align-items: center;
-  backdrop-filter: blur(10px);
   transition: all 0.2s;
   cursor: pointer;
 }
 
 .conti:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: #f8fafc;
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .conti img {
@@ -396,14 +395,13 @@ a:active {
   font-size: 15px;
   font-weight: 600;
   margin: 0 0 4px 0;
-  color: #555555;
+  color: #0f172a;
 }
 
 .conti-q p {
   font-size: 13px;
-  opacity: 0.8;
+  color: #475569;
   margin: 0;
-  color: #555555;
 }
 
 .experts {
@@ -425,9 +423,9 @@ a:active {
 
 .expert-cart {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
-  margin-bottom: 24px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 10px;
 }
 
 .card-wrap {
@@ -488,29 +486,38 @@ a:active {
 }
 
 .ato p strong {
-  color: #000133;
+  color: #151515;
   font-weight: 700;
   font-size: 16px;
 }
 
-.ato p:last-child strong {
-  color: #00a3ff;
-}
-
-.News {
+.expert-cart .News {
+  display: inline-flex; 
+  justify-content: center;
+  align-items: center;
   background: #f7ca4e;
-  color: #000000;
+  color: #000;
   padding: 12px 32px;
   border-radius: 8px;
   font-size: 15px;
   font-weight: 600;
+  border: none; 
+  cursor: pointer; 
   transition: all 0.2s;
   margin-top: 8px;
+  grid-column:  1/-1;
+  justify-self: center;
 }
 
 .News:hover {
-  background: #0088cc;
+  background: #6a6a6b; 
+  color: #fff; 
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.News:active {
+  transform: translateY(0);
 }
 
 /* Footer */

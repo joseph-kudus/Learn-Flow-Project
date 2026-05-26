@@ -1,22 +1,48 @@
 import React from "react";
 import "../../dashboard/courses/course.css";
+import {
+  Image1,
+  Image2,
+  Image3,
+  Image4,
+  Image5,
+} from "../../assets/images/Myimg";
 
 const Courses = () => {
-  const course = {
-    author: "ATO Productions",
-    level: "Beginner",
-    lessons: 14,
-    price: "$29",
-  };
-
-  const handleBuy = () => {
-    console.log("Buying course:", course.lessons);
-  };
-
+  const courses = [
+    {
+      img: Image2,
+      title: "Introduction to CSS language",
+      desc: "Learn the basics of CSS, and its usefulness in the programming world",
+      author: "ATO",
+      price: 29,
+    },
+    {
+      img: Image3,
+      title: "Introduction to Python language",
+      desc: "Learn the basics of python, and its usefulness in the programming world",
+      author: "ATO",
+      price: 30,
+    },
+    {
+      img: Image5,
+      title: "Introduction to JavaScript language",
+      desc: "Learn the basics of JavaScript, and its usefulness in the programming world",
+      author: "ATO",
+      price: 50,
+    },
+    {
+      img: Image4,
+      title: "Introduction to HTML language",
+      desc: "Learn the basics of Html, and its usefulness in the programming world",
+      author: "ATO",
+      price: 45,
+    },
+  ];
   return (
     <div className="course-conti">
       <div className="conti-q">
-        <h3>Introduction to CSS language</h3>
+        <h3>Courses</h3>
         <p>
           Unlock the world of web development effortlessly with our innovative
           e-learning courses. Elevate your skills, build a dynamic portfolio,
@@ -24,25 +50,23 @@ const Courses = () => {
           industry-aligned certifications and dedicated job placement
           assistance.
         </p>
-      </div>
-      <div className="course-card">
-        <h2>Course details</h2>
-        <div className="course-info">
-          <div className="info-row">
-            <span className="label">Author:</span>
-            <span className="value">{course.author}</span>
-          </div>
-          <div className="info-row">
-            <span className="label">Level:</span>
-            <span className="value">{course.level}</span>
-          </div>
-          <div className="info-row">
-            <span className="label">Lessons: </span>
-            <span className="value">{course.lessons}</span>
-          </div>
-          <button className="buy-btn" onClick={handleBuy}>
-            Buy Now {course.price}
-          </button>
+        <div className="expert-cart">
+          {courses.map((course, idx) => (
+            <div className="card-wrap" key={idx}>
+              <img src={course.img} alt={course.title} className="imgr" />
+              <div className="expert1">
+                <div className="expert11">
+                  <h1>{course.title}</h1>
+                  <p>{course.desc}</p>
+                  <hr />
+                  <div className="ato">
+                    <p>By {course.author}</p>
+                    <p>${course.price}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

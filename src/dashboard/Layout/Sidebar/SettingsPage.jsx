@@ -9,6 +9,7 @@ import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { db } from "../../../../firebaseconfig";
 import { useAuth } from "../../../context/AuthContext";
 import "./SettingsPage.css";
+import { Link } from "react-router-dom";
 
 function SettingsPage() {
   const { currentUser: user, userData, refreshUserData } = useAuth();
@@ -20,12 +21,11 @@ function SettingsPage() {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  // Use userData from context instead of fetching again
   useEffect(() => {
     if (userData !== null) {
       setLoading(false);
     }
-  }, [userData]); // Only run when userData changes
+  }, [userData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,8 +49,6 @@ function SettingsPage() {
         email: user.email,
       };
       await setDoc(doc(db, "users", user.uid), updatedData, { merge: true });
-
-      // Update context so DashboardHeader updates instantly
       await refreshUserData();
 
       const tryingToChangePassword =
@@ -101,10 +99,11 @@ function SettingsPage() {
 
   return (
     <div className="settings-page">
-      <h1>Update Profile</h1>
+      <h1 className="underline">Edit Profile</h1>
       <form onSubmit={handleSubmit}>
         {error && <p className="alert alert-error">{error}</p>}
         {success && <p className="alert alert-success">{success}</p>}
+
         <h3>Edit Details</h3>
         <div className="form-group">
           <label htmlFor="First-Name">First Name (required)</label>
@@ -114,6 +113,7 @@ function SettingsPage() {
             id="First-Name"
             required
           />
+
           <label htmlFor="Last-Name">Last Name (required)</label>
           <input
             type="text"
@@ -121,6 +121,7 @@ function SettingsPage() {
             id="Last-Name"
             required
           />
+
           <label htmlFor="Nickname">Nickname (required)</label>
           <input
             type="text"
@@ -128,14 +129,8 @@ function SettingsPage() {
             id="Nickname"
             required
           />
-          <label htmlFor="Account-Email">Email</label>
-          <input
-            type="email"
-            id="Account-Email"
-            defaultValue={user.email}
-            readOnly
-          />
         </div>
+
         <h3>Login information</h3>
         <div className="form-group">
           <label htmlFor="current-password">Current Password</label>
@@ -149,6 +144,9 @@ function SettingsPage() {
               type="button"
               className="eye-toggle"
               onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+              aria-label={
+                showCurrentPassword ? "Hide password" : "Show password"
+              }
             >
               {showCurrentPassword ? (
                 <IoMdEyeOff />
@@ -158,7 +156,19 @@ function SettingsPage() {
             </button>
           </div>
 
-          <label htmlFor="new-password">New Password</label>
+          <div className="fgt">
+            <Link to="/forgot-password">Can't Remember Password?</Link>
+          </div>
+
+          <label htmlFor="Account-Email">Account Email</label>
+          <input
+            type="email"
+            id="Account-Email"
+            defaultValue={user.email}
+            readOnly
+          />
+
+          <label htmlFor="new-password">Add your new password</label>
           <div className="password-wrapper">
             <input
               type={showNewPassword ? "text" : "password"}
@@ -170,6 +180,7 @@ function SettingsPage() {
               type="button"
               className="eye-toggle"
               onClick={() => setShowNewPassword(!showNewPassword)}
+              aria-label={showNewPassword ? "Hide password" : "Show password"}
             >
               {showNewPassword ? <IoMdEyeOff /> : <IoMdEye className="eye" />}
             </button>
@@ -181,12 +192,15 @@ function SettingsPage() {
               type={showConfirmPassword ? "text" : "password"}
               id="confirm-password"
               minLength={6}
-              placeholder="confirm new password"
+              placeholder="Confirm new password"
             />
             <button
               type="button"
               className="eye-toggle"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              aria-label={
+                showConfirmPassword ? "Hide password" : "Show password"
+              }
             >
               {showConfirmPassword ? (
                 <IoMdEyeOff />
@@ -196,6 +210,7 @@ function SettingsPage() {
             </button>
           </div>
         </div>
+
         <button className="sub" type="submit">
           Save Changes
         </button>

@@ -2,14 +2,11 @@ import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../../dashboard/courses/course.css";
 import { FaArrowLeft } from "react-icons/fa";
-import { coursesData } from "./CourseData"; // this is the only data source now
+import { coursesData } from "./CourseData";
 
 function Courses() {
   const { id } = useParams();
   const navigate = useNavigate();
-
-  // Remove this entire local array - it was shadowing the import
-  // const coursesData = [ ... ]
 
   const course = coursesData.find((c) => c.id === parseInt(id));
 

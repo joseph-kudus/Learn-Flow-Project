@@ -1,44 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { coursesData } from "./CourseData"; // make sure path is correct
 import "../../dashboard/courses/course.css";
-import {
-  Image1,
-  Image2,
-  Image3,
-  Image4,
-  Image5,
-} from "../../assets/images/Myimg";
 
-const Courses = () => {
-  const courses = [
-    {
-      img: Image2,
-      title: "Introduction to CSS language",
-      desc: "Learn the basics of CSS, and its usefulness in the programming world",
-      author: "ATO",
-      price: 29,
-    },
-    {
-      img: Image3,
-      title: "Introduction to python language",
-      desc: "Learn the basics of python, and its usefulness in the programming world",
-      auth: "ATO",
-      price: 30,
-    },
-    {
-      img: Image1,
-      title: "Introduction to javascript language",
-      desc: "Learn the basics of JavaScript, and its usefulness in the programming world",
-      author: "ATO",
-      price: 50,
-    },
-    {
-      img: Image4,
-      title: "Introduction to HTML language",
-      desc: "Learn the basics of Html, and its usefulness in the programming world",
-      author: "ATO",
-      price: 45
-    },
-  ];
+const AllCourse = () => {
   return (
     <div className="course-conti">
       <div className="conti-q">
@@ -50,9 +15,14 @@ const Courses = () => {
           industry-aligned certifications and dedicated job placement
           assistance.
         </p>
+
         <div className="expert-cart">
-          {courses.map((course, idx) => (
-            <div className="card-wrap" key={idx}>
+          {coursesData.map((course) => (
+            <Link
+              to={`/course/${course.id}`}
+              key={course.id}
+              className="card-wrap"
+            >
               <img src={course.img} alt={course.title} className="imgr" />
               <div className="expert1">
                 <div className="expert11">
@@ -65,7 +35,7 @@ const Courses = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
@@ -73,4 +43,4 @@ const Courses = () => {
   );
 };
 
-export default Courses;
+export default AllCourse;

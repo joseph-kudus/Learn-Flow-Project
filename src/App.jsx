@@ -14,6 +14,7 @@ import DashboardLayout from "./dashboard/Layout/DashboardLayout";
 import Support from "./dashboard/Layout/Sidebar/Support";
 import LandingPage from "./pages/LandingPage";
 import CreateCourse from "./dashboard/courses/CreateCourse";
+import Courses from "./dashboard/courses/Courses";
 
 function App() {
   const { loading, currentUser } = useAuth();
@@ -138,15 +139,24 @@ function App() {
               )
             }
           />
-          <Route path="/coursebuilder/create"
-          element={
-            <ProtectedRoute>
-              <Layout>
-                <CreateCourse/>
-              </Layout>
-            </ProtectedRoute>
-          } />
-
+          <Route
+            path="/coursebuilder/create"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <CreateCourse />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/course/:id"
+            element={
+              <ProtectedRoute>
+                <Courses />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/dashboard"
             element={

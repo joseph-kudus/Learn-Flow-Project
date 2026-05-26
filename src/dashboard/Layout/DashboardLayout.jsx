@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import AllCourse from "../courses/AllCourse";
-import Courses from "../courses/Courses"; 
+
 import Coursebuilder from "../courses/Coursebuilder";
 import SettingsPage from "../Layout/Sidebar/SettingsPage";
 import "../Layout/layout.css";
@@ -13,8 +13,8 @@ function DashboardLayout({ onLogout }) {
   const [activeView, setActiveView] = useState("dashboard");
 
   const views = {
-    dashboard: <DashboardContent setActiveView={setActiveView} />, // pass it here
-    courses: <Courses />,
+    dashboard: <DashboardContent setActiveView={setActiveView} />, 
+    
     allcourse: <AllCourse />,
     coursebuilder: <Coursebuilder />,
     settingsPage: <SettingsPage />,

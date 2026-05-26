@@ -5,7 +5,7 @@ export const coursesData = [
     id: 1,
     img: Image2,
     title: "Introduction to CSS language",
-    desc: "Learn the basics of CSS, and its usefulness in the programming world.",
+    desc: " Unlock the world of web development effortlessly with our innovative e-learning courses. Elevate your skills, build a dynamic portfolio,and launch your web development or no- code career with our industry-aligned certifications and dedicated job placement assistance.",
     author: "ATO",
     level: "Beginner",
     lessons: 14,

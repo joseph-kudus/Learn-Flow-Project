@@ -28,7 +28,7 @@ body {
 
 /* ===== AllCourse Page ===== */
 .allcourses-wrapper {
-  background: var(--card-bg);
+  
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -44,8 +44,6 @@ body {
 }
 
 .back-to-course button {
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
   border-radius: 8px;
   width: 40px;
   height: 40px;
@@ -64,9 +62,11 @@ body {
 }
 
 .back-to-course h1 {
+  font-family: sans-serif;
   font-weight: 500;
   font-size: 24px;
   color: var(--primary);
+  line-height: 100%;
 }
 
 .models {
@@ -97,16 +97,19 @@ body {
   box-shadow: var(--shadow);
 }
 
-.conti-q h3 {
+.conti-r h3 {
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 16px;
+  color: #000000;
 }
 
-.conti-q p {
+.conti-r p {
   font-size: 15px;
   line-height: 1.7;
   text-align: left;
+  color: #555555;
+  
 }
 
 .course-card {
@@ -363,10 +366,12 @@ body {
 /* ===== Course Builder ===== */
 .course-section {
   width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 2px;
-  left: 10px;
+  max-width: 551px;
+  margin: auto;
+  padding: 1px;
+  top: 90px;
+  left: 290px;
+  position: absolute;
 }
 .course-wrapper {
   background: var(--card-bg);
@@ -382,7 +387,6 @@ body {
   transition: all 0.3s ease;
   min-height: 300px;
 }
-
 .course-wrapper:hover {
   border-color: var(--blue);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
@@ -511,7 +515,7 @@ body {
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  
 }
 
 .CreateCourse button[type="submit"]:hover:not(:disabled) {
@@ -566,8 +570,9 @@ body {
   }
 
   .course-wrapper {
+    max-width: 551px;
     padding: 32px 20px;
-    min-height: 250px;
+    min-height: 358px;
   }
 
   .course-wrapper button {

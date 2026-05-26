@@ -29,7 +29,7 @@ function AllCourse() {
         </button>
 
         <span>
-          <h1>Back Courses</h1>
+          <h1>Back to Courses</h1>
         </span>
       </div>
       <div className="models">
@@ -37,7 +37,7 @@ function AllCourse() {
       </div>
 
       <div className="course-conti">
-        <div className="conti-q">
+        <div className="conti-r">
           <h3>Introduction to CSS language</h3>
           <p>
             Lorem ipsum dolor sit amet consectetur. Tempus ultrices dui

@@ -94,12 +94,8 @@ function DashboardContent({ setActiveView }) {
 
                   <hr />
                   <div className="ato">
-                    <p>
-                      By <strong>{course.author}</strong>
-                    </p>
-                    <p className="prr">
-                      <strong>${course.price}</strong>
-                    </p>
+                    <p>By {course.author}</p>
+                    <p>${course.price}</p>
                   </div>
                 </div>
               </div>

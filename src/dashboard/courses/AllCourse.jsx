@@ -27,9 +27,16 @@ const Courses = () => {
     {
       img: Image1,
       title: "Introduction to javascript language",
+      desc: "Learn the basics of JavaScript, and its usefulness in the programming world",
+      author: "ATO",
+      price: 50,
     },
     {
       img: Image4,
+      title: "Introduction to HTML language",
+      desc: "Learn the basics of Html, and its usefulness in the programming world",
+      author: "ATO",
+      price: 45
     },
   ];
   return (

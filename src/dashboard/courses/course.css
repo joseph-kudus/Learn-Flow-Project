@@ -85,10 +85,15 @@ body {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 32px;
-  margin-bottom: 32px;
+  margin-bottom: 22px;
 }
 .conti-q {
-  padding: 24px;
+  padding: 1px;
+}
+.conti-q p {
+  color: #555755;
+  padding: 3px;
+  padding-bottom: 10px;
 }
 
 .conti-r h3 {
@@ -204,7 +209,7 @@ body {
 .expert-cart {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
 }
 
 .card-wrap {

@@ -13,6 +13,7 @@ function CreateCourse() {
     title: "",
     description: "",
     image: null,
+    author: "",
     price: "",
   });
 
@@ -38,6 +39,7 @@ function CreateCourse() {
       data.append("title", formData.title);
       data.append("description", formData.description);
       data.append("price", formData.price);
+      data.append("author", formData.author);
       if (formData.image) data.append("image", formData.image);
 
       const res = await fetch("/api/courses", {
@@ -105,6 +107,18 @@ function CreateCourse() {
         {preview && (
           <img src={preview} alt="Preview" className="image-preview" />
         )}
+
+        <label htmlFor="author">Author</label>
+        <input
+          type="text"
+          id="author"
+          name="author"
+          value={formData.author}
+          onChange={handleChange}
+          required
+          rows={5}
+          placeholder="Add the author"
+        />
 
         <label htmlFor="price">Price</label>
         <input

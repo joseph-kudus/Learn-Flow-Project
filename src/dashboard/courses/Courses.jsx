@@ -67,14 +67,14 @@ function Courses() {
               Buy Now ${course.price}
             </button>
           </div>
-          <button
-            className="next-btn"
-            onClick={handleNext}
-            disabled={course.id >= coursesData.length}
-          >
-            Next Course
-          </button>
         </div>
+        <button
+          className="next-btn"
+          onClick={handleNext}
+          disabled={course.id >= coursesData.length}
+        >
+          Next Course
+        </button>
       </div>
     </div>
   );

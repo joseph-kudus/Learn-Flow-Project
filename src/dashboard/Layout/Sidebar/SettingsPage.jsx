@@ -4,9 +4,11 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential,
   updatePassword,
+  sendPasswordResetEmail,
 } from "firebase/auth";
+
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
-import { db } from "../../../../firebaseconfig";
+import { db, auth } from "../../../../firebaseconfig";
 import { useAuth } from "../../../context/AuthContext";
 import "./SettingsPage.css";
 import { Link } from "react-router-dom";
@@ -16,10 +18,30 @@ function SettingsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [email, setEmail] = useState(user?.email || "");
 
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const handleForgot = async () => {
+    if (!email) {
+      setError("Enter your email first");
+      return;
+    }
+    setError("");
+    setSuccess("");
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setSuccess("Password reset email sent check your box");
+    } catch (err) {
+      if (err.code === "auth/user-not-found") {
+        setError("No account found with this email");
+      } else {
+        setError(err.message);
+      }
+    }
+  };
 
   useEffect(() => {
     if (userData !== null) {
@@ -157,7 +179,9 @@ function SettingsPage() {
           </div>
 
           <div className="fgt">
-            <Link to="/forgot-password">Can't Remember Password?</Link>
+            <button type="button" onClick={handleForgot} className="link-btn">
+              Can't Remember Password?
+            </button>
           </div>
 
           <label htmlFor="Account-Email">Account Email</label>

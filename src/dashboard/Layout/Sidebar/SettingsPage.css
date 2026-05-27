@@ -38,6 +38,16 @@
   text-align: right;
 }
 
+.link-btn{
+  background-color: none;
+  border: none;
+  color: #000;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+}
+
 .settings-page h3 {
   font-size: 18px;
   font-weight: 600;

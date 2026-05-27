@@ -75,7 +75,7 @@ function Courses() {
         >
           Next Course
         </button>
-      </div>
+      </div> 
     </div>
   );
 }

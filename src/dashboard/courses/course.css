@@ -112,7 +112,7 @@ body {
 }
 
 .course-card {
-  width: 100%;
+  width: 90%;
   border-radius: 20px;
   background-color: var(--card-bg);
   padding: 24px;
@@ -178,14 +178,14 @@ body {
 }
 
 .next-btn {
-  width: 100%;
+  width: 70%;
   height: 50px;
-  background-color: var(--border-color);
+  
   color: var(--primary);
-  border: none;
+  border: 1px solid var(--border-color);
   border-radius: 10px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 16px;
   display: block;
   margin: 32px auto 0;

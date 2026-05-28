@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { coursesData } from "./CourseData"; // make sure path is correct
+import { coursesData } from "./CourseData";
 import "../../dashboard/courses/course.css";
 
 const AllCourse = () => {
@@ -19,7 +19,7 @@ const AllCourse = () => {
         <div className="expert-cart">
           {coursesData.map((course) => (
             <Link
-              to={`/course/${course.id}`}
+              to={`/allcourses/course/${course.id}`}
               key={course.id}
               className="card-wrap"
             >

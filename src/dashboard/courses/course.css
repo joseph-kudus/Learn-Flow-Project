@@ -10,7 +10,7 @@
   --text-muted: #64748b;
   --hover-bg: #f1f5f9;
   --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-  --bg: #000000;
+  --bg: #000;
 }
 
 /* ===== Reset ===== */
@@ -21,11 +21,7 @@
 }
 
 body {
-  font-family:
-    "DM Sans",
-    system-ui,
-    -apple-system,
-    sans-serif;
+  font-family: "DM Sans", system-ui, -apple-system, sans-serif;
   color: var(--primary);
   background: #f8fafc;
 }
@@ -82,6 +78,7 @@ body {
   object-fit: cover;
   border-radius: 12px;
 }
+
 /* ===== Course Detail Layout ===== */
 .course-conti {
   width: 100%;
@@ -90,27 +87,19 @@ body {
   gap: 32px;
   margin-bottom: 22px;
 }
-.conti-q {
-  padding: 1px;
-}
-.conti-q p {
-  color: #555755;
-  padding: 3px;
-  padding-bottom: 10px;
-}
 
 .conti-r h3 {
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 16px;
-  color: #000000;
+  color: #000;
 }
 
 .conti-r p {
   font-size: 15px;
   line-height: 1.7;
   text-align: left;
-  color: #555555;
+  color: #555;
 }
 
 .course-card {
@@ -123,6 +112,15 @@ body {
   height: fit-content;
   position: sticky;
   top: 90px;
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.course-nav {
+  grid-column: 2;
+  grid-row: 2;
+  width: 90%;
+  justify-self: start;
 }
 
 .course-card h2 {
@@ -180,27 +178,28 @@ body {
 }
 
 .next-btn {
-  width: 70%;
-  height: 50px;
-
+  width: 100%;
+  height: 48px;
+  background: transparent;
   color: var(--primary);
   border: 1px solid var(--border-color);
   border-radius: 10px;
   cursor: pointer;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 16px;
-  display: block;
-  margin: 32px auto 0;
   transition: all 0.3s ease;
-  left: 580px;
-  position: relative;
 }
 
-.next-btn:hover {
-  background-color: var(--bg);
-  color: var(--hover-bg);
-  transform: translateY(-3px);
-  box-shadow: 0 4px 15px rgba(247, 202, 78, 0.4);
+.next-btn:hover:not(:disabled) {
+  background-color: var(--primary);
+  color: var(--secondary);
+  transform: translateY(-2px);
+}
+
+.next-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
 }
 
 /* ===== Course List / Experts ===== */
@@ -376,6 +375,7 @@ body {
   left: 290px;
   position: absolute;
 }
+
 .course-wrapper {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
@@ -390,13 +390,14 @@ body {
   transition: all 0.3s ease;
   min-height: 300px;
 }
+
 .course-wrapper:hover {
   border-color: var(--blue);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 .course-section h1 {
-  color: #000000;
+  color: #000;
   font-size: 24px;
   font-weight: 600;
 }
@@ -442,11 +443,9 @@ body {
 .CreateCourse h1 {
   font-size: 28px;
   font-weight: 700;
- 
 }
 
 .close-btn {
-  
   background: #ffffff;
   border-radius: 8px;
   padding: 8px;
@@ -554,17 +553,15 @@ body {
   }
 
   .course-card,
-  .course-wrapper {
+  .course-nav {
+    grid-column: 1;
+    grid-row: auto;
+    width: 100%;
     position: static;
   }
 
   .models img {
     height: 200px;
-  }
-
-  .next-btn,
-  .News {
-    width: 100%;
   }
 
   .back-to-course h1,

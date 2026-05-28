@@ -47,7 +47,7 @@ function App() {
             path="/"
             element={
               currentUser ? (
-                <Navigate to="/dashboard" />
+                <Navigate to="/dashboard" replace />
               ) : (
                 <Layout>
                   <LandingPage />
@@ -59,7 +59,7 @@ function App() {
             path="/landing"
             element={
               currentUser ? (
-                <Navigate to="/dashboard" />
+                <Navigate to="/dashboard" replace />
               ) : (
                 <Layout>
                   <LandingPage />
@@ -119,7 +119,7 @@ function App() {
             path="/login"
             element={
               currentUser ? (
-                <Navigate to="/dashboard" />
+                <Navigate to="/dashboard" replace />
               ) : (
                 <Layout>
                   <Login />
@@ -149,14 +149,28 @@ function App() {
               </ProtectedRoute>
             }
           />
+          
+          {/* Courses list */}
           <Route
-            path="/course/:id"
+            path="/allcourses"
+            element={
+              <ProtectedRoute>
+                <DashboardLayout />
+              </ProtectedRoute>
+            }
+          />
+          
+          {/* Single course view */}
+          <Route
+            path="/allcourses/course/:id"
             element={
               <ProtectedRoute>
                 <Courses />
               </ProtectedRoute>
             }
           />
+          
+          {/* Dashboard home */}
           <Route
             path="/dashboard"
             element={
@@ -165,6 +179,9 @@ function App() {
               </ProtectedRoute>
             }
           />
+          
+          {/* Catch all 404 */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>
     </AuthProvider>

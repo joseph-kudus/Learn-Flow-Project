@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../../dashboard/courses/course.css";
 import { FaArrowLeft } from "react-icons/fa";
@@ -8,38 +8,42 @@ function Courses() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const course = coursesData.find((c) => c.id === parseInt(id));
+  const courseId = Number(id);
+  const course = coursesData.find((c) => c.id === courseId);
+  const currentIndex = coursesData.findIndex((c) => c.id === courseId);
+  const nextCourse = coursesData[currentIndex + 1];
 
-  if (!course) {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
+
+  if (!course || isNaN(courseId)) {
     return <h2>Course not found</h2>;
   }
 
   const handleBuy = () => {
     console.log("Buying course:", course.title);
-    // payment logic here
   };
 
   const handleNext = () => {
-    const nextId = course.id + 1;
-    if (nextId <= coursesData.length) {
-      navigate(`/course/${nextId}`);
+    if (nextCourse) {
+      navigate(`/allcourses/course/${nextCourse.id}`);
     }
   };
 
   return (
     <div className="allcourses-wrapper">
       <div className="back-to-course">
-        <button onClick={() => navigate("/")}>
+        <button onClick={() => navigate("/allcourses")}>
           <FaArrowLeft className="arrow" />
         </button>
-
         <span>
           <h1>Back to Courses</h1>
         </span>
       </div>
 
       <div className="models">
-        <img src={course.img} alt="model-image" />
+        <img src={course.img} alt={course.title} />
       </div>
 
       <div className="course-conti">
@@ -68,14 +72,17 @@ function Courses() {
             </button>
           </div>
         </div>
-        <button
-          className="next-btn"
-          onClick={handleNext}
-          disabled={course.id >= coursesData.length}
-        >
-          Next Course
-        </button>
-      </div> 
+
+        <div className="course-nav">
+          <button
+            className="next-btn"
+            onClick={handleNext}
+            disabled={!nextCourse}
+          >
+            Next Course
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

@@ -29,7 +29,7 @@ export default function Login() {
     }
 
     if (rememberMe) {
-      localStorage.setItem("email", email); // removed colon from key
+      localStorage.setItem("email", email); 
     } else {
       localStorage.removeItem("email");
     }

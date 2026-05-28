@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Image1,
   unsplash,
@@ -8,7 +9,9 @@ import {
   Image5,
 } from "../../assets/images/Myimg";
 
-function DashboardContent({ setActiveView }) {
+function DashboardContent() {
+  const navigate = useNavigate();
+
   const continueLearning = [
     {
       img: unsplash,
@@ -101,7 +104,10 @@ function DashboardContent({ setActiveView }) {
               </div>
             </div>
           ))}
-          <button onClick={() => setActiveView("allcourse")} className="News">
+          <button
+            onClick={() => navigate("/dashboard/allcourses")}
+            className="News"
+          >
             View all courses
           </button>
         </div>

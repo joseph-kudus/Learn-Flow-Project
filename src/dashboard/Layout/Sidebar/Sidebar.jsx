@@ -1,7 +1,7 @@
 import { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Loader2, LogOut } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 import {
   MdDashboard,
   MdSettings,
@@ -10,7 +10,7 @@ import {
 } from "react-icons/md";
 import { FaBook } from "react-icons/fa";
 
-const Sidebar = ({ activeView, setActiveView, onLogout }) => {
+const Sidebar = ({ onLogout }) => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -28,11 +28,15 @@ const Sidebar = ({ activeView, setActiveView, onLogout }) => {
     }
   };
 
-  const navitems = [
-    { id: "dashboard", label: "Dashboard", icon: MdDashboard },
-    { id: "allcourse", label: "All Course", icon: MdOutlineBookOnline },
-    { id: "coursebuilder", label: "Course Builder", icon: MdSchool },
-    { id: "settingsPage", label: "Settings", icon: MdSettings },
+  const navItems = [
+    { to: "/dashboard", label: "Dashboard", icon: MdDashboard, end: true },
+    {
+      to: "/dashboard/allcourses",
+      label: "All Course",
+      icon: MdOutlineBookOnline,
+    },
+    { to: "/dashboard/coursebuilder", label: "Course Builder", icon: MdSchool },
+    { to: "/dashboard/settings", label: "Settings", icon: MdSettings },
   ];
 
   return (
@@ -47,21 +51,21 @@ const Sidebar = ({ activeView, setActiveView, onLogout }) => {
       </div>
 
       <nav className="nav-links">
-        {navitems.map((item) => {
+        {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = activeView === item.id;
           return (
-            <button
-              className={`dasff ${isActive ? "active" : ""}`}
-              key={item.id}
-              onClick={() => setActiveView(item.id)}
-              disabled={isLoggingOut}
+            <NavLink
+              to={item.to}
+              end={item.end}
+              key={item.to}
+              className={({ isActive }) => `dasff ${isActive ? "active" : ""}`}
             >
               <Icon size={20} />
               <span>{item.label}</span>
-            </button>
+            </NavLink>
           );
         })}
+
         <div className="logout-section">
           <button
             className="dasff logout-btn"

@@ -1,36 +1,32 @@
-import React, { useState } from "react";
-
-import AllCourse from "../courses/AllCourse";
-
-import Coursebuilder from "../courses/Coursebuilder";
-import SettingsPage from "../Layout/Sidebar/SettingsPage";
+import React from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import "../Layout/layout.css";
 import Sidebar from "./Sidebar/Sidebar";
 import DashboardHeader from "./DashboardHeader";
-import DashboardContent from "./DashboardContent";
 
 function DashboardLayout({ onLogout }) {
-  const [activeView, setActiveView] = useState("dashboard");
+  const location = useLocation();
 
-  const views = {
-    dashboard: <DashboardContent setActiveView={setActiveView} />, 
-    
-    allcourse: <AllCourse />,
-    coursebuilder: <Coursebuilder />,
-    settingsPage: <SettingsPage />,
+  // Derive active view from URL so sidebar highlights correctly
+  const getActiveView = () => {
+    const path = location.pathname;
+    if (path.includes("/dashboard/coursebuilder")) return "coursebuilder";
+    if (path.includes("/dashboard/allcourses")) return "allcourse";
+    if (path.includes("/dashboard/settings")) return "settingsPage";
+    return "dashboard";
   };
+
+  const activeView = getActiveView();
 
   return (
     <div className="dashboardlayout">
       <div className="container">
-        <Sidebar
-          activeView={activeView}
-          setActiveView={setActiveView}
-          onLogout={onLogout}
-        />
+        <Sidebar activeView={activeView} onLogout={onLogout} />
         <div className="content-wrap">
           <DashboardHeader />
-          <main className="main-content">{views[activeView]}</main>
+          <main className="main-content">
+            <Outlet /> {/* Nested routes render here */}
+          </main>
         </div>
       </div>
     </div>

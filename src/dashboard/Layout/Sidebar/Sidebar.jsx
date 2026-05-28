@@ -10,7 +10,7 @@ import {
 } from "react-icons/md";
 import { FaBook } from "react-icons/fa";
 
-const Sidebar = ({ onLogout }) => {
+const Sidebar = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -20,7 +20,6 @@ const Sidebar = ({ onLogout }) => {
     setIsLoggingOut(true);
     try {
       await logout();
-      onLogout?.();
       navigate("/login");
     } catch (err) {
       console.log(err);
@@ -32,7 +31,7 @@ const Sidebar = ({ onLogout }) => {
     { to: "/dashboard", label: "Dashboard", icon: MdDashboard, end: true },
     {
       to: "/dashboard/allcourses",
-      label: "All Course",
+      label: "All Courses",
       icon: MdOutlineBookOnline,
     },
     { to: "/dashboard/coursebuilder", label: "Course Builder", icon: MdSchool },

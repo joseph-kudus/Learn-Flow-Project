@@ -19,7 +19,7 @@ const AllCourse = () => {
         <div className="expert-cart">
           {coursesData.map((course) => (
             <Link
-              to={`/allcourses/course/${course.id}`}
+              to={`/dashboard/allcourses/course/${course.id}`}
               key={course.id}
               className="card-wrap"
             >

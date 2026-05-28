@@ -50,7 +50,7 @@ function CreateCourse() {
       if (!res.ok) throw new Error("Failed to create course");
 
       await res.json();
-      navigate("/course-builder");
+      navigate("/dashboard/coursebuilder"); // fixed path
     } catch (err) {
       setError(err.message);
     } finally {
@@ -74,6 +74,7 @@ function CreateCourse() {
             <MdClose />
           </button>
         </div>
+
         <label htmlFor="title">Course Title</label>
         <input
           type="text"
@@ -86,7 +87,7 @@ function CreateCourse() {
         />
 
         <label htmlFor="description">Course Description</label>
-        <input
+        <textarea
           id="description"
           name="description"
           value={formData.description}
@@ -116,7 +117,6 @@ function CreateCourse() {
           value={formData.author}
           onChange={handleChange}
           required
-          rows={5}
           placeholder="Add the author"
         />
 

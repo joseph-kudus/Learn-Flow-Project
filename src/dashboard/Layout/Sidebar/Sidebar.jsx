@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { Loader2, LogOut } from "lucide-react";
+import { Loader2, LogOut, X } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
+import { useState } from "react";
 import {
   MdDashboard,
   MdSettings,
@@ -10,7 +10,7 @@ import {
 } from "react-icons/md";
 import { FaBook } from "react-icons/fa";
 
-const Sidebar = ({ activeView, setActiveView, onLogout }) => {
+const Sidebar = ({ className, onClose, onLogout }) => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -29,17 +29,28 @@ const Sidebar = ({ activeView, setActiveView, onLogout }) => {
   };
 
   const navitems = [
-    { id: "dashboard", label: "Dashboard", icon: MdDashboard },
-    { id: "allcourse", label: "All Course", icon: MdOutlineBookOnline },
-    { id: "coursebuilder", label: "Course Builder", icon: MdSchool },
-    { id: "settingsPage", label: "Settings", icon: MdSettings },
+    { path: "/dashboard", label: "Dashboard", icon: MdDashboard, end: true },
+    {
+      path: "/dashboard/allcourses",
+      label: "All Course",
+      icon: MdOutlineBookOnline,
+    },
+    {
+      path: "/dashboard/coursebuilder",
+      label: "Course Builder",
+      icon: MdSchool,
+    },
+    { path: "/dashboard/settings", label: "Settings", icon: MdSettings },
   ];
 
   return (
-    <aside className="drawer">
+    <aside className={className}>
       <div className="logo-wraper">
         <FaBook className="logob" />
         <p>LearnFlow</p>
+        <button className="close-btn" onClick={onClose}>
+          <X size={20} />
+        </button>
       </div>
 
       <div className="nav-title">
@@ -49,19 +60,20 @@ const Sidebar = ({ activeView, setActiveView, onLogout }) => {
       <nav className="nav-links">
         {navitems.map((item) => {
           const Icon = item.icon;
-          const isActive = activeView === item.id;
           return (
-            <button
-              className={`dasff ${isActive ? "active" : ""}`}
-              key={item.id}
-              onClick={() => setActiveView(item.id)}
-              disabled={isLoggingOut}
+            <NavLink
+              to={item.path}
+              end={item.end}
+              className={({ isActive }) => `dasff ${isActive ? "active" : ""}`}
+              key={item.path}
+              onClick={onClose}
             >
               <Icon size={20} />
               <span>{item.label}</span>
-            </button>
+            </NavLink>
           );
         })}
+
         <div className="logout-section">
           <button
             className="dasff logout-btn"

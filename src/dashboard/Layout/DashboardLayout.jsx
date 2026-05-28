@@ -1,36 +1,33 @@
-import React, { useState } from "react";
-
-import AllCourse from "../courses/AllCourse";
-
-import Coursebuilder from "../courses/Coursebuilder";
-import SettingsPage from "../Layout/Sidebar/SettingsPage";
-import "../Layout/layout.css";
+import { Outlet } from "react-router-dom";
+import { useState } from "react";
 import Sidebar from "./Sidebar/Sidebar";
 import DashboardHeader from "./DashboardHeader";
-import DashboardContent from "./DashboardContent";
+import "../Layout/layout.css";
 
 function DashboardLayout({ onLogout }) {
-  const [activeView, setActiveView] = useState("dashboard");
-
-  const views = {
-    dashboard: <DashboardContent setActiveView={setActiveView} />, 
-    
-    allcourse: <AllCourse />,
-    coursebuilder: <Coursebuilder />,
-    settingsPage: <SettingsPage />,
-  };
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="dashboardlayout">
       <div className="container">
         <Sidebar
-          activeView={activeView}
-          setActiveView={setActiveView}
+          className={`drawer ${sidebarOpen ? "open" : ""}`}
+          onClose={() => setSidebarOpen(false)}
           onLogout={onLogout}
         />
+
+        {sidebarOpen && (
+          <div
+            className="sidebar-overlay show"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+
         <div className="content-wrap">
-          <DashboardHeader />
-          <main className="main-content">{views[activeView]}</main>
+          <DashboardHeader onMenuClick={() => setSidebarOpen(true)} />
+          <main className="main-content">
+            <Outlet /> {/* This renders AllCourse, Courses, etc */}
+          </main>
         </div>
       </div>
     </div>

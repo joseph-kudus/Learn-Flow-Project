@@ -27,7 +27,7 @@ function Courses() {
 
   const handleNext = () => {
     if (nextCourse) {
-      navigate(`/dashboard/allcourses/course/${nextCourse.id}`); 
+      navigate(`/dashboard/allcourses/course/${nextCourse.id}`);
     }
   };
 
@@ -35,8 +35,6 @@ function Courses() {
     <div className="allcourses-wrapper">
       <div className="back-to-course">
         <button onClick={() => navigate("/dashboard/allcourses")}>
-         
-         
           <FaArrowLeft className="arrow" />
         </button>
         <span>

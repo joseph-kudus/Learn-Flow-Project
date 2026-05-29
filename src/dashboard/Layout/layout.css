@@ -1,21 +1,22 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
 
 * {
   text-decoration: none;
   box-sizing: border-box;
 }
+/* ===== CSS Variables ===== */
 :root {
   /* Colors */
-  --blue: #030a0e;
-  --blue-dark: #2A2A2A;
-  --accent: #F7CA4E;
+  --blue: #696a6d;
+  --blue-dark: #2a2a2a;
+  --accent: #f7ca4e;
   --primary: #1a1d29;
   --secondary: #ffffff;
   --text-muted: #444547;
   /* Backgrounds */
-  --bg-main: #F5F5F5;
+  --bg-main: #f5f5f5;
   --card-bg: #ffffff;
   --hover-bg: #f3f4f6;
   --sidebar-bg: #1a1d29;
@@ -27,11 +28,11 @@
   --gray-100: #f3f4f6;
 
   /* Shadows */
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.15);
 
   /*font*/
-  --font-sans: 'DM Sans', sans-serif;
+  --font-sans: "DM Sans", sans-serif;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-bold: 700;
@@ -97,7 +98,7 @@ a:active {
   color: inherit;
 }
 
-/* Main Layout */
+/* ===== Dashboard Layout ===== */
 .dashboardlayout {
   height: 100vh;
   color: #0d0d0f;
@@ -110,7 +111,18 @@ a:active {
   height: 100vh;
 }
 
-/* Sidebar */
+.dashboardlayout .container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.content-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+/* ===== Sidebar ===== */
 .drawer {
   width: 100%;
   max-width: 260px;
@@ -122,6 +134,10 @@ a:active {
   overflow-y: auto;
   transition: transform 0.3s ease;
   transform: translate(0);
+  min-height: 100vh;
+  padding: 20px 19px;
+  gap: 20px;
+  top: 0;
 }
 
 .logo-wraper {
@@ -129,9 +145,11 @@ a:active {
   align-items: center;
   padding: 0 30px;
   height: 40px;
-  color: #0d0d0e;
   gap: 10px;
   flex-shrink: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary);
 }
 
 .logo-wraper .logob {
@@ -150,10 +168,10 @@ a:active {
 }
 
 .nav-title h1 {
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 600;
-  color: #746c6c;
-  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
   margin: 0;
 }
 
@@ -162,7 +180,9 @@ a:active {
   padding: 0 1px;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 10px;
+  display: flex;
+  color: red;
 }
 
 .dasff {
@@ -170,31 +190,39 @@ a:active {
   align-items: center;
   gap: 12px;
   width: 100%;
-  padding: 12px 16px;
-  color: #2A2A2A;
-  text-align: left;
-  border-radius: 6px;
+  padding: 12px 17px;
+  border-radius: 10px;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-decoration: none;
   transition: all 0.2s;
+  text-align: left;
   font-size: 14px;
-  font-weight: 400;
+}
+.dasff:hover {
+  background: var(--hover-bg);
+  color: var(--primary);
+}
+.dasff.active {
+  background: var(--primary);
+  color: var(--card-bg);
 }
 
 .dasff:hover:not(:disabled) {
-  background: #f5f7fa;
-}
-
-.dasff.active {
   background: #000000;
-  color: #802c2c;
-  font-weight: 600;
+  color: #ffffff;
 }
-
 .logout-section {
-  padding: 12px;
-  /**border-top: 1px solid #e0e0e0;**/
-  flex-shrink: 0;
+  margin-top: auto;
+  padding-top: 16px;
 }
 
+.logout-btn {
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
 .logout-btn:hover:not(:disabled) {
   background: #ffebeb;
   color: #ff4444;
@@ -203,6 +231,8 @@ a:active {
 .dasff:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  color: #000;
+  background: #000;
 }
 
 .spin {
@@ -217,8 +247,7 @@ a:active {
     transform: rotate(360deg);
   }
 }
-
-/* Content Area */
+/* ===== Content Area ===== */
 .content-wrap {
   flex: 1;
   display: flex;
@@ -227,7 +256,7 @@ a:active {
   overflow: hidden;
 }
 
-/* Header */
+/* ===== Header Area ===== */
 .header {
   height: 70px;
   background: #ffffff;
@@ -329,6 +358,7 @@ a:active {
   background: var(--bg-main);
 }
 /* Dashboard Content Styles */
+
 .content-section {
   max-width: 1200px;
   margin: 0 auto;
@@ -341,11 +371,10 @@ a:active {
 }
 
 .welcome-banner h1 {
-  font-family:  sans-serif;
+  font-family: sans-serif;
   font-size: 32px;
   font-style: bold;
   font-weight: 700;
- 
 }
 
 .welcome-banner p {
@@ -369,21 +398,23 @@ a:active {
 }
 
 .course-conti {
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 2px;
-  padding: 2px;
-  border-radius: 1px;
+  margin-bottom: 22px;
+  gap: 10px;
 }
 
 .conti {
-  border-radius: 8px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
   padding: 5px;
   display: flex;
   align-items: center;
   transition: all 0.2s;
   cursor: pointer;
-  backdrop-filter: blur(10px);
+  gap: 20px;
+  background-color: #ffffff;
 }
 
 .conti:hover {
@@ -409,18 +440,19 @@ a:active {
   margin: 0 0 4px 0;
   color: #0f172a;
 }
-.conti-q h3 {
-  font-size: 12px;
-  font-weight: 500;
+.conti-q h1 {
+  font-size: 34px;
+  font-weight: 700;
   margin: 0 0 4px 0;
-  color: var(--ptext);
+  color: var(--text-border);
 }
 
 .conti-q p {
   font-size: 14px;
-  color: #000000;
+  color: var(--ptext);
   margin: 0;
   font-weight: 700;
+  padding: 20px 0px;
 }
 
 .experts h2 {
@@ -468,13 +500,7 @@ a:active {
   padding: 20px;
 }
 
-.expert11 h1 {
-  font-size: 16px;
-  font-weight: 700;
-  color: #000133;
-  margin: 0 0 8px 0;
-  line-height: 1.4;
-}
+
 
 .expert11 > p {
   font-size: 13px;
@@ -617,8 +643,8 @@ a:active {
 }
 
 #progressbar {
-  background-color: #D2D7DC;
-   
+  background-color: #d2d7dc;
+
   padding: 1px;
 }
 
@@ -629,4 +655,3 @@ a:active {
   height: 5px;
   border-radius: 10px;
 }
-

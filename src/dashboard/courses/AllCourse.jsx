@@ -5,7 +5,7 @@ import "../../dashboard/courses/course.css";
 
 const AllCourse = () => {
   return (
-    <div className="course-conti">
+    <div className="course-cont">
       <div className="conti-q">
         <h1>Courses</h1>
         <p>

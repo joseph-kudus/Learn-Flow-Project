@@ -48,13 +48,11 @@ const Sidebar = ({ className, onClose, onLogout }) => {
       <div className="logo-wraper">
         <FaBook className="logob" />
         <p>LearnFlow</p>
-        <button className="close-btn" onClick={onClose}>
-          <X size={20} />
-        </button>
+       
       </div>
 
       <div className="nav-title">
-        <h3>MENU</h3>
+        <h1>MENU</h1>
       </div>
 
       <nav className="nav-links">
@@ -66,9 +64,9 @@ const Sidebar = ({ className, onClose, onLogout }) => {
               end={item.end}
               className={({ isActive }) => `dasff ${isActive ? "active" : ""}`}
               key={item.path}
-              onClick={onClose}
+             
             >
-              <Icon size={20} />
+              <Icon size={30} />
               <span>{item.label}</span>
             </NavLink>
           );

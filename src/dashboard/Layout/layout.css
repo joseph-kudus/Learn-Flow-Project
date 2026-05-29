@@ -8,14 +8,14 @@
 }
 :root {
   /* Colors */
-  --blue: #00a3ff;
-  --blue-dark: #0088d1;
+  --blue: #030a0e;
+  --blue-dark: #2A2A2A;
   --accent: #F7CA4E;
   --primary: #1a1d29;
   --secondary: #ffffff;
-  --text-muted: #6b7280;
+  --text-muted: #444547;
   /* Backgrounds */
-  --bg-main: #f5f7fa;
+  --bg-main: #F5F5F5;
   --card-bg: #ffffff;
   --hover-bg: #f3f4f6;
   --sidebar-bg: #1a1d29;
@@ -85,7 +85,7 @@ button {
 }
 
 button:focus-visible {
-  outline: 2px solid #34393b;
+  outline: 2px solid #0c0c0c;
   outline-offset: 2px;
 }
 
@@ -100,7 +100,7 @@ a:active {
 /* Main Layout */
 .dashboardlayout {
   height: 100vh;
-  color: #000133;
+  color: #0d0d0f;
   background: #f5f7fa;
   overflow: hidden;
 }
@@ -112,7 +112,8 @@ a:active {
 
 /* Sidebar */
 .drawer {
-  width: 260px;
+  width: 100%;
+  max-width: 260px;
   background: #ffffff;
   border-right: 1px solid #e0e0e0;
   flex-shrink: 0;
@@ -120,47 +121,48 @@ a:active {
   flex-direction: column;
   overflow-y: auto;
   transition: transform 0.3s ease;
+  transform: translate(0);
 }
 
 .logo-wraper {
   display: flex;
   align-items: center;
-  padding: 0 24px;
-  height: 70px;
+  padding: 0 30px;
+  height: 40px;
   color: #0d0d0e;
   gap: 10px;
-  /**border-bottom: 1px solid #e0e0e0;**/
   flex-shrink: 0;
 }
 
 .logo-wraper .logob {
   font-size: 24px;
+  color: #000000;
 }
 
 .logo-wraper p {
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   font-size: 18px;
   margin: 0;
 }
 
 .nav-title {
-  padding: 16px 24px 8px;
+  padding: 5px 1px 2px;
 }
 
-.nav-title h3 {
-  font-size: 11px;
+.nav-title h1 {
+  font-size: 24px;
   font-weight: 600;
-  color: #666;
+  color: #746c6c;
   letter-spacing: 0.5px;
   margin: 0;
 }
 
 .nav-links {
   flex: 1;
-  padding: 0 12px;
+  padding: 0 1px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 40px;
 }
 
 .dasff {
@@ -169,7 +171,7 @@ a:active {
   gap: 12px;
   width: 100%;
   padding: 12px 16px;
-  color: #334155;
+  color: #2A2A2A;
   text-align: left;
   border-radius: 6px;
   transition: all 0.2s;
@@ -183,7 +185,7 @@ a:active {
 
 .dasff.active {
   background: #000000;
-  color: #ffffff;
+  color: #802c2c;
   font-weight: 600;
 }
 
@@ -280,7 +282,7 @@ a:active {
   height: 40px;
   border-radius: 100%;
   overflow: hidden;
-  border: 2px solid #0f0f0f;
+  border: 2px;
   background-color: #55555533;
   flex-shrink: 0;
 }
@@ -324,7 +326,7 @@ a:active {
   flex: 1;
   padding: 24px;
   overflow-y: auto;
-  background: #f2f4f5;
+  background: var(--bg-main);
 }
 /* Dashboard Content Styles */
 .content-section {
@@ -368,7 +370,7 @@ a:active {
 
 .course-conti {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 2px;
   padding: 2px;
   border-radius: 1px;
@@ -627,3 +629,4 @@ a:active {
   height: 5px;
   border-radius: 10px;
 }
+

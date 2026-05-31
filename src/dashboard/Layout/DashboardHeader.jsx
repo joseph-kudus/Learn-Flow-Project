@@ -2,6 +2,9 @@ import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 import defaultAvatar from "../../assets/images/default.png";
 import { IoIosNotificationsOutline } from "react-icons/io";
+import SearchBox from "./SearchBox";
+import UseuserRole from "../UserData/UseuserRole";
+import { BellIcon } from "lucide-react";
 
 function DashboardHeader() {
   const { currentUser, userData, loading } = useAuth();
@@ -18,11 +21,22 @@ function DashboardHeader() {
 
   const avatar = userData?.photoURL || currentUser.photoURL || defaultAvatar;
 
+  const { user } = UseuserRole();
+
   return (
     <div className="header">
       <div className="header-nav">
-        
-        <div className="header-left"></div>
+        <div className="header-left">
+          {/*Show search bar only for students*/}
+          {user?.role === "Student" && <SearchBox />}
+          <h4>searchbar</h4>
+        </div>
+        <div className="flex" gap-4 ml-auto>
+          {/*Notification only show to students
+           */}
+          {user?.role === "Student" && <BellIcon size={20} />}
+          <h4>Notification</h4>
+        </div>
         <div className="MyAcc-wraper">
           <Link to="/settings" className="myacc">
             <div className="userinfo">

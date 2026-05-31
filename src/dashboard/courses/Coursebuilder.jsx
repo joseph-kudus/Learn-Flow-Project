@@ -2,20 +2,26 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { GrAdd } from "react-icons/gr";
 import "./course.css";
+import UseuserRole from "../UserData/UseuserRole";
 
 function CourseBuilder() {
+  const { user } = UseuserRole();
   return (
     <div className="course-section">
       <h1>Create new course</h1>
-      <div className="course-wrapper">
-        <Link to="/dashboard/coursebuilder/create" className="add-course-btn">
-          <button type="button">
-            <GrAdd className="mes" />
-          </button>
-        </Link>
-      </div>
+      {user?.role === "instructor" && (
+        <div className="course-wrapper">
+          <Link to="/dashboard/coursebuilder/create" className="add-course-btn">
+            +create course
+            <button type="button">
+              <GrAdd className="mes" />
+            </button>
+          </Link>
+        </div>
+      )}
     </div>
   );
+  console.log(user)
 }
 
 export default CourseBuilder;

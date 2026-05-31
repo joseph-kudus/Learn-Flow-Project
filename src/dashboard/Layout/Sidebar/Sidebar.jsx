@@ -1,4 +1,4 @@
-import { Loader2, LogOut, X } from "lucide-react";
+import { BookIcon, HomeIcon, Loader2, LogOut, X } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
 import { useNavigate, NavLink } from "react-router-dom";
 import { useState } from "react";
@@ -9,6 +9,7 @@ import {
   MdOutlineBookOnline,
 } from "react-icons/md";
 import { FaBook } from "react-icons/fa";
+import UseuserRole from "../../UserData/UseuserRole";
 
 const Sidebar = ({ className, onClose, onLogout }) => {
   const { logout } = useAuth();
@@ -27,6 +28,44 @@ const Sidebar = ({ className, onClose, onLogout }) => {
       setIsLoggingOut(false);
     }
   };
+
+  const { user } = UseuserRole();
+
+  const baseLinks = [
+    { name: "Dashboard", path: "/dashboard", icon: MdDashboard, end: true },
+    { name: "Settings", path: "/dashboard/settings", icon: MdSettings },
+  ];
+
+  const studentLinks = [
+    {
+      name: "My Courses",
+      path: "/course",
+      icon: MdSchool
+    },
+    {
+      name: "All Courses",
+      path: "/dashboard/allcourses",
+      icon: MdOutlineBookOnline,
+    },
+  ];
+  const instructorLinks = [
+    {
+      name: "All Courses",
+      path: "/dashboard/allcourses",
+      icon: MdOutlineBookOnline,
+    },
+    {
+      name: "Course Builder",
+      path: "/dashboard/coursebuilder",
+      icon: MdSchool,
+    },
+  ];
+
+  const links = [
+    ...baseLinks,
+    ...(user?.role === "student" ? studentLinks : []),
+    ...(user?.role === "Instructor" ? instructorLinks : []),
+  ];
 
   const navitems = [
     { path: "/dashboard", label: "Dashboard", icon: MdDashboard, end: true },
@@ -48,12 +87,24 @@ const Sidebar = ({ className, onClose, onLogout }) => {
       <div className="logo-wraper">
         <FaBook className="logob" />
         <p>LearnFlow</p>
-       
       </div>
 
       <div className="nav-title">
         <h1>MENU</h1>
       </div>
+      {/*using role base*/}
+      <nav nav-links>
+        {links.map((link) => (
+          <NavLink
+            className={({ isActive }) => `dasff ${isActive ? "active" : ""}`}
+            key={link.path}
+            to={link.path}
+          >
+            <link.icon size={20} />
+            {link.name}
+          </NavLink>
+        ))}
+      </nav>
 
       <nav className="nav-links">
         {navitems.map((item) => {
@@ -64,7 +115,6 @@ const Sidebar = ({ className, onClose, onLogout }) => {
               end={item.end}
               className={({ isActive }) => `dasff ${isActive ? "active" : ""}`}
               key={item.path}
-             
             >
               <Icon size={30} />
               <span>{item.label}</span>

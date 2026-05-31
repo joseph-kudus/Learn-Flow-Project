@@ -18,6 +18,7 @@ import Coursebuilder from "./dashboard/courses/Coursebuilder";
 import AllCourse from "./dashboard/courses/AllCourse";
 import SettingsPage from "./dashboard/Layout/Sidebar/SettingsPage";
 import DashboardContent from "./dashboard/Layout/DashboardContent";
+import UseuserRole from "./dashboard/UserData/UseuserRole";
 
 function Layout({ children }) {
   return (
@@ -40,6 +41,12 @@ function AppRoutes() {
         </div>
       </div>
     );
+  }
+
+  function RoleRoute({ children, allowedRole }) {
+    const { user } = UseuserRole();
+    if (user?.role !== allowedRole) return <Navigate to="/unauthorized" replace />;
+    return children;
   }
 
   return (
@@ -161,7 +168,39 @@ function AppRoutes() {
 
         <Route path="settings" element={<SettingsPage />} />
       </Route>
-
+      {/*Instructors only*/}
+      <Route
+        path="coursebuilder"
+        element={
+          <DashboardLayout>
+            <RoleRoute allowedRole="instructor">
+              <Coursebuilder />
+            </RoleRoute>
+          </DashboardLayout>
+        }
+      />
+      {/*Students only*/}
+      <Route
+        path="course"
+        element={
+          <DashboardLayout>
+            <RoleRoute allowedRole="instructor">
+              <Courses />
+            </RoleRoute>
+          </DashboardLayout>
+        }
+      />
+      <Route
+        path="allcourse"
+        element={
+          <DashboardLayout>
+            <RoleRoute allowedRole="student">
+              <AllCourse/>
+            </RoleRoute>
+          </DashboardLayout>
+        }
+      />
+      <Route path="coursebuilder/create" element={<CreateCourse />} />
       {/* Catch all 404 */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

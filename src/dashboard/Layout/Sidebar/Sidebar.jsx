@@ -7,9 +7,14 @@ import {
   MdSettings,
   MdSchool,
   MdOutlineBookOnline,
+  MdExplore,
 } from "react-icons/md";
+import { RiGraduationCapLine } from "react-icons/ri";
+import { GrPerformance } from "react-icons/gr";
+
 import { FaBook } from "react-icons/fa";
 import UseuserRole from "../../UserData/UseuserRole";
+import { FiDownload } from "react-icons/fi";
 
 const Sidebar = ({ className, onClose, onLogout }) => {
   const { logout } = useAuth();
@@ -38,26 +43,35 @@ const Sidebar = ({ className, onClose, onLogout }) => {
 
   const baseLinks = [
     { name: "Dashboard", path: "/dashboard", icon: MdDashboard, end: true },
+  ];
+
+  const studentLinks = [
+    {
+      name: "Courses",
+      path: "/course",
+      icon: MdSchool,
+    },
+    {
+      name: "Recommended Course",
+      path: "/dashboard/explore",
+      icon: MdExplore,
+    },
+    {
+      name: "Achievements",
+      path: "/dashboard/achievements",
+      icon: RiGraduationCapLine,
+    },
+
+    { name: "Settings", path: "/dashboard/settings", icon: GrPerformance },
+    
+  ];
+
+  const instructorLinks = [
     {
       name: "All Courses",
       path: "/dashboard/allcourses",
       icon: MdOutlineBookOnline,
     },
-   
-  ];
-
-  const studentLinks = [
-  
-    {
-      name: "My Courses",
-      path: "/course",
-      icon: MdSchool,
-    },
-    
-    { name: "Settings", path: "/dashboard/settings", icon: MdSettings },
-  ];
-
-  const instructorLinks = [
     {
       name: "Course Builder",
       path: "/dashboard/coursebuilder",
@@ -69,7 +83,7 @@ const Sidebar = ({ className, onClose, onLogout }) => {
   const links = [
     ...baseLinks,
     ...(role === "student" ? studentLinks : []),
-    ...(role === "instructor" ? instructorLinks : []), // lowercase "instructor"
+    ...(role === "instructor" ? instructorLinks : []),
   ];
 
   return (
@@ -78,7 +92,6 @@ const Sidebar = ({ className, onClose, onLogout }) => {
         <FaBook className="logob" />
         <p>LearnFlow</p>
       </div>
-      <p>Current Role: {role}</p>
 
       <div className="nav-title">
         <h1>MENU</h1>
@@ -108,7 +121,7 @@ const Sidebar = ({ className, onClose, onLogout }) => {
               </>
             ) : (
               <>
-                <LogOut size={20} />
+                <FiDownload size={20} />
                 <span>Logout</span>
               </>
             )}

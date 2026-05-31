@@ -75,7 +75,7 @@ export default function Register() {
 
           <form onSubmit={handleSubmit} className="login-form">
             <div className="input-group">
-              <label htmlFor="username">Username</label>
+              <label htmlFor="username">Username:</label>
               <input
                 type="text"
                 id="username"
@@ -88,7 +88,7 @@ export default function Register() {
             </div>
 
             <div className="input-group">
-              <label htmlFor="email">Email</label>
+              <label htmlFor="email">Email:</label>
               <input
                 type="email"
                 id="email"
@@ -101,7 +101,7 @@ export default function Register() {
             </div>
 
             <div className="input-group">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">Password:</label>
               <div className="password-wrap">
                 <input
                   type={showPassword ? "text" : "password"}

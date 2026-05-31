@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import land from ".././assets/images/Ellipse 1.png";
 import ato from "../assets/images/Ellipse 5.png";
 import ata from "../assets/images/Ellipse 6.png";
@@ -22,6 +22,9 @@ import {
 } from "lucide-react";
 
 function Landing() {
+  const get_started = () => {
+    if (!User) return <Navigate to="/login" /> 
+  }
   return (
     <main>
       <div className="Container">
@@ -35,20 +38,19 @@ function Landing() {
           </div>
           <div className="CTA">
             <div className="article">
-              <button className="newc1">Start a new course!</button>
+              <button className="newc1" onClick={get_started}>
+                Start a new course!
+              </button>
               <div className="groupimg">
                 <img src={land} alt="gr" />
                 <img src={ato} alt="gr" />
                 <img src={ata} alt="gr" />
               </div>
-              <h3 className="gr-h">
-                Join thousands of students to start coding now!
-              </h3>
             </div>
+            <h3>Join thousands of students to start coding now!</h3>
           </div>
-          <div className="hero-img">
-            <img className="hero-image" src={hero} alt="img" />
-          </div>
+
+          <img className="hero-img" src={hero} alt="img" />
         </div>
 
         {/**Logo slide */}
@@ -115,7 +117,7 @@ function Landing() {
               <div className="colo">
                 <div className="myi">
                   {/*image here* */}
-                  <img src={bes} alt="" className="myi" />
+                  <img src={bes} alt="" />
                 </div>
 
                 <div className="cols">
@@ -124,7 +126,11 @@ function Landing() {
                     qualified instructors, who are passionate about teaching and
                     dedicated to helping you achieve your language goals.
                   </p>
-                  <button className="newc">Get Started</button>
+                  <Link to="/courses">
+                    <button className="newc" onClick={() => get_started}>
+                      Get Started
+                    </button>
+                  </Link>
                 </div>
               </div>
 
@@ -139,9 +145,9 @@ function Landing() {
                   </p>
                   <button className="newc">Get Started</button>
                 </div>
-                <div className="myii">
+                <div className="myi">
                   {/*image here* */}
-                  <img src={bes1} alt="" className="myi" />
+                  <img src={bes1} alt="" />
                 </div>
               </div>
             </div>

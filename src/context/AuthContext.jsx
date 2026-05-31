@@ -22,7 +22,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  async function signup(email, password, username = "") {
+  async function signup(email, password, username, role = "student") {
     setError("");
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
@@ -44,8 +44,10 @@ export function AuthProvider({ children }) {
         nickname: username,
         photoURL: "",
         emailVerified: false,
+        role: "",
         createdAt: new Date(),
       });
+      console.log();
       return cred;
     } catch (err) {
       setError(err.message);
@@ -127,6 +129,7 @@ export function AuthProvider({ children }) {
               nickname: user.displayName || "",
               photoURL: user.photoURL || "",
               emailVerified: user.emailVerified,
+              role: "",
               createdAt: new Date(),
             });
           }

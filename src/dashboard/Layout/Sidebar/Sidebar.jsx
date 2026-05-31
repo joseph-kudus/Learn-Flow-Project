@@ -29,57 +29,47 @@ const Sidebar = ({ className, onClose, onLogout }) => {
     }
   };
 
-  const { user } = UseuserRole();
+  const { user, loading } = UseuserRole();
+  if (loading) return <div>Loading Sidebar</div>;
+  if (!user) return <div>No user</div>;
+
+  // Default to student if role missing, and force lowercase
+  const role = (user.role || "student").toLowerCase();
 
   const baseLinks = [
     { name: "Dashboard", path: "/dashboard", icon: MdDashboard, end: true },
-    { name: "Settings", path: "/dashboard/settings", icon: MdSettings },
+    {
+      name: "All Courses",
+      path: "/dashboard/allcourses",
+      icon: MdOutlineBookOnline,
+    },
+   
   ];
 
   const studentLinks = [
+  
     {
       name: "My Courses",
       path: "/course",
-      icon: MdSchool
+      icon: MdSchool,
     },
-    {
-      name: "All Courses",
-      path: "/dashboard/allcourses",
-      icon: MdOutlineBookOnline,
-    },
+    
+    { name: "Settings", path: "/dashboard/settings", icon: MdSettings },
   ];
+
   const instructorLinks = [
-    {
-      name: "All Courses",
-      path: "/dashboard/allcourses",
-      icon: MdOutlineBookOnline,
-    },
     {
       name: "Course Builder",
       path: "/dashboard/coursebuilder",
       icon: MdSchool,
     },
+    { name: "Settings", path: "/dashboard/settings", icon: MdSettings },
   ];
 
   const links = [
     ...baseLinks,
-    ...(user?.role === "student" ? studentLinks : []),
-    ...(user?.role === "Instructor" ? instructorLinks : []),
-  ];
-
-  const navitems = [
-    { path: "/dashboard", label: "Dashboard", icon: MdDashboard, end: true },
-    {
-      path: "/dashboard/allcourses",
-      label: "All Course",
-      icon: MdOutlineBookOnline,
-    },
-    {
-      path: "/dashboard/coursebuilder",
-      label: "Course Builder",
-      icon: MdSchool,
-    },
-    { path: "/dashboard/settings", label: "Settings", icon: MdSettings },
+    ...(role === "student" ? studentLinks : []),
+    ...(role === "instructor" ? instructorLinks : []), // lowercase "instructor"
   ];
 
   return (
@@ -88,12 +78,13 @@ const Sidebar = ({ className, onClose, onLogout }) => {
         <FaBook className="logob" />
         <p>LearnFlow</p>
       </div>
+      <p>Current Role: {role}</p>
 
       <div className="nav-title">
         <h1>MENU</h1>
       </div>
-      {/*using role base*/}
-      <nav nav-links>
+
+      <nav className="nav-links">
         {links.map((link) => (
           <NavLink
             className={({ isActive }) => `dasff ${isActive ? "active" : ""}`}
@@ -104,24 +95,6 @@ const Sidebar = ({ className, onClose, onLogout }) => {
             {link.name}
           </NavLink>
         ))}
-      </nav>
-
-      <nav className="nav-links">
-        {navitems.map((item) => {
-          const Icon = item.icon;
-          return (
-            <NavLink
-              to={item.path}
-              end={item.end}
-              className={({ isActive }) => `dasff ${isActive ? "active" : ""}`}
-              key={item.path}
-            >
-              <Icon size={30} />
-              <span>{item.label}</span>
-            </NavLink>
-          );
-        })}
-
         <div className="logout-section">
           <button
             className="dasff logout-btn"

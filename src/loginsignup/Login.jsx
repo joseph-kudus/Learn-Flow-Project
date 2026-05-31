@@ -1,20 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Notebook } from "lucide-react";
 import "./Mylogin.css";
-import { useAuth } from "../context/AuthContext";
+import {useAuth} from "../context/AuthContext"
 import smte from "../assets/images/small-team.png";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false); // renamed
   const [error, setError] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const { login, forgotPassword } = useAuth();
   const navigate = useNavigate();
+
+  // Load saved email on mount
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("email");
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setRememberMe(true);
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,20 +37,21 @@ export default function Login() {
       return setError("Password must be 6 characters or more");
     }
 
+    // Save/remove email based on checkbox
     if (rememberMe) {
-      localStorage.setItem("email", email); 
+      localStorage.setItem("email", email);
     } else {
       localStorage.removeItem("email");
     }
 
     try {
-      setLoading(true);
-      await login(email, password);
+      setSubmitting(true);
+      await login(email, password, rememberMe); // pass remember flag
       navigate("/dashboard");
     } catch (err) {
       setError("Failed to login: " + (err.message || "Please try again"));
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   };
 
@@ -49,7 +59,7 @@ export default function Login() {
     if (!email) return setError("Enter email first");
     try {
       await forgotPassword(email);
-      setError(""); // clear error
+      setError("");
       alert("Check email for reset link");
     } catch (err) {
       setError(err.message);
@@ -128,8 +138,8 @@ export default function Login() {
 
             {error && <div className="error-msg">{error}</div>}
 
-            <button type="submit" className="submit-btn" disabled={loading}>
-              {loading ? "Signing in..." : "Login"}
+            <button type="submit" className="submit-btn" disabled={submitting}>
+              {submitting ? "Signing in..." : "Login"}
             </button>
 
             <p className="register-text">

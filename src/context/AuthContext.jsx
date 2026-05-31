@@ -1,41 +1,46 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { auth, db } from "../../firebaseconfig"; 
 import {
   createUserWithEmailAndPassword,
+  updateProfile,
+  sendEmailVerification,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged,
   sendPasswordResetEmail,
-  sendEmailVerification,
-  updateProfile,
 } from "firebase/auth";
-import { doc, onSnapshot, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { auth, db } from "../../firebaseconfig";
+import {
+  doc,
+  onSnapshot,
+  getDoc,
+  setDoc,
+  updateDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 
+// 1. Create the context
 const AuthContext = createContext();
+
+// 2. Export the hook - this is what Login.jsx imports
 export function useAuth() {
   return useContext(AuthContext);
 }
 
+// 3. Export the Provider component - wrap your App with this in main.jsx
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Creates new user in Firebase Auth + Firestore doc
   async function signup(email, password, username, role = "student") {
     setError("");
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
-
-      // 1. Update Firebase Auth profile
-      await updateProfile(cred.user, {
-        displayName: username,
-      });
-
-      // 2. Send verification email
+      await updateProfile(cred.user, { displayName: username });
       await sendEmailVerification(cred.user);
 
-      // 3. Create Firestore user doc
       await setDoc(doc(db, "users", cred.user.uid), {
         email: cred.user.email,
         username: username,
@@ -44,10 +49,9 @@ export function AuthProvider({ children }) {
         nickname: username,
         photoURL: "",
         emailVerified: false,
-        role: "",
-        createdAt: new Date(),
+        role: role,
+        createdAt: serverTimestamp(),
       });
-      console.log();
       return cred;
     } catch (err) {
       setError(err.message);
@@ -58,15 +62,7 @@ export function AuthProvider({ children }) {
   async function login(email, password) {
     setError("");
     try {
-      const cred = await signInWithEmailAndPassword(auth, email, password);
-
-      // Remove or comment this block for testing
-      // if (!cred.user.emailVerified) {
-      //   await signOut(auth);
-      //   throw new Error("Please verify your email before logging in. Check your inbox.");
-      // }
-
-      return cred;
+      return await signInWithEmailAndPassword(auth, email, password);
     } catch (err) {
       setError(err.message);
       throw err;
@@ -75,38 +71,20 @@ export function AuthProvider({ children }) {
 
   async function logout() {
     setError("");
+    return signOut(auth);
+  }
+
+  async function forgotPassword(email) {
+    setError("");
     try {
-      return await signOut(auth);
+      return await sendPasswordResetEmail(auth, email);
     } catch (err) {
       setError(err.message);
       throw err;
     }
   }
 
-  const forgotPassword = async (email) => {
-    if (!email) throw new Error("Please enter email to reset password");
-    try {
-      await sendPasswordResetEmail(auth, email);
-    } catch (err) {
-      throw err;
-    }
-  };
-
-  const resendVerification = async () => {
-    if (!currentUser) throw new Error("No user logged in");
-    try {
-      await sendEmailVerification(currentUser);
-    } catch (err) {
-      throw err;
-    }
-  };
-
-  const refreshUserData = async () => {
-    if (!currentUser) return;
-    const docSnap = await getDoc(doc(db, "users", currentUser.uid));
-    if (docSnap.exists()) setUserData(docSnap.data());
-  };
-
+  // Listen to auth state + sync Firestore user doc in real-time
   useEffect(() => {
     let unsubscribeDoc = () => {};
 
@@ -118,7 +96,6 @@ export function AuthProvider({ children }) {
         const userRef = doc(db, "users", user.uid);
 
         try {
-          // Create doc if missing - fixes old users
           const docSnap = await getDoc(userRef);
           if (!docSnap.exists()) {
             await setDoc(userRef, {
@@ -129,8 +106,8 @@ export function AuthProvider({ children }) {
               nickname: user.displayName || "",
               photoURL: user.photoURL || "",
               emailVerified: user.emailVerified,
-              role: "",
-              createdAt: new Date(),
+              role: "student",
+              createdAt: serverTimestamp(),
             });
           }
 
@@ -139,20 +116,27 @@ export function AuthProvider({ children }) {
             async (snap) => {
               if (snap.exists()) {
                 const data = snap.data();
-                // Sync emailVerified
                 if (data.emailVerified !== user.emailVerified) {
-                  await updateDoc(userRef, {
-                    emailVerified: user.emailVerified,
-                  });
-                  data.emailVerified = user.emailVerified;
+                  try {
+                    await updateDoc(userRef, {
+                      emailVerified: user.emailVerified,
+                    });
+                    data.emailVerified = user.emailVerified;
+                  } catch (err) {
+                    console.warn("Couldn't sync emailVerified:", err.message);
+                  }
                 }
                 setUserData(data);
+                setLoading(false);
+              } else {
+                setUserData(null);
+                setLoading(false);
               }
-              setLoading(false);
             },
             (err) => {
               console.error("Firestore listen error:", err);
               setError(err.message);
+              setUserData(null);
               setLoading(false);
             },
           );
@@ -172,6 +156,7 @@ export function AuthProvider({ children }) {
       unsubscribeDoc();
     };
   }, []);
+
   const value = {
     currentUser,
     userData,
@@ -181,8 +166,6 @@ export function AuthProvider({ children }) {
     login,
     logout,
     forgotPassword,
-    resendVerification,
-    refreshUserData,
   };
 
   return (
@@ -191,3 +174,5 @@ export function AuthProvider({ children }) {
     </AuthContext.Provider>
   );
 }
+
+

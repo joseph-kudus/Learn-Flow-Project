@@ -56,23 +56,23 @@ function DashboardContent() {
       price: 35,
     },
   ];
-  const { user } = UseuserRole();
+  
   return (
     <section className="content-section">
       <div className="welcome-banner">
         <div className="welcome-banner1">
-          <h1>Welcome to Learnflow, {user?.name}</h1>
+          <h1>Welcome to Learnflow</h1>
           <p>
             Learn at your own pace with lifetime access on mobile and desktop
           </p>
         </div>
         <hr />
-        {user?.role === "Student" && (
-          <>
-            <continueLearning />
-            <courses/>
-          </>
-        )}
+        
+        
+        
+        
+        
+        
         <p>Let’s continue Learning!</p>
         <div className="course-conti">
           {continueLearning.map((item, idx) => (

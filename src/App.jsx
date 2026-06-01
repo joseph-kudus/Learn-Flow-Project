@@ -10,7 +10,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import ProtectedRoute from "./component/ProtectedRoute";
 import "./App.css";
 import DashboardLayout from "./dashboard/Layout/DashboardLayout";
-import Support from "./dashboard/Layout/Sidebar/Support";
+
 import LandingPage from "./pages/LandingPage";
 import CreateCourse from "./dashboard/courses/CreateCourse";
 import Courses from "./dashboard/courses/Courses";
@@ -19,6 +19,11 @@ import AllCourse from "./dashboard/courses/AllCourse";
 import SettingsPage from "./dashboard/Layout/Sidebar/SettingsPage";
 import DashboardContent from "./dashboard/Layout/DashboardContent";
 import UseuserRole from "./dashboard/UserData/UseuserRole";
+import WelcomePage from "./dashboard/UserData/students/WelcomePage";
+import Explore from "./dashboard/UserData/students/Explore";
+import Achievement from "./dashboard/UserData/students/Achivement";
+import Support from "./dashboard/UserData/Support";
+import RecomendedCourse from "./dashboard/UserData/students/RecomendedCourses.jsx";
 
 function Layout({ children }) {
   return (
@@ -45,7 +50,8 @@ function AppRoutes() {
 
   function RoleRoute({ children, allowedRole }) {
     const { user } = UseuserRole();
-    if (user?.role !== allowedRole) return <Navigate to="/unauthorized" replace />;
+    if (user?.role !== allowedRole)
+      return <Navigate to="/unauthorized" replace />;
     return children;
   }
 
@@ -167,6 +173,13 @@ function AppRoutes() {
         <Route path="coursebuilder/create" element={<CreateCourse />} />
 
         <Route path="settings" element={<SettingsPage />} />
+
+        {/*Student dashboard*/}
+        <Route path="welcomepage" element={<WelcomePage />} />
+        <Route path="explore" element={<Explore />} />
+        <Route path="recomendedcourse" element={<RecomendedCourse/>} />
+        <Route path="achievement" element={<Achievement />} />
+        <Route path="support" element={<Support/>} />
       </Route>
       {/*Instructors only*/}
       <Route
@@ -195,7 +208,7 @@ function AppRoutes() {
         element={
           <DashboardLayout>
             <RoleRoute allowedRole="student">
-              <AllCourse/>
+              <AllCourse />
             </RoleRoute>
           </DashboardLayout>
         }

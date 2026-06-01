@@ -36,7 +36,7 @@ const Sidebar = ({ className, onClose, onLogout }) => {
 
   const { user, loading } = UseuserRole();
   if (loading) return <div>Loading Sidebar</div>;
-  if (!user) return <div>No user</div>;
+  if (!user) return <navigate to="/register"/>;
 
   // Default to student if role missing, and force lowercase
   const role = (user.role || "student").toLowerCase();
@@ -45,25 +45,45 @@ const Sidebar = ({ className, onClose, onLogout }) => {
     { name: "Dashboard", path: "/dashboard", icon: MdDashboard, end: true },
   ];
 
+  const learnerLinks = [
+    {
+      name: "All Courses",
+      path: "/dashboard/allcourses",
+      icon: MdOutlineBookOnline,
+    },
+    {
+      name: "Explore",
+      path: "/dashboard/explore",
+      icon: MdExplore,
+    },
+    {
+      name: "Recommended Courses",
+      path: "/dashboard/recomendedcourse",
+      icon: MdExplore,
+    },
+    {
+      name: "Achievements",
+      path: "/dashboard/achievement",
+      icon: RiGraduationCapLine,
+    },
+
+    { name: "Settings", path: "/dashboard/settings", icon: GrPerformance },
+  ];
   const studentLinks = [
     {
       name: "Courses",
       path: "/course",
       icon: MdSchool,
     },
-    {
-      name: "Recommended Course",
-      path: "/dashboard/explore",
-      icon: MdExplore,
-    },
+    
     {
       name: "Achievements",
-      path: "/dashboard/achievements",
+      path: "/dashboard/achievement",
       icon: RiGraduationCapLine,
     },
 
     { name: "Settings", path: "/dashboard/settings", icon: GrPerformance },
-    
+    { name: "Support", path: "/dashboard/support", icon: MdSettings },
   ];
 
   const instructorLinks = [
@@ -83,6 +103,7 @@ const Sidebar = ({ className, onClose, onLogout }) => {
   const links = [
     ...baseLinks,
     ...(role === "student" ? studentLinks : []),
+    ...(role === "learner" ? learnerLinks : []),
     ...(role === "instructor" ? instructorLinks : []),
   ];
 

@@ -11,15 +11,27 @@ const UseuserRole = () => {
     const unsub = onAuthStateChanged(auth, async (user) => {
       if (user) {
         try {
-          const docSnap = await getDoc(doc(db, "users", user.uid));
-          console.log("Doc exist:", docSnap.exists());
+          const docRef = doc(db, "users", user.uid);
+          const docSnap = await getDoc(docRef);
+
+          console.log("Doc exists:", docSnap.exists());
           console.log("Doc data:", docSnap.data());
-          setUserData(
-            docSnap.exists() ? { uid: user.uid, ...docSnap.data() } : null,
-          );
+
+          // Merge Firebase Auth + Firestore data
+          setUserData({
+            uid: user.uid,
+            email: user.email, // from Auth
+            displayName: user.displayName, // from Auth
+            ...docSnap.data(), // Firstname, Lastname, role from Firestore
+          });
         } catch (err) {
           console.error("Error fetching user doc:", err);
-          setUserData(null);
+          // Still return auth data even if Firestore fails
+          setUserData({
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName,
+          });
         }
       } else {
         setUserData(null);
@@ -31,4 +43,5 @@ const UseuserRole = () => {
 
   return { user: userData, loading };
 };
+
 export default UseuserRole;

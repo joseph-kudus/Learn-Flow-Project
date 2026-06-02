@@ -6,7 +6,6 @@ import { FaBook, FaUsers, FaDollarSign, FaPlus } from "react-icons/fa";
 function WelcomeInstructor() {
   const { user } = UseuserRole();
 
-  // Replace with real Firestore queries later
   const stats = {
     totalStudents: 124,
     publishedCourses: 5,

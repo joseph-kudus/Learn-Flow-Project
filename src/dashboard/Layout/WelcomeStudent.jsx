@@ -1,9 +1,22 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { unsplash, Image1 } from "../../assets/images/Myimg";
-import "./WelcomeStudent.css"; // import the CSS
+import "./welcomeStudent.css";
+import UseuserRole from "../UserData/UseuserRole";
 
-const WelcomeStudent = ({ user }) => {
+const WelcomeStudent = () => {
+  const { user, loading } = UseuserRole();
+  if (loading) return <div>Loading...</div>;
+  if (!user) return <Navigate to="/login" />;
+
+  const role = (user.role || "learner").toLowerCase();
+
+  const fullName =
+    user?.nickname ||
+    user?.displayName ||
+    user?.email?.split("@")[0] ||
+    "Student";
+
   const enrolledCourses = [
     {
       id: 1,
@@ -24,14 +37,15 @@ const WelcomeStudent = ({ user }) => {
   const stats = {
     coursesInProgress: enrolledCourses.length,
     completed: 1,
-    certificates: 1,
+    certificates: 0,
   };
 
   return (
     <section className="content-section">
       <div className="welcome-banner">
-        <h1>Welcome back, {user?.name || "Student"}</h1>
-        <p>Let's continue your learning journey</p>
+        <h3>Hello {fullName}</h3>
+
+        <p>Let's learn something exciting today!</p>
       </div>
 
       {/* Stats */}
@@ -50,34 +64,41 @@ const WelcomeStudent = ({ user }) => {
         </div>
       </div>
 
-      {/* Continue Learning */}
-      <div className="learning-section">
-        <h2>Continue Learning</h2>
-        <div className="course-list">
-          {enrolledCourses.map((course) => (
-            <div key={course.id} className="course-card">
-              <img src={course.img} alt={course.title} />
-              <div className="course-info">
-                <h3>{course.title}</h3>
-                <p className="next-lesson">Next: {course.nextLesson}</p>
-                <div className="progress-wrapper">
-                  <div className="progress-label">
-                    <span>Progress</span>
-                    <span>{course.progress}%</span>
-                  </div>
-                  <div className="progress-bar">
-                    <div
-                      className="progress-fill"
-                      style={{ width: `${course.progress}%` }}
-                    ></div>
+      {role === "student" && (
+        <div className="learning-section">
+          <h2>Continue Learning</h2>
+          <div className="course-list">
+            {enrolledCourses.map((course) => (
+              <div key={course.id} className="course-card">
+                <img src={course.img} alt={course.title} />
+                <div className="course-info">
+                  <h3>{course.title}</h3>
+                  <p className="next-lesson">Next: {course.nextLesson}</p>
+                  <div className="progress-wrapper">
+                    <div className="progress-label">
+                      <span>Progress</span>
+                      <span>{course.progress}%</span>
+                    </div>
+                    <div className="progress-bar">
+                      <div
+                        className="progress-fill"
+                        style={{ width: `${course.progress}%` }}
+                      ></div>
+                    </div>
                   </div>
                 </div>
+                <button className="resume-btn">Resume</button>
               </div>
-              <button className="resume-btn">Resume</button>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
+
+      {role === "instructor" && (
+        <Link to="/dashboard/coursebuilder" className="instructor-btn">
+          Create New Course
+        </Link>
+      )}
 
       <Link to="/dashboard/allcourses" className="browse-link">
         Browse More Courses

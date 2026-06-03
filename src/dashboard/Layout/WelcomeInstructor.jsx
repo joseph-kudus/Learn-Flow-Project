@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import UseuserRole from "../UserData/UseuserRole";
 import { FaBook, FaUsers, FaDollarSign, FaPlus } from "react-icons/fa";
 
-function WelcomeInstructor() {
-  const { user } = UseuserRole();
+function WelcomeInstructor({ user, role }) {
+  const name =
+    user?.Firstname || user?.displayName || user?.email || "instructor";
 
   const stats = {
     totalStudents: 124,
@@ -22,8 +23,8 @@ function WelcomeInstructor() {
     <section className="content-section p-6">
       <div className="welcome-banner">
         <div className="welcome-banner1">
-          <h1>Instructor Dashboard</h1>
-          <p>Welcome back, {user?.name}. Here's your overview</p>
+          <h1>Instructor { name}</h1>
+          <p>Welcome back, . Here's your overview</p>
         </div>
       </div>
 

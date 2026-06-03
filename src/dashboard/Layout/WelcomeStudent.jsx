@@ -3,7 +3,7 @@ import { Link, Navigate } from "react-router-dom";
 import { unsplash, Image1 } from "../../assets/images/Myimg";
 import "./welcomeStudent.css";
 
-const WelcomeStudent = ({ user }) => {
+const WelcomeStudent = ({ user, role }) => {
   const firstnamedisplay =
     user?.Firstname ||
     user?.displayName ||

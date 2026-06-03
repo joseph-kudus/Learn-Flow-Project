@@ -2,20 +2,13 @@ import React from "react";
 import { Link, Navigate } from "react-router-dom";
 import { unsplash, Image1 } from "../../assets/images/Myimg";
 import "./welcomeStudent.css";
-import UseuserRole from "../UserData/UseuserRole";
 
-const WelcomeStudent = () => {
-  const { user, loading } = UseuserRole();
-  if (loading) return <div>Loading...</div>;
-  if (!user) return <Navigate to="/login" />;
-
-  const role = (user.role || "learner").toLowerCase();
-
-  const fullName =
-    user?.nickname ||
+const WelcomeStudent = ({ user }) => {
+  const firstnamedisplay =
+    user?.Firstname ||
     user?.displayName ||
     user?.email?.split("@")[0] ||
-    "Student";
+    "student";
 
   const enrolledCourses = [
     {
@@ -43,7 +36,7 @@ const WelcomeStudent = () => {
   return (
     <section className="content-section">
       <div className="welcome-banner">
-        <h3>Hello {fullName}</h3>
+        <h3>Hello {firstnamedisplay}</h3>
 
         <p>Let's learn something exciting today!</p>
       </div>

@@ -10,9 +10,12 @@ import {
 } from "../../assets/images/Myimg";
 import UseuserRole from "../UserData/UseuserRole";
 
-function DashboardContent() {
-  const navigate = useNavigate();
-
+function DashboardContent({ user }) {
+  const displayNamehere =
+    user?.Firstname ||
+    user?.displayName ||
+    user?.email?.split("@")[0] ||
+    "learner";
   const continueLearning = [
     {
       img: unsplash,
@@ -56,23 +59,18 @@ function DashboardContent() {
       price: 35,
     },
   ];
-  
+
   return (
     <section className="content-section">
       <div className="welcome-banner">
         <div className="welcome-banner1">
-          <h1>Welcome to Learnflow</h1>
+          <h1>Welcome to Learnflow, {displayNamehere} </h1>
           <p>
             Learn at your own pace with lifetime access on mobile and desktop
           </p>
         </div>
         <hr />
-        
-        
-        
-        
-        
-        
+
         <p>Let’s continue Learning!</p>
         <div className="course-conti">
           {continueLearning.map((item, idx) => (

@@ -7,10 +7,10 @@ import WelcomeInstructor from "../Layout/WelcomeInstructor"; // View Instructors
 
 const DashboardMain = () => {
   const { user, loading } = UseuserRole();
-  if (loading) return <div>Loading ,,,,</div>;
+  if (loading) return <div>checking user data</div>;
+  if (!user) return <Navigate to="/login" />;
 
   const role = (user.role || "learner").toLowerCase();
-  if (!user) return <Navigate to="/register" />;
 
   if (role === "instructor") {
     return <WelcomeInstructor user={user} />;

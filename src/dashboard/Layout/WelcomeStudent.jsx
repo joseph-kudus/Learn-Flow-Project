@@ -5,7 +5,7 @@ import "./welcomeStudent.css";
 
 const WelcomeStudent = ({ user, role }) => {
   const firstnamedisplay =
-    user?.Firstname ||
+    user?.nickname ||
     user?.displayName ||
     user?.email?.split("@")[0] ||
     "student";

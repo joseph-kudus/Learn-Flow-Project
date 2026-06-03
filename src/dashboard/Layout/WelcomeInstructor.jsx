@@ -1,11 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import UseuserRole from "../UserData/UseuserRole";
 import { FaBook, FaUsers, FaDollarSign, FaPlus } from "react-icons/fa";
+// Remove: import UseuserRole from "../UserData/UseuserRole"; // not needed
 
-function WelcomeInstructor({ user, role }) {
-  const name =
-    user?.Firstname || user?.displayName || user?.email || "instructor";
+function WelcomeInstructor({ user }) {
+  // <-- Remove role prop, it's in user
+  const fullName =
+    user?.nickname || // <-- Add this. Matches SettingsPage
+    user?.displayName ||
+    user?.email?.split("@")[0] ||
+    "Instructor"; // <-- Changed from "student"
 
   const stats = {
     totalStudents: 124,
@@ -23,8 +27,9 @@ function WelcomeInstructor({ user, role }) {
     <section className="content-section p-6">
       <div className="welcome-banner">
         <div className="welcome-banner1">
-          <h1>Instructor { name}</h1>
-          <p>Welcome back, . Here's your overview</p>
+          <h1>Instructor {fullName}</h1>
+          <p>Welcome back. Here's your overview</p>{" "}
+          {/* Fixed: removed extra, */}
         </div>
       </div>
 

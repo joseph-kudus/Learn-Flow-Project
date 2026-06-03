@@ -1,5 +1,5 @@
 import React from "react";
-import UseuserRole from "../../dashboard/userdata/UseuserRole";
+import UseuserRole from "../UserData/UseuserRole";
 import { Navigate } from "react-router-dom";
 import DashboardContent from "../Layout/DashboardContent"; // View Learner
 import WelcomeStudent from "../Layout/WelcomeStudent"; // View Student

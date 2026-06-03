@@ -52,9 +52,9 @@ const WelcomeStudent = ({ user, role }) => {
     },
   ];
 
-  // Helper to calculate progress if null
   const getProgress = (course) => {
-    if (course.progress !== null) return course.progress;
+    if (course.progress !== undefined && course.progress !== null)
+      return course.progress;
     return Math.round((course.classesCompleted / course.totalClasses) * 100);
   };
 
@@ -70,7 +70,9 @@ const WelcomeStudent = ({ user, role }) => {
           <button className="active">All</button>
           <button>Coding</button>
           <button>Programming</button>
-          <button><GrMore/></button>
+          <button>
+            <GrMore />
+          </button>
         </div>
       </div>
 
@@ -86,18 +88,20 @@ const WelcomeStudent = ({ user, role }) => {
                   alt={course.title}
                   className="card-image"
                 />
-                <h3>{course.title}</h3>
-                <span className="card-category">{course.category}</span>
+                <div className="bek">
+                  <h3>{course.title}</h3>
+                  <span className="card-category">{course.category}</span>
+                </div>
               </div>
 
               <div className="progress-section">
                 <div className="progress-bar">
                   <div
                     className="progress-fill"
-                    style={{ width: `${progress}` }}
+                    style={{ width: `${progress}%` }}
                   ></div>
                 </div>
-                <span className="progress-text">{progress}</span>
+                <span className="progress-text">{progress}%</span>
               </div>
 
               <div className="lessons">

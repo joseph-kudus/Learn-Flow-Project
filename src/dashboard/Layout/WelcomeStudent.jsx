@@ -1,7 +1,8 @@
 import React from "react";
-import { Link, Navigate } from "react-router-dom";
-import { unsplash, Image1 } from "../../assets/images/Myimg";
+import { Link } from "react-router-dom";
+import { unsplash, Image1, Image2 } from "../../assets/images/Myimg";
 import "./welcomeStudent.css";
+import { FaArrowRightLong } from "react-icons/fa6";
 
 const WelcomeStudent = ({ user, role }) => {
   const firstnamedisplay =
@@ -13,89 +14,137 @@ const WelcomeStudent = ({ user, role }) => {
   const enrolledCourses = [
     {
       id: 1,
-      img: unsplash,
-      title: "Introduction to CSS language",
-      progress: 60,
-      nextLesson: "Flexbox basics",
+      title: "Intro to C++",
+      category: "CODING",
+      img: Image2,
+      progress: 84,
+      classesCompleted: 42,
+      totalClasses: 50,
+      duration: "1hr 45m",
+      nextLesson: "Pointers & Memory",
     },
     {
       id: 2,
+      title: "Intro to Programming",
+      category: "LANGUAGE",
       img: Image1,
-      title: "Introduction to JavaScript language",
-      progress: 25,
-      nextLesson: "Variables and functions",
+      progress: 38,
+      classesCompleted: 12,
+      totalClasses: 32,
+      duration: "2hr 10m",
+      nextLesson: "Variables and Functions",
     },
   ];
 
-  const stats = {
-    coursesInProgress: enrolledCourses.length,
-    completed: 1,
-    certificates: 0,
-  };
+  const completedCourses = [
+    {
+      code: "JavaScript 101",
+      title: "Introduction to Javascript",
+      grade: "100/100",
+      date: "October 13, 2024",
+      status: "pass",
+    },
+    {
+      code: "HTML 102",
+      title: "HTML as a Programming Language",
+      grade: "40/100",
+      date: "October 13, 2024",
+      status: "fail",
+    },
+  ];
 
   return (
     <section className="content-section">
       <div className="welcome-banner">
-        <h3>Hello {firstnamedisplay}</h3>
+        <div className="greet-banner">
+          <h1>Hello {firstnamedisplay}</h1>
+          <p>Let's learn something exciting today!</p>
+        </div>
 
-        <p>Let's learn something exciting today!</p>
+        <div className="programs-nav">
+          <button className="active">All</button>
+          <button>Coding</button>
+          <button>Programming</button>
+          <button>More</button>
+        </div>
       </div>
 
-      {/* Stats */}
-      <div className="stats-grid">
-        <div className="stat-card">
-          <p className="stat-label">In Progress</p>
-          <p className="stat-number">{stats.coursesInProgress}</p>
+      {/* Active Courses Cards */}
+      <div className="card-container">
+        {enrolledCourses.map((course) => (
+          <div key={course.id} className="course-card-container">
+            <div className="card-header">
+              <h3>{course.title}</h3>
+              <span className="card-category">{course.category}</span>
+            </div>
+
+            <div className="progress-section">
+              <div className="progress-bar">
+                <div
+                  className="progress-fill"
+                  style={{ width: `${course.progress}%` }}
+                ></div>
+              </div>
+              <span className="progress-text">{course.progress}%</span>
+            </div>
+
+            <div className="lessons">
+              <p>
+                {course.classesCompleted}/{course.totalClasses} Classes
+              </p>
+              <p>{course.duration}</p>
+            </div>
+
+            <div className="card-footer">
+              <button className="resume-btn">Resume classes</button>
+              <button className="arrow-btn">
+                <FaArrowRightLong />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Completed Courses Table */}
+      <div className="course-main">
+        <div className="table-header">
+          <h3>Completed courses</h3>
+          <button className="view-all">View All</button>
         </div>
-        <div className="stat-card">
-          <p className="stat-label">Completed</p>
-          <p className="stat-number">{stats.completed}</p>
-        </div>
-        <div className="stat-card">
-          <p className="stat-label">Certificates</p>
-          <p className="stat-number">{stats.certificates}</p>
-        </div>
+
+        <table className="courses-table">
+          <thead>
+            <tr>
+              <th>Course Code</th>
+              <th>Course Title</th>
+              <th>Grade Score</th>
+              <th>Completion Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {completedCourses.map((course) => (
+              <tr key={course.code}>
+                <td>{course.code}</td>
+                <td>{course.title}</td>
+                <td>{course.grade}</td>
+                <td>{course.date}</td>
+                <td>
+                  <span className={`status ${course.status}`}>
+                    {course.status === "pass" ? "Pass" : "Fail"}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       {role === "student" && (
-        <div className="learning-section">
-          <h2>Continue Learning</h2>
-          <div className="course-list">
-            {enrolledCourses.map((course) => (
-              <div key={course.id} className="course-card">
-                <img src={course.img} alt={course.title} />
-                <div className="course-info">
-                  <h3>{course.title}</h3>
-                  <p className="next-lesson">Next: {course.nextLesson}</p>
-                  <div className="progress-wrapper">
-                    <div className="progress-label">
-                      <span>Progress</span>
-                      <span>{course.progress}%</span>
-                    </div>
-                    <div className="progress-bar">
-                      <div
-                        className="progress-fill"
-                        style={{ width: `${course.progress}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                </div>
-                <button className="resume-btn">Resume</button>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {role === "instructor" && (
-        <Link to="/dashboard/coursebuilder" className="instructor-btn">
-          Create New Course
+        <Link to="/dashboard/allcourses" className="browse-link">
+          Browse More Courses
         </Link>
       )}
-
-      <Link to="/dashboard/allcourses" className="browse-link">
-        Browse More Courses
-      </Link>
     </section>
   );
 };

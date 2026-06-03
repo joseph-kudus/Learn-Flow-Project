@@ -14,9 +14,6 @@ const UseuserRole = () => {
           const docRef = doc(db, "users", user.uid);
           const docSnap = await getDoc(docRef);
 
-          console.log("Doc exists:", docSnap.exists());
-          console.log("Doc data:", docSnap.data());
-
           // Merge Firebase Auth + Firestore data
           setUserData({
             uid: user.uid,

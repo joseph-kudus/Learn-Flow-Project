@@ -11,6 +11,7 @@ import {
 } from "react-icons/md";
 import { RiGraduationCapLine } from "react-icons/ri";
 import { GrPerformance } from "react-icons/gr";
+import { PiNotePencilBold } from "react-icons/pi";
 
 import { FaBook } from "react-icons/fa";
 import UseuserRole from "../../UserData/UseuserRole";
@@ -91,7 +92,7 @@ const Sidebar = ({ className, onClose, onLogout }) => {
     {
       name: "Course Builder",
       path: "/dashboard/coursebuilder",
-      icon: MdSchool,
+      icon: PiNotePencilBold,
     },
     { name: "Settings", path: "/dashboard/settings", icon: MdSettings },
   ];

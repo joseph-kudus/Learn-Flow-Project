@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { unsplash, Image1, Image2 } from "../../assets/images/Myimg";
+import { Courseicon, Image1, Image2 } from "../../assets/images/Myimg";
 import "./welcomeStudent.css";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { GrMore } from "react-icons/gr";
 
 const WelcomeStudent = ({ user, role }) => {
   const firstnamedisplay =
@@ -16,8 +17,7 @@ const WelcomeStudent = ({ user, role }) => {
       id: 1,
       title: "Intro to C++",
       category: "CODING",
-      img: Image2,
-      progress: 84,
+      img: Courseicon,
       classesCompleted: 42,
       totalClasses: 50,
       duration: "1hr 45m",
@@ -28,7 +28,6 @@ const WelcomeStudent = ({ user, role }) => {
       title: "Intro to Programming",
       category: "LANGUAGE",
       img: Image1,
-      progress: 38,
       classesCompleted: 12,
       totalClasses: 32,
       duration: "2hr 10m",
@@ -53,6 +52,12 @@ const WelcomeStudent = ({ user, role }) => {
     },
   ];
 
+  // Helper to calculate progress if null
+  const getProgress = (course) => {
+    if (course.progress !== null) return course.progress;
+    return Math.round((course.classesCompleted / course.totalClasses) * 100);
+  };
+
   return (
     <section className="content-section">
       <div className="welcome-banner">
@@ -65,44 +70,52 @@ const WelcomeStudent = ({ user, role }) => {
           <button className="active">All</button>
           <button>Coding</button>
           <button>Programming</button>
-          <button>More</button>
+          <button><GrMore/></button>
         </div>
       </div>
 
       {/* Active Courses Cards */}
       <div className="card-container">
-        {enrolledCourses.map((course) => (
-          <div key={course.id} className="course-card-container">
-            <div className="card-header">
-              <h3>{course.title}</h3>
-              <span className="card-category">{course.category}</span>
-            </div>
-
-            <div className="progress-section">
-              <div className="progress-bar">
-                <div
-                  className="progress-fill"
-                  style={{ width: `${course.progress}%` }}
-                ></div>
+        {enrolledCourses.map((course) => {
+          const progress = getProgress(course);
+          return (
+            <div key={course.id} className="course-card-container">
+              <div className="card-header">
+                <img
+                  src={course.img}
+                  alt={course.title}
+                  className="card-image"
+                />
+                <h3>{course.title}</h3>
+                <span className="card-category">{course.category}</span>
               </div>
-              <span className="progress-text">{course.progress}%</span>
-            </div>
 
-            <div className="lessons">
-              <p>
-                {course.classesCompleted}/{course.totalClasses} Classes
-              </p>
-              <p>{course.duration}</p>
-            </div>
+              <div className="progress-section">
+                <div className="progress-bar">
+                  <div
+                    className="progress-fill"
+                    style={{ width: `${progress}` }}
+                  ></div>
+                </div>
+                <span className="progress-text">{progress}</span>
+              </div>
 
-            <div className="card-footer">
-              <button className="resume-btn">Resume classes</button>
-              <button className="arrow-btn">
-                <FaArrowRightLong />
-              </button>
+              <div className="lessons">
+                <p>
+                  {course.classesCompleted}/{course.totalClasses} Classes
+                </p>
+                <p>{course.duration}</p>
+              </div>
+
+              <div className="card-footer">
+                <button className="resume-btn">Resume classes</button>
+                <button className="arrow-btn">
+                  <FaArrowRightLong />
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Completed Courses Table */}
@@ -139,12 +152,6 @@ const WelcomeStudent = ({ user, role }) => {
           </tbody>
         </table>
       </div>
-
-      {role === "student" && (
-        <Link to="/dashboard/allcourses" className="browse-link">
-          Browse More Courses
-        </Link>
-      )}
     </section>
   );
 };

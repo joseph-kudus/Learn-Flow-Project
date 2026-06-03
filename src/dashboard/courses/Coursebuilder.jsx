@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { GrAdd } from "react-icons/gr";
 import "./course.css";
 import UseuserRole from "../UserData/UseuserRole";
+import { IoAddCircle } from "react-icons/io5";
 
 function CourseBuilder() {
   const { user } = UseuserRole();
@@ -14,7 +15,7 @@ function CourseBuilder() {
           <Link to="/dashboard/coursebuilder/create" className="add-course-btn">
             +create course
             <button type="button">
-              <GrAdd className="mes" />
+              <IoAddCircle size={120}/>
             </button>
           </Link>
         </div>

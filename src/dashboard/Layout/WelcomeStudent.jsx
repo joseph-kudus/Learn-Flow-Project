@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Courseicon, Image1, Image2 } from "../../assets/images/Myimg";
+import { book1, book2, termina } from "../../assets/images/logos";
 import "./welcomeStudent.css";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { GrMore } from "react-icons/gr";
+import { MdAccessTime } from "react-icons/md";
 
 const WelcomeStudent = ({ user, role }) => {
   const firstnamedisplay =
@@ -27,7 +29,7 @@ const WelcomeStudent = ({ user, role }) => {
       id: 2,
       title: "Intro to Programming",
       category: "LANGUAGE",
-      img: Image1,
+      img: termina,
       classesCompleted: 12,
       totalClasses: 32,
       duration: "2hr 10m",
@@ -47,7 +49,28 @@ const WelcomeStudent = ({ user, role }) => {
       code: "HTML 102",
       title: "HTML as a Programming Language",
       grade: "40/100",
+      date: "October 21, 2024",
+      status: "fail",
+    },
+    {
+      code: "HTML 103",
+      title: "HTML as a Programming Language",
+      grade: "40/100",
+      date: "October 21, 2024",
+      status: "fail",
+    },
+    {
+      code: "JavaScript 101",
+      title: "Introduction to Javascript",
+      grade: "100/100",
       date: "October 13, 2024",
+      status: "pass",
+    },
+    {
+      code: "HTML 104",
+      title: "HTML as a Programming Language",
+      grade: "40/100",
+      date: "October 21, 2024",
       status: "fail",
     },
   ];
@@ -98,21 +121,27 @@ const WelcomeStudent = ({ user, role }) => {
                 <div className="progress-bard">
                   <div
                     className="progress-fill"
-                    style={{ width: `${progress}` }}
+                    style={{ width: `${progress}%` }}
                   ></div>
                 </div>
                 <span className="progress-text">{progress}</span>
               </div>
 
               <div className="lessons">
-                <p>
-                  {course.classesCompleted}/{course.totalClasses} Classes
-                </p>
-                <p>{course.duration}</p>
+                <div className="lessons-logo">
+                  <img src={book2} alt="ff" />
+                  <p>
+                    {course.classesCompleted}/{course.totalClasses} Classes
+                  </p>
+                </div>
+                <div className="durationy">
+                  <MdAccessTime size={20} />
+                  <p>{course.duration}</p>
+                </div>
               </div>
-
+              <hr />
               <div className="card-footer">
-                <button className="resume-btn">Resume classes</button>
+                <button>Resume classes</button>
                 <button className="arrow-btn">
                   <FaArrowRightLong />
                 </button>

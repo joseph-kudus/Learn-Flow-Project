@@ -9,6 +9,7 @@ import {
   MdOutlineBookOnline,
   MdExplore,
 } from "react-icons/md";
+import { TbWorldWww } from "react-icons/tb";
 import { RiGraduationCapLine } from "react-icons/ri";
 import { GrPerformance } from "react-icons/gr";
 import { PiNotePencilBold } from "react-icons/pi";
@@ -16,6 +17,7 @@ import { PiNotePencilBold } from "react-icons/pi";
 import { FaBook } from "react-icons/fa";
 import UseuserRole from "../../UserData/UseuserRole";
 import { FiDownload } from "react-icons/fi";
+
 
 const Sidebar = ({ className, onClose, onLogout }) => {
   const { logout } = useAuth();
@@ -39,7 +41,7 @@ const Sidebar = ({ className, onClose, onLogout }) => {
   if (loading) return <div>Loading Sidebar</div>;
   if (!user) return null;
 
-  // Default to student if role missing, and force lowercase
+  // Default to learner if role missing, and force lowercase
   const role = (user.role || "learner").toLowerCase();
 
   const baseLinks = [
@@ -71,6 +73,11 @@ const Sidebar = ({ className, onClose, onLogout }) => {
       name: "Courses",
       path: "/dashboard/allcourses",
       icon: MdSchool,
+    },
+    {
+      name: "Explore",
+      path: "/dashboard/explore",
+      icon: TbWorldWww,
     },
 
     {
@@ -126,6 +133,7 @@ const Sidebar = ({ className, onClose, onLogout }) => {
             {link.name}
           </NavLink>
         ))}
+        <hr />
         <div className="logout-section">
           <button
             className="dasff logout-btn"

@@ -95,13 +95,13 @@ const WelcomeStudent = ({ user, role }) => {
               </div>
 
               <div className="progress-section">
-                <div className="progress-bar">
+                <div className="progress-bard">
                   <div
                     className="progress-fill"
-                    style={{ width: `${progress}%` }}
+                    style={{ width: `${progress}` }}
                   ></div>
                 </div>
-                <span className="progress-text">{progress}%</span>
+                <span className="progress-text">{progress}</span>
               </div>
 
               <div className="lessons">

@@ -71,7 +71,7 @@ const Sidebar = ({ className, onClose, onLogout }) => {
   const studentLinks = [
     {
       name: "Courses",
-      path: "/dashboard/allcourses",
+      path: "/dashboard/courses",
       icon: MdSchool,
     },
     {
@@ -86,7 +86,7 @@ const Sidebar = ({ className, onClose, onLogout }) => {
       icon: RiGraduationCapLine,
     },
 
-    { name: "Settings", path: "/dashboard/settings", icon: GrPerformance },
+    { name: "Settings", path: "/dashboard/setting", icon: GrPerformance },
     { name: "Support", path: "/dashboard/support", icon: MdSettings },
   ];
 

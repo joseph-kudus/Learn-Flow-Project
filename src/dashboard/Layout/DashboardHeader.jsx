@@ -39,7 +39,7 @@ function DashboardHeader() {
           )}
 
           <div className="MyAcc-wraper">
-            <Link to="/dashboard/settings" className="myacc">
+            <Link to="/dashboard/setting" className="myacc">
               <div className="userinfo">
                 <h4>{displayName}</h4>
                 <p className="capitalize">{role}</p>{" "}

@@ -23,6 +23,8 @@ import Achievement from "./dashboard/UserData/students/Achivement";
 import Support from "./dashboard/UserData/Support";
 import RecomendedCourse from "./dashboard/UserData/students/RecomendedCourses.jsx";
 import LandingPage from "./pages/LandingPage";
+import Mycourse from "./dashboard/UserData/students/Mycourses.jsx";
+import Settings from "./dashboard/UserData/students/Settings.jsx";
 
 /**
  * Layout: Wraps public pages with Navbar + Footer
@@ -174,9 +176,11 @@ function AppRoutes() {
         <Route path="coursebuilder/create" element={<CreateCourse />} />
 
         {/* Student/Learner routes */}
+        <Route path="courses" element={<Mycourse />} />
         <Route path="explore" element={<Explore />} />
         <Route path="recomendedcourse" element={<RecomendedCourse />} />
         <Route path="achievement" element={<Achievement />} />
+        <Route path="setting" element={<Settings />} />
         <Route path="support" element={<Support />} />
       </Route>
 

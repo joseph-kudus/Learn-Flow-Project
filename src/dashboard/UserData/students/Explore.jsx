@@ -1,10 +1,8 @@
-import React from "react";
 import { Courseicon } from "../../../assets/images/Myimg";
 import { termina, book2 } from "../../../assets/images/logos";
 import { MdAccessTime } from "react-icons/md";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { GrMore } from "react-icons/gr";
-
 
 const Explore = () => {
   const enrolledCourses = [

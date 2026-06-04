@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Courseicon, Image1, Image2 } from "../../assets/images/Myimg";
 import { book1, book2, termina } from "../../assets/images/logos";
@@ -13,6 +13,7 @@ const WelcomeStudent = ({ user, role }) => {
     user?.displayName ||
     user?.email?.split("@")[0] ||
     "student";
+  const [activeCategory, setActiveCategory] = useState("ALL");
 
   const enrolledCourses = [
     {
@@ -74,6 +75,10 @@ const WelcomeStudent = ({ user, role }) => {
       status: "fail",
     },
   ];
+  const filtercourses =
+    activeCategory === "ALL"
+      ? enrolledCourses
+      : enrolledCourses.filter((course) => course.category === activeCategory);
 
   const getProgress = (course) => {
     if (course.progress !== undefined && course.progress !== null)
@@ -90,10 +95,29 @@ const WelcomeStudent = ({ user, role }) => {
         </div>
 
         <div className="programs-nav">
-          <button className="active">All</button>
-          <button>Coding</button>
-          <button>Programming</button>
-          <button>
+          <button
+            className={activeCategory === "ALL" ? "active" : ""}
+            onClick={() => setActiveCategory("ALL")}
+          >
+            All
+          </button>
+          <button
+            className={activeCategory === "CODING" ? "active" : ""}
+            onClick={() => setActiveCategory("CODING")}
+          >
+            Coding
+          </button>
+
+          <button
+            className={activeCategory === "LANGUAGE" ? "active" : ""}
+            onClick={() => setActiveCategory("LANGUAGE")}
+          >
+            Programing
+          </button>
+          <button
+            className={activeCategory === "more" ? "active" : ""}
+            onClick={() => setActiveCategory("more")}
+          >
             <GrMore />
           </button>
         </div>
@@ -101,7 +125,7 @@ const WelcomeStudent = ({ user, role }) => {
 
       {/* Active Courses Cards */}
       <div className="card-container">
-        {enrolledCourses.map((course) => {
+        {filtercourses.map((course) => {
           const progress = getProgress(course);
           return (
             <div key={course.id} className="course-card-container">
@@ -188,5 +212,4 @@ const WelcomeStudent = ({ user, role }) => {
     </section>
   );
 };
-
 export default WelcomeStudent;

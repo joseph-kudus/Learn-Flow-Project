@@ -5,6 +5,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import { GrMore } from "react-icons/gr";
 
 const Explore = () => {
+  
   const enrolledCourses = [
     {
       id: 1,

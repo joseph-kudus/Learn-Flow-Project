@@ -74,6 +74,9 @@
   gap: 30px;
   margin-bottom: 32px;
 }
+.card-container p{
+color: #000;
+}
 
 .course-card-container {
   display: block;

@@ -1,84 +1,96 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Courseicon, Image1, Image2 } from "../../assets/images/Myimg";
-import { book1, book2, termina } from "../../assets/images/logos";
+import React, { useMemo, useState } from "react";
+
+import { Courseicon } from "../../assets/images/Myimg";
+import { book2, termina } from "../../assets/images/logos";
 import "./welcomeStudent.css";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { GrMore } from "react-icons/gr";
 import { MdAccessTime } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
-const WelcomeStudent = ({ user, role }) => {
+const categories = ["ALL", "CODING", "PROGRAMMING", "..."];
+
+const enrolledCourses = [
+  {
+    id: 1,
+    title: "Intro to C++",
+    category: "CODING",
+    img: Courseicon,
+    classesCompleted: 42,
+    totalClasses: 50,
+    duration: "1hr 45m",
+    nextLesson: "Pointers & Memory",
+  },
+  {
+    id: 2,
+    title: "Intro to Programming",
+    category: "PROGRAMMING",
+    img: termina,
+    classesCompleted: 12,
+    totalClasses: 32,
+    duration: "2hr 10m",
+    nextLesson: "Variables and Functions",
+  },
+];
+
+const completedCourses = [
+  {
+    id: 1001,
+    code: "JavaScript 101",
+    title: "Introduction to Javascript",
+    grade: "100/100",
+    date: "October 13, 2024",
+    status: "pass",
+  },
+  {
+    id: 1002,
+    code: "HTML 102",
+    title: "HTML as a Programming Language",
+    grade: "40/100",
+    date: "October 21, 2024",
+    status: "fail",
+  },
+  {
+    id: 1003,
+    code: "HTML 103",
+    title: "HTML as a Programming Language",
+    grade: "40/100",
+    date: "October 21, 2024",
+    status: "fail",
+  },
+  {
+    id: 1004,
+    code: "JavaScript 102",
+    title: "Introduction to Javascript",
+    grade: "100/100",
+    date: "October 13, 2024",
+    status: "pass",
+  },
+  {
+    id: 1005,
+    code: "HTML 104",
+    title: "HTML as a Programming Language",
+    grade: "40/100",
+    date: "October 21, 2024",
+    status: "fail",
+  },
+];
+
+const WelcomeStudent = ({ user }) => {
+  const [courses, setCourses] = useState(enrolledCourses);
+  const [activeCategory, setActiveCategory] = useState("ALL");
+  const navigate = useNavigate();
   const firstnamedisplay =
     user?.nickname ||
     user?.displayName ||
     user?.email?.split("@")[0] ||
     "student";
-  const [activeCategory, setActiveCategory] = useState("ALL");
 
-  const enrolledCourses = [
-    {
-      id: 1,
-      title: "Intro to C++",
-      category: "CODING",
-      img: Courseicon,
-      classesCompleted: 42,
-      totalClasses: 50,
-      duration: "1hr 45m",
-      nextLesson: "Pointers & Memory",
-    },
-    {
-      id: 2,
-      title: "Intro to Programming",
-      category: "LANGUAGE",
-      img: termina,
-      classesCompleted: 12,
-      totalClasses: 32,
-      duration: "2hr 10m",
-      nextLesson: "Variables and Functions",
-    },
-  ];
-
-  const completedCourses = [
-    {
-      code: "JavaScript 101",
-      title: "Introduction to Javascript",
-      grade: "100/100",
-      date: "October 13, 2024",
-      status: "pass",
-    },
-    {
-      code: "HTML 102",
-      title: "HTML as a Programming Language",
-      grade: "40/100",
-      date: "October 21, 2024",
-      status: "fail",
-    },
-    {
-      code: "HTML 103",
-      title: "HTML as a Programming Language",
-      grade: "40/100",
-      date: "October 21, 2024",
-      status: "fail",
-    },
-    {
-      code: "JavaScript 101",
-      title: "Introduction to Javascript",
-      grade: "100/100",
-      date: "October 13, 2024",
-      status: "pass",
-    },
-    {
-      code: "HTML 104",
-      title: "HTML as a Programming Language",
-      grade: "40/100",
-      date: "October 21, 2024",
-      status: "fail",
-    },
-  ];
-  const filtercourses =
-    activeCategory === "ALL"
+  const filteredCourses = useMemo(() => {
+    return activeCategory === "ALL"
       ? enrolledCourses
       : enrolledCourses.filter((course) => course.category === activeCategory);
+  }, [activeCategory]);
 
   const getProgress = (course) => {
     if (course.progress !== undefined && course.progress !== null)
@@ -95,84 +107,84 @@ const WelcomeStudent = ({ user, role }) => {
         </div>
 
         <div className="programs-nav">
-          <button
-            className={activeCategory === "ALL" ? "active" : ""}
-            onClick={() => setActiveCategory("ALL")}
-          >
-            All
-          </button>
-          <button
-            className={activeCategory === "CODING" ? "active" : ""}
-            onClick={() => setActiveCategory("CODING")}
-          >
-            Coding
-          </button>
-
-          <button
-            className={activeCategory === "LANGUAGE" ? "active" : ""}
-            onClick={() => setActiveCategory("LANGUAGE")}
-          >
-            Programing
-          </button>
-          <button
-            className={activeCategory === "more" ? "active" : ""}
-            onClick={() => setActiveCategory("more")}
-          >
-            <GrMore />
-          </button>
+          {categories.map((category) => (
+            <button
+              key={category}
+              className={activeCategory === category ? "active" : ""}
+              onClick={() => setActiveCategory(category)}
+            >
+              {category}
+            </button>
+          ))}
         </div>
       </div>
 
       {/* Active Courses Cards */}
       <div className="card-container">
-        {filtercourses.map((course) => {
-          const progress = getProgress(course);
-          return (
-            <div key={course.id} className="course-card-container">
-              <div className="card-header">
-                <img
-                  src={course.img}
-                  alt={course.title}
-                  className="card-image"
-                />
-                <div className="bek">
-                  <h3>{course.title}</h3>
-                  <span className="card-category">{course.category}</span>
-                </div>
-              </div>
+        {filteredCourses.length === 0 ? (
+          <p className="coursent">No courses found.</p>
+        ) : (
+          filteredCourses.map((course) => {
+            const progress = getProgress(course);
 
-              <div className="progress-section">
-                <div className="progress-bard">
-                  <div
-                    className="progress-fill"
-                    style={{ width: `${progress}%` }}
-                  ></div>
+            return (
+              <div key={course.id} className="course-card-container">
+                {/* card content */}
+                <div className="card-header">
+                  <img
+                    src={course.img}
+                    alt={course.title}
+                    className="card-image"
+                  />
+                  <div className="bek">
+                    <h3>{course.title}</h3>
+                    <span className="card-category">{course.category}</span>
+                  </div>
                 </div>
-                <span className="progress-text">{progress}</span>
-              </div>
 
-              <div className="lessons">
-                <div className="lessons-logo">
-                  <img src={book2} alt="ff" />
-                  <p>
-                    {course.classesCompleted}/{course.totalClasses} Classes
-                  </p>
+                <div className="progress-section">
+                  <div className="progress-bard">
+                    <div
+                      className="progress-fill"
+                      style={{ width: `${progress}%` }}
+                    ></div>
+                  </div>
+                  <span className="progress-text">{progress}</span>
                 </div>
-                <div className="durationy">
-                  <MdAccessTime size={20} />
-                  <p>{course.duration}</p>
+
+                <div className="lessons">
+                  <div className="lessons-logo">
+                    <img src={book2} alt="ff" />
+                    <p>
+                      {course.classesCompleted}/{course.totalClasses} Classes
+                    </p>
+                  </div>
+                  <div className="durationy">
+                    <MdAccessTime size={20} />
+                    <p>{course.duration}</p>
+                  </div>
+                </div>
+                <hr />
+                <div className="card-footer">
+                  <button onClick={() => navigate(`/course/${course.id}`)}>
+                    Resume Classes
+                  </button>
+
+                  <button
+                    className="arrow-btn"
+                    onClick={() =>
+                      navigate(`/lesson/${course.id}`, {
+                        state: { lesson: course.nextLesson },
+                      })
+                    }
+                  >
+                    <FaArrowRightLong />
+                  </button>
                 </div>
               </div>
-              <hr />
-              <div className="card-footer">
-                <button>Resume classes</button>
-                <button className="arrow-btn">
-                  <FaArrowRightLong />
-                </button>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
 
       {/* Completed Courses Table */}
@@ -194,7 +206,7 @@ const WelcomeStudent = ({ user, role }) => {
           </thead>
           <tbody>
             {completedCourses.map((course) => (
-              <tr key={course.code}>
+              <tr key={course.id}>
                 <td>{course.code}</td>
                 <td>{course.title}</td>
                 <td>{course.grade}</td>

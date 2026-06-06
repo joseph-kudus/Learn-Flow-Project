@@ -1,8 +1,8 @@
-const Mycourse = () => {
-  return (
-    <div>
-      <h1>Courses</h1>
-    </div>
-  );
-};
-export default Mycourse;
+import React from 'react';
+
+const Mycourses = () => {
+  return <div><h1>my courses</h1></div>;
+}
+
+
+export default Mycourses;

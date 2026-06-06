@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from "react";
-
 import { Courseicon } from "../../assets/images/Myimg";
 import { book2, termina } from "../../assets/images/logos";
 import "./welcomeStudent.css";
@@ -7,8 +6,14 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import { GrMore } from "react-icons/gr";
 import { MdAccessTime } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import FilterButtons from "../UserData/FilterButtons";
 
-const categories = ["ALL", "CODING", "PROGRAMMING", "..."];
+
+const categories = [
+  { label: "All", value: "ALL" },
+  { label: "Coding", value: "CODING" },
+  { label: "Programming", value: "PROGRAMMING" },
+];
 
 const enrolledCourses = [
   {
@@ -77,9 +82,9 @@ const completedCourses = [
 ];
 
 const WelcomeStudent = ({ user }) => {
-  const [courses, setCourses] = useState(enrolledCourses);
   const [activeCategory, setActiveCategory] = useState("ALL");
   const navigate = useNavigate();
+
   const firstnamedisplay =
     user?.nickname ||
     user?.displayName ||
@@ -106,17 +111,12 @@ const WelcomeStudent = ({ user }) => {
           <p>Let's learn something exciting today!</p>
         </div>
 
-        <div className="programs-nav">
-          {categories.map((category) => (
-            <button
-              key={category}
-              className={activeCategory === category ? "active" : ""}
-              onClick={() => setActiveCategory(category)}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
+        <FilterButtons
+          activeFilter={activeCategory}
+          setActiveFilter={setActiveCategory}
+          options={categories}
+          showMore={false}
+        />
       </div>
 
       {/* Active Courses Cards */}
@@ -129,7 +129,6 @@ const WelcomeStudent = ({ user }) => {
 
             return (
               <div key={course.id} className="course-card-container">
-                {/* card content */}
                 <div className="card-header">
                   <img
                     src={course.img}
@@ -149,7 +148,7 @@ const WelcomeStudent = ({ user }) => {
                       style={{ width: `${progress}%` }}
                     ></div>
                   </div>
-                  <span className="progress-text">{progress}</span>
+                  <span className="progress-text">{progress}%</span>
                 </div>
 
                 <div className="lessons">

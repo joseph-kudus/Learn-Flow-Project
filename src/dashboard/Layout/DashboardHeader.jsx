@@ -6,6 +6,7 @@ import { useState, useRef, useEffect } from "react";
 import { IoIosArrowDown, IoIosNotificationsOutline } from "react-icons/io";
 import { RiAccountBoxFill } from "react-icons/ri";
 import { IoSettingsOutline } from "react-icons/io5";
+import { SlSettings } from "react-icons/sl";
 
 function DashboardHeader() {
   const { currentUser, userData, loading } = useAuth();
@@ -26,6 +27,7 @@ function DashboardHeader() {
   const avatar = userData?.photoURL || currentUser.photoURL || defaultAvatar;
 
   const [open, setOpen] = useState(false);
+  const [opennotification, setOpenNotification] = useState(false);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -52,9 +54,27 @@ function DashboardHeader() {
         <div className="header-right">
           {role === "student" && (
             <div className="notification-wrapper">
-              <button className="notification-btn">
+              <button
+                className="notification-btn"
+                onClick={() => setOpenNotification((prev) => !prev)}
+              >
                 <IoIosNotificationsOutline size={28} />
               </button>
+            </div>
+          )}
+          {opennotification && (
+            <div className="notification-header-drop">
+              <div className="notification-header">
+                <h1>Notifications</h1>
+                <SlSettings />
+              </div>
+              <div className="notification-steps-btn">
+                <button className="All">All</button>
+                <button className="Courses">Courses</button>
+                <button className="Updates">Updates</button>
+                
+                
+              </div>
             </div>
           )}
 
@@ -97,7 +117,7 @@ function DashboardHeader() {
                       to="/dashboard/setting"
                       onClick={() => setOpen(false)}
                     >
-                      <RiAccountBoxFill/>
+                      <RiAccountBoxFill />
                       My Account
                     </Link>
                   </li>
@@ -107,7 +127,7 @@ function DashboardHeader() {
                       to="/dashboard/settings"
                       onClick={() => setOpen(false)}
                     >
-                      <IoSettingsOutline/>
+                      <IoSettingsOutline />
                       Settings
                     </Link>
                   </li>

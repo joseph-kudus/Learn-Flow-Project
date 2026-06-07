@@ -17,6 +17,7 @@ import { PiNotePencilBold } from "react-icons/pi";
 import { FaBook } from "react-icons/fa";
 import UseuserRole from "../../UserData/UseuserRole";
 import { FiDownload } from "react-icons/fi";
+import { learnflowlogo } from "../../../assets/images/logos";
 
 const Sidebar = ({ className, onClose, onLogout }) => {
   const { logout } = useAuth();
@@ -111,17 +112,17 @@ const Sidebar = ({ className, onClose, onLogout }) => {
   ];
 
   return (
-    <aside
-      className={`${className} sidebar-${role}`}
-    >
+    <aside className={`${className} sidebar-${role}`}>
       <div className="logo-wraper">
-        <FaBook className="logob" />
+        <img src={learnflowlogo} alt="logo" className="logob" />
         <p>LearnFlow</p>
       </div>
 
-      <div className="nav-title">
-        <h1>MENU</h1>
-      </div>
+      {role !== "student" && (
+        <div className="nav-title">
+          <h1>MENU</h1>
+        </div>
+      )}
 
       <nav className="nav-links">
         {links.map((link) => (

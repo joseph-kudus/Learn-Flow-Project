@@ -26,6 +26,10 @@
   /* Borders */
   --border-color: #d0d3da;
   --gray-100: #f3f4f6;
+  /*sidebar for user role*/
+  --sidebar-student: #2a2a2a;
+  --sidebar-instructor: #ffffff;
+  --sidebar-learner: #ffffff;
 
   /* Shadows */
   --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
@@ -127,17 +131,59 @@ a:active {
 sidebar-student
 sidebar-instructor
 sidebar-learner*/
-.sidebar-student {
-  background: #000;
-  color: red;
+
+.sidebar-learner {
+  background: var(--sidebar-learner);
 }
-.sidebar-instructor{
-  background-color: #000133;
+.sidebar-instructor {
+  background: var(--sidebar-instructor);
+}
+
+.sidebar-instructor .logo-wraper,
+.sidebar-instructor .logo-wraper .logob {
+  color: #000;
+}
+.sidebar-student .logo-wraper p {
+  color: #ffffff;
+}
+.sidebar-student .dasff {
+  color: rgba(255, 255, 255, 0.8);
+}
+.sidebar-student .dasff.active {
+  color: var(--accent);
+}
+.sidebar-student {
+  background: var(--sidebar-student);
+  color: white;
+}
+
+.sidebar-student .logo-wraper,
+.sidebar-student .logo-wraper p,
+.sidebar-student .logo-wraper .logob {
+  color: white;
+  font-size: 28px;
+}
+
+.sidebar-student .nav-title h1 {
+  color: #ffffff;
+}
+
+.sidebar-student .dasff {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.sidebar-student .dasff:hover {
+  color: #f5f5f5;
+}
+
+.sidebar-student .dasff.active {
+  background: var(--sidebar-student);
+  color: var(--accent);
 }
 .drawer {
   width: 100%;
   max-width: 260px;
-  background: #ffffff;
+
   border-right: 1px solid #e0e0e0;
   flex-shrink: 0;
   display: flex;
@@ -160,7 +206,6 @@ sidebar-learner*/
   flex-shrink: 0;
   font-size: 20px;
   font-weight: 700;
-  color: var(--primary);
 }
 
 .logo-wraper .logob {
@@ -215,8 +260,7 @@ sidebar-learner*/
   color: var(--primary);
 }
 .dasff.active {
-  background: var(--primary);
-  color: var(--card-bg);
+  color: var(--accent);
 }
 
 .dasff:hover:not(:disabled) {
@@ -415,6 +459,54 @@ sidebar-learner*/
   font-size: 20px;
   color: #292929;
 }
+.notification-header-drop {
+  position: relative;
+  top: 90px;
+  left: 30px;
+
+  width: 370px;
+  background: #fff;
+
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+  padding: 8px 0;
+  z-index: 999;
+}
+.notification-header-drop ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.notification-header-drop li {
+  padding: 12px 16px;
+}
+
+.notification-header-drop li:hover {
+  background: #f5f5f5;
+}
+
+.notification-header-drop a {
+  text-decoration: none;
+  color: #333;
+  display: block;
+}
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+  padding: 15px 20px;
+}
+.notification-steps-btn{
+  display: flex;
+  gap: 20px;
+  padding: 0px 15px;
+}
+
+/*sss*/
 
 .acc-setting {
   position: absolute;

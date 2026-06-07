@@ -18,7 +18,6 @@ import { FaBook } from "react-icons/fa";
 import UseuserRole from "../../UserData/UseuserRole";
 import { FiDownload } from "react-icons/fi";
 
-
 const Sidebar = ({ className, onClose, onLogout }) => {
   const { logout } = useAuth();
   const navigate = useNavigate();
@@ -112,7 +111,9 @@ const Sidebar = ({ className, onClose, onLogout }) => {
   ];
 
   return (
-    <aside className={className}>
+    <aside
+      className={`${className} sidebar-${role}`}
+    >
       <div className="logo-wraper">
         <FaBook className="logob" />
         <p>LearnFlow</p>

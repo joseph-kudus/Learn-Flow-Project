@@ -2,7 +2,10 @@ import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 import defaultAvatar from "../../assets/images/default.png";
 import SearchBox from "./SearchBox";
-import { BellIcon } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { IoIosArrowDown, IoIosNotificationsOutline } from "react-icons/io";
+import { RiAccountBoxFill } from "react-icons/ri";
+import { IoSettingsOutline } from "react-icons/io5";
 
 function DashboardHeader() {
   const { currentUser, userData, loading } = useAuth();
@@ -22,6 +25,23 @@ function DashboardHeader() {
 
   const avatar = userData?.photoURL || currentUser.photoURL || defaultAvatar;
 
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className="header">
       <div className="header-nav">
@@ -29,34 +49,71 @@ function DashboardHeader() {
           {/* Show search bar only for students */}
           {role === "student" && <SearchBox />}
         </div>
-
-        <div className="flex gap-4 ml-auto items-center">
-          {/* Notification only show to students */}
+        <div className="header-right">
           {role === "student" && (
-            <button className="p-2 hover:bg-gray-100 rounded-full">
-              <BellIcon size={20} />
-            </button>
+            <div className="notification-wrapper">
+              <button className="notification-btn">
+                <IoIosNotificationsOutline size={28} />
+              </button>
+            </div>
           )}
 
-          <div className="MyAcc-wraper">
-            <Link to="/dashboard/setting" className="myacc">
-              <div className="userinfo">
-                <h4>{displayName}</h4>
-                <p className="capitalize">{role}</p>{" "}
-              </div>
+          {/* Notification only show to students */}
 
-              <div className="userimg">
-                <span className="round-circle">
+          <div className="MyAcc-wraper" ref={dropdownRef}>
+            <div className="myacc">
+              <div to="/dashboard/setting" className="userinfo-link">
+                <div className="userinfo">
+                  <h4>{displayName}</h4>
+                  <p>{role}</p>
+                </div>
+
+                <div className="userimg">
                   <img
                     src={avatar}
-                    alt="user avatar"
+                    alt="avatar"
                     onError={(e) => {
                       e.target.src = defaultAvatar;
                     }}
                   />
-                </span>
+                </div>
               </div>
-            </Link>
+
+              {role === "student" && (
+                <button
+                  className="dropdown-toggle"
+                  onClick={() => setOpen((prev) => !prev)}
+                >
+                  <IoIosArrowDown color="grey" size={30} />
+                </button>
+              )}
+            </div>
+
+            {open && (
+              <div className="acc-setting">
+                <ul>
+                  <li>
+                    <Link
+                      to="/dashboard/setting"
+                      onClick={() => setOpen(false)}
+                    >
+                      <RiAccountBoxFill/>
+                      My Account
+                    </Link>
+                  </li>
+
+                  <li>
+                    <Link
+                      to="/dashboard/settings"
+                      onClick={() => setOpen(false)}
+                    >
+                      <IoSettingsOutline/>
+                      Settings
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>

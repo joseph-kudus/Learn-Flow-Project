@@ -59,7 +59,7 @@ function DashboardContent({ user }) {
       price: 35,
     },
   ];
-
+  const navigate = useNavigate();
   return (
     <section className="content-section">
       <div className="welcome-banner">

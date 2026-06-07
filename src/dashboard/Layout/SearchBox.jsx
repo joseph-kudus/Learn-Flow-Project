@@ -1,15 +1,14 @@
 import { Search } from "lucide-react";
 import React from "react";
-import "./layout.css"
+import "./layout.css";
+import { IoIosSearch } from "react-icons/io";
 
 const SearchBox = () => {
   return (
-    <div className="header-left">
-    <div className="search-bar">
-      <input type="text" placeholder="search....." />
+    <div className="searchBox position-relative d-flex align-items-center">
+      <IoIosSearch className="mr-2"/>
+      <input type="text" placeholder="Search ..." />
     </div>
-  </div>
-  
   );
 };
 export default SearchBox;

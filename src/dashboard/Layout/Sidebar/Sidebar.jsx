@@ -1,7 +1,7 @@
-import { BookIcon, HomeIcon, Loader2, LogOut, X } from "lucide-react";
 import { useAuth } from "../../../context/AuthContext";
 import { useNavigate, NavLink } from "react-router-dom";
 import { useState } from "react";
+import { Loader2, LogOut } from "lucide-react";
 import {
   MdDashboard,
   MdSettings,
@@ -17,7 +17,11 @@ import { PiNotePencilBold } from "react-icons/pi";
 import { FaBook } from "react-icons/fa";
 import UseuserRole from "../../UserData/UseuserRole";
 import { FiDownload } from "react-icons/fi";
-import { learnflowlogo } from "../../../assets/images/logos";
+
+import yellowLogo from "../../../assets/learnflow-yellow.svg";
+import blackLogo from "../../../assets/learnflow-black.svg";
+
+
 
 const Sidebar = ({ className, onClose, onLogout }) => {
   const { logout } = useAuth();
@@ -38,11 +42,19 @@ const Sidebar = ({ className, onClose, onLogout }) => {
   };
 
   const { user, loading } = UseuserRole();
-  if (loading) return <div>Loading Sidebar</div>;
+  if (loading) {
+    return (
+      <aside className={`${className} sidebar-student`}>
+        <div className="logo-wraper">Loading...</div>
+      </aside>
+    );
+  }
+
   if (!user) return null;
 
   // Default to learner if role missing, and force lowercase
   const role = (user.role || "learner").toLowerCase();
+  const logoSrc = role === "student" ? yellowLogo : blackLogo;
 
   const baseLinks = [
     { name: "Dashboard", path: "/dashboard", icon: MdDashboard, end: true },
@@ -103,18 +115,16 @@ const Sidebar = ({ className, onClose, onLogout }) => {
     },
     { name: "Settings", path: "/dashboard/settings", icon: MdSettings },
   ];
-
-  const links = [
-    ...baseLinks,
-    ...(role === "student" ? studentLinks : []),
-    ...(role === "learner" ? learnerLinks : []),
-    ...(role === "instructor" ? instructorLinks : []),
-  ];
-
+  const roleLinks = {
+    student: studentLinks,
+    learner: learnerLinks,
+    instructor: instructorLinks,
+  };
+  const links = [...baseLinks, ...(roleLinks[role] || [])];
   return (
     <aside className={`${className} sidebar-${role}`}>
       <div className="logo-wraper">
-        <img src={learnflowlogo} alt="logo" className="logob" />
+        <img src={logoSrc} alt="logo" className="logob" />
         <p>LearnFlow</p>
       </div>
 
@@ -127,9 +137,10 @@ const Sidebar = ({ className, onClose, onLogout }) => {
       <nav className="nav-links">
         {links.map((link) => (
           <NavLink
-            className={({ isActive }) => `dasff ${isActive ? "active" : ""}`}
             key={link.path}
             to={link.path}
+            end={link.end}
+            className={({ isActive }) => `dasff ${isActive ? "active" : ""}`}
           >
             <link.icon size={20} />
             {link.name}
@@ -149,7 +160,7 @@ const Sidebar = ({ className, onClose, onLogout }) => {
               </>
             ) : (
               <>
-                <FiDownload size={20} />
+                <LogOut size={20} />
                 <span>Logout</span>
               </>
             )}

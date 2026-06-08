@@ -14,8 +14,8 @@ function DashboardHeader() {
   if (loading) return <div className="header-skeleton">Loading...</div>;
   if (!currentUser) return null;
 
-  // Default to student and force lowercase
-  const role = (userData?.role || "student").toLowerCase();
+  // Default to learner if role missing, and force lowercase
+  const role = (userData?.role || "learner").toLowerCase();
 
   const displayName =
     userData?.nickname ||
@@ -29,16 +29,22 @@ function DashboardHeader() {
   const [open, setOpen] = useState(false);
   const [opennotification, setOpenNotification] = useState(false);
   const dropdownRef = useRef(null);
+  const notificationRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setOpen(false);
       }
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target)
+      ) {
+        setOpenNotification(false);
+      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -53,28 +59,30 @@ function DashboardHeader() {
         </div>
         <div className="header-right">
           {role === "student" && (
-            <div className="notification-wrapper">
+            <div className="notification-wrapper" ref={notificationRef}>
               <button
                 className="notification-btn"
-                onClick={() => setOpenNotification((prev) => !prev)}
+                onClick={() => {
+                  setOpen(false);
+                  setOpenNotification((prev) => !prev);
+                }}
               >
                 <IoIosNotificationsOutline size={28} />
               </button>
-            </div>
-          )}
-          {opennotification && (
-            <div className="notification-header-drop">
-              <div className="notification-header">
-                <h1>Notifications</h1>
-                <SlSettings />
-              </div>
-              <div className="notification-steps-btn">
-                <button className="All">All</button>
-                <button className="Courses">Courses</button>
-                <button className="Updates">Updates</button>
-                
-                
-              </div>
+
+              {opennotification && (
+                <div className="notification-header-drop">
+                  <div className="notification-header">
+                    <h1>Notifications</h1>
+                    <SlSettings />
+                  </div>
+                  <div className="notification-steps-btn">
+                    <button className="All">All</button>
+                    <button className="Courses">Courses</button>
+                    <button className="Updates">Updates</button>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -82,7 +90,7 @@ function DashboardHeader() {
 
           <div className="MyAcc-wraper" ref={dropdownRef}>
             <div className="myacc">
-              <div to="/dashboard/setting" className="userinfo-link">
+              <div className="userinfo-link">
                 <div className="userinfo">
                   <h4>{displayName}</h4>
                   <p>{role}</p>
@@ -102,7 +110,10 @@ function DashboardHeader() {
               {role === "student" && (
                 <button
                   className="dropdown-toggle"
-                  onClick={() => setOpen((prev) => !prev)}
+                  onClick={() => {
+                    setOpenNotification(false);
+                    setOpen((prev) => !prev);
+                  }}
                 >
                   <IoIosArrowDown color="grey" size={30} />
                 </button>

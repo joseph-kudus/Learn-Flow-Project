@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Notebook } from "lucide-react";
+
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import "./Mylogin.css";
 import smte from "../assets/images/small-team.png";
@@ -63,10 +63,6 @@ export default function Register() {
   return (
     <div className="login-container">
       <div className="login-form-wrap">
-        <Link to="/" className="login-logo-link">
-          <Notebook size={24} />
-          <p>LearnFlow</p>
-        </Link>
 
         <div className="login-content">
           <h1>Welcome!</h1>

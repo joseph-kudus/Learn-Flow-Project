@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Notebook } from "lucide-react";
 import "./Mylogin.css";
-import {useAuth} from "../context/AuthContext"
+import { useAuth } from "../context/AuthContext";
 import smte from "../assets/images/small-team.png";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 
@@ -69,11 +68,6 @@ export default function Login() {
   return (
     <div className="login-container">
       <div className="login-form-wrap">
-        <Link to="/" className="login-logo-link">
-          <Notebook size={24} />
-          <p>LearnFlow</p>
-        </Link>
-
         <div className="login-content">
           <h1>Welcome!</h1>
           <h2>Sign in to your account</h2>

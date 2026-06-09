@@ -3,6 +3,7 @@ import "./Nav.css";
 import { Link } from "react-router-dom";
 import { BarChartHorizontal, Notebook } from "lucide-react";
 import { IoMenu } from "react-icons/io5";
+import whiteLogo from "../assets/learnflow-white.svg";
 
 function Navbar() {
   const [showMenu, setShowMenu] = useState(false);
@@ -21,7 +22,8 @@ function Navbar() {
       <div className="navbar">
         <div className="nav-left">
           <Link to="/Landing" className="logo-l">
-            <Notebook />
+            <img src={whiteLogo} alt="" />
+
             <p>LearnFlow</p>
           </Link>
         </div>

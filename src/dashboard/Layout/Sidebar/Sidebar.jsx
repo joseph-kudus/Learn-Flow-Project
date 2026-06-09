@@ -3,16 +3,17 @@ import { useNavigate, NavLink } from "react-router-dom";
 import { useState } from "react";
 import { Loader2, LogOut } from "lucide-react";
 import {
-  MdDashboard,
   MdSettings,
   MdSchool,
   MdOutlineBookOnline,
   MdExplore,
 } from "react-icons/md";
-import { TbWorldWww } from "react-icons/tb";
+import { RxDashboard } from "react-icons/rx";
+import { TbWorldSearch } from "react-icons/tb";
 import { RiGraduationCapLine } from "react-icons/ri";
 import { GrPerformance } from "react-icons/gr";
 import { PiNotePencilBold } from "react-icons/pi";
+import { LuUsers, LuBookText } from "react-icons/lu";
 
 import { FaBook } from "react-icons/fa";
 import UseuserRole from "../../UserData/UseuserRole";
@@ -20,8 +21,7 @@ import { FiDownload } from "react-icons/fi";
 
 import yellowLogo from "../../../assets/learnflow-yellow.svg";
 import blackLogo from "../../../assets/learnflow-black.svg";
-
-
+import whiteLogo from "../../../assets/learnflow-white.svg";
 
 const Sidebar = ({ className, onClose, onLogout }) => {
   const { logout } = useAuth();
@@ -54,23 +54,31 @@ const Sidebar = ({ className, onClose, onLogout }) => {
 
   // Default to learner if role missing, and force lowercase
   const role = (user.role || "learner").toLowerCase();
-  const logoSrc = role === "student" ? yellowLogo : blackLogo;
+  // logo colors to the roles
+  const logos = {
+    student: yellowLogo,
+    learner: whiteLogo,
+    instructor: blackLogo,
+  };
+  const logoSrc = logos[role] || blackLogo;
+  console.log("role:",role)
+  console.log("logo:",logoSrc)
 
   const baseLinks = [
-    { name: "Dashboard", path: "/dashboard", icon: MdDashboard, end: true },
+    { name: "Dashboard", path: "/dashboard", icon: RxDashboard, end: true },
   ];
 
   const learnerLinks = [
     {
-      name: "All Courses",
+      name: "Courses",
       path: "/dashboard/allcourses",
-      icon: MdOutlineBookOnline,
+      icon: LuBookText,
     },
 
     {
       name: "Recommended Courses",
       path: "/dashboard/recomendedcourse",
-      icon: MdExplore,
+      icon: LuUsers,
     },
     {
       name: "Achievements",
@@ -84,12 +92,12 @@ const Sidebar = ({ className, onClose, onLogout }) => {
     {
       name: "Courses",
       path: "/dashboard/courses",
-      icon: MdSchool,
+      icon: RxDashboard,
     },
     {
       name: "Explore",
       path: "/dashboard/explore",
-      icon: TbWorldWww,
+      icon: TbWorldSearch,
     },
 
     {

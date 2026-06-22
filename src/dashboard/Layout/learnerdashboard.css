@@ -1,0 +1,72 @@
+.course-container{
+    color: black;
+    flex:  1;
+    display: flex;
+    gap: 40px;
+}
+.welcome-click{
+    background-color: #F7CA4E;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 879px;
+    height: 238px;
+}
+
+.welcome-text{
+    width: 100%;
+    max-width: 492px;
+    height: 164px;
+    left: 16px;
+    padding: 18px 16px;
+}
+.welcome-text button{
+    width: 200px;
+    height: 40px;
+    background-color: #000000;
+    color: white;
+    border:  1px solid #000000;
+    border-radius: 10px;
+
+}
+
+.myco{
+border-radius: 10px;
+width: 100%;
+max-width: 879px;
+height: 238px;
+}
+
+.overview ,.achievement{
+    max-width: 250px;
+    height: 366px;
+    top: 96px;
+    left: 1166px;
+    border: 1px solid #1E1E1E33;
+    border-radius: 10px;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    align-items: center;
+    
+}
+.overview{
+    align-items: center;
+    text-align: center;
+}
+
+.coursecompletion h5{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.coursecompletion .badges{
+    color: #F7CA4E;
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 10px;
+   padding-top: 30px;
+   
+}
+.coursecompletion{
+    justify-content: space-evenly;
+}

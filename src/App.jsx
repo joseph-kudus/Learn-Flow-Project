@@ -25,6 +25,7 @@ import RecomendedCourse from "./dashboard/UserData/students/RecomendedCourses.js
 import LandingPage from "./pages/LandingPage";
 import Mycourse from "./dashboard/UserData/students/Mycourses.jsx";
 import Settings from "./dashboard/UserData/students/Settings.jsx";
+import Contact from "./pages/Contact.jsx";
 
 /**
  * Layout: Wraps public pages with Navbar + Footer
@@ -69,13 +70,13 @@ function AppRoutes() {
         }
       />
       <Route
-        path="/landing"
+        path="/contact"
         element={
           currentUser ? (
             <Navigate to="/dashboard" replace />
           ) : (
             <Layout>
-              <LandingPage />
+              <Contact />
             </Layout>
           )
         }

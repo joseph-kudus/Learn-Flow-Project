@@ -1,87 +1,142 @@
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "../../../firebaseconfig";
+
+
 export const allEnrollments = [
   {
     id: 1,
-    desc: "People Management",
-    course: "MANAGEMENT",
+    title: "People Management",
+    category: "MANAGEMENT",
     img: "",
     allowedRoles: ["learner", "student"],
   },
   {
     id: 2,
-    desc: "Advance Rush",
-    course: "BLOCHCHAIN",
+    title: "Advance Rush",
+    category: "BLOCKCHAIN",
     img: "",
     allowedRoles: ["learner", "student"],
   },
   {
     id: 3,
-    desc: "Robotics & Machine Learning",
-    course: "ARTICIAL INTELLIGENCE",
+    title: "Robotics & Machine Learning",
+    category: "ARTIFICIAL INTELLIGENCE",
     img: "",
     allowedRoles: ["learner", "student"],
   },
   {
     id: 4,
-    desc: "Intro to Python",
-    course: "Coding",
+    title: "Intro to Python",
+    category: "Coding",
     img: "",
     allowedRoles: ["learner", "student"],
   },
   {
     id: 5,
-    desc: "Intro to Javascript",
-    course: "Coding",
+    title: "Intro to Javascript",
+    category: "Coding",
     img: "",
     allowedRoles: ["learner", "student"],
   },
   {
     id: 6,
-    desc: "Ethical Hacking",
-    course: "Coding",
+    title: "Ethical Hacking",
+    category: "Coding",
     img: "",
+    allowedRoles: ["learner", "student"],
   },
   {
     id: 7,
-    desc: "Intro to C++",
-    course: "Coding",
+    title: "Intro to C++",
+    category: "Coding",
     img: "",
+    allowedRoles: ["learner", "student"],
   },
   {
     id: 8,
-    desc: "Intro to Programming",
-    course: "Language",
+    title: "Intro to Programming",
+    category: "Language",
     img: "",
     allowedRoles: ["learner", "student"],
   },
   {
     id: 9,
-    desc: "Intro to C",
-    course: "Coding",
+    title: "Intro to C",
+    category: "Coding",
     img: "",
     allowedRoles: ["learner", "student"],
   },
   {
     id: 10,
-    course: "Javascript",
+    category: "Javascript",
     img: "",
-    desc: "Beginner’s Guide to becoming  a      professional frontend developer",
+    title: "Beginner’s Guide to becoming a professional frontend developer",
+    allowedRoles: ["learner", "student"],
   },
   {
     id: 11,
-    course: "React JS",
+    category: "React JS",
     img: "",
-    desc: "Beginner’s Guide to becoming       a       professional frontend developer",
+    title: "Beginner’s Guide to becoming a professional frontend developer",
+    allowedRoles: ["learner", "student"],
   },
   {
     id: 12,
-    course: "Python",
+    category: "Python",
     img: "",
-    desc: "Beginner’s Guide to becoming      a       professional frontend developer",
+    title: "Beginner’s Guide to bec a professional frontend developer",
+    allowedRoles: ["learner", "student"],
   },
   {
     id: 13,
-    desc: "Beginner’s Guide to becoming       a       professional Software Engineer.",
+    title: "Beginner’s Guide to becoming a professional Software Engineer.",
     img: "",
-    course: "Software Enginering",
+    category: "Software Engineering",
+    allowedRoles: ["learner", "student"],
   },
 ];
+
+//Fetch users from firebase
+export const getUserByEmail = async (email) => {
+  const q = query(collection(db, "users"), where("email", "==", email));
+  const snapshot = await getDocs(q);
+  if (snapshot.empty) {
+    return null;
+  }
+  return {
+    id: snapshot.docs[0].id,
+    ...snapshot.docs[0].data(),
+  };
+};
+
+// Validate courses and user roles
+
+export const validateEnrollment = async (email, courseId) => {
+  const user = await getUserByEmail(email);
+
+  if (!user) {
+    return {
+      success: false,
+      message: "user not found",
+    };
+  }
+  const course = allEnrollments.find((c) => Number(c.id) === Number(courseId));
+  if (!course) {
+    return {
+      success: false,
+      message: "course not found",
+    };
+  }
+
+  if (!course.allowedRoles.includes(user.role)) {
+    return {
+      success: false,
+      message: `${user.role} cannot enroll in ${course.title}`,
+    };
+  }
+  return {
+    success: true,
+    user,
+    course,
+  };
+};

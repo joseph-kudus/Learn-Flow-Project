@@ -7,6 +7,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../../../firebaseconfig";
+import { useAuth } from "../../context/AuthContext";
 
 export const allEnrollments = [
   {
@@ -118,9 +119,10 @@ export const getUserByEmail = async (email) => {
 // Validate courses and user roles
 
 export const validateEnrollment = async (email, courseId) => {
-  const user = await getUserByEmail(email);
+  //const user = await getUserByEmail(email);
+  const { userData, currentUser } = useAuth();
 
-  if (!user) {
+  if (!currentUser) {
     return {
       success: false,
       message: "user not found",
@@ -169,7 +171,7 @@ export const enrollStudent = async (email, courseId) => {
   }
   //save enrollment
   await addDoc(collection(db, "enrollments"), {
-    userId: user.id,
+    userId: currentUser.uid,
     userName:
       user.username || `${user.firstname || ""} ${user.lastname || ""}`.trim(),
     email: user.email,

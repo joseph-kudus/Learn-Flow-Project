@@ -19,6 +19,10 @@ const WelcomeLearner = ({ user }) => {
   const recommendedCourses = allEnrollments.filter(
     (course) => !studentEnrollments.includes(course.id),
   );
+  const handleEnroll = (courseId) => {
+    console.log("Enroll:", courseId);
+  };
+  
 
   return (
     <div className="course-container">
@@ -36,7 +40,7 @@ const WelcomeLearner = ({ user }) => {
           <div className="grid_course_card">
             {myEnrolledCourses.length > 0 ? (
               myEnrolledCourses.map((course) => (
-                <CourseCard key={course.id} item={course} isEnrolled={true} />
+                <CourseCard key={course.id} item={course} isEnrolled={true} onEnroll={handleEnroll}/>
               ))
             ) : (
               <p>

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { allEnrollments, enrollStudent } from "./allEnrollments";
 import { useAuth } from "../../context/AuthContext";
+import CourseCard from "./CourseCard";
 
 const StudentEnrollment = () => {
   const { userData } = useAuth();
+
   const [enrollingId, setEnrollingId] = useState(null);
 
   const handleEnroll = async (courseId) => {
@@ -13,10 +15,6 @@ const StudentEnrollment = () => {
     }
 
     try {
-      console.log("user:", userData);
-      console.log("course ID:", courseId);
-
-
       setEnrollingId(courseId);
 
       const result = await enrollStudent(userData.email, courseId);
@@ -33,19 +31,12 @@ const StudentEnrollment = () => {
   return (
     <div className="courses_grid">
       {allEnrollments.map((course) => (
-        <div key={course.id} className="course_card">
-          {course.img && <img src={course.img} alt={course.title} />}
-
-          <h3>{course.title}</h3>
-          <p>{course.category}</p>
-
-          <button
-            onClick={() => handleEnroll(course.id)}
-            disabled={enrollingId === course.id}
-          >
-            {enrollingId === course.id ? "Enrolling..." : "Enroll"}
-          </button>
-        </div>
+        <CourseCard
+          key={course.id}
+          item={course}
+          isEnrolled={false}
+          onEnroll={handleEnroll}
+        />
       ))}
     </div>
   );

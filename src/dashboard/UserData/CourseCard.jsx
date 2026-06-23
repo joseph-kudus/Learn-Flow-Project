@@ -1,26 +1,17 @@
-// CourseCard.jsx
 import React from "react";
 
-const CourseCard = ({ item, isEnrolled }) => {
-  const isCategoryTag = [
-    "MANAGEMENT",
-    "BLOCHCHAIN",
-    "ARTICIAL INTELLIGENCE",
-    "Coding",
-    "Language",
-  ].includes(item.course);
-  const displayTitle = isCategoryTag ? item.desc : item.course;
-
+const CourseCard = ({ item, isEnrolled, onEnroll }) => {
   return (
     <div className="single_course_card">
-      <h2>{displayTitle}</h2>
-      <p>{item.desc}</p>
+      <h2>{item.title}</h2>
+      <p>{item.category}</p>
 
-      {/* Dynamic button changes based on enrollment status */}
       {isEnrolled ? (
         <button className="btn-resume">Resume Learning</button>
       ) : (
-        <button className="btn-enroll">Enroll Now</button>
+        <button className="btn-enroll" onClick={() => onEnroll?.(item.id)}>
+          Enroll Now
+        </button>
       )}
     </div>
   );

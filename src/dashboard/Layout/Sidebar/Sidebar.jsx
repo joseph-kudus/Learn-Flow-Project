@@ -61,8 +61,6 @@ const Sidebar = ({ className, onClose, onLogout }) => {
     instructor: blackLogo,
   };
   const logoSrc = logos[role] || blackLogo;
-  console.log("role:",role)
-  console.log("logo:",logoSrc)
 
   const baseLinks = [
     { name: "Dashboard", path: "/dashboard", icon: RxDashboard, end: true },

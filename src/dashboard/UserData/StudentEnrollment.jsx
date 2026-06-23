@@ -13,6 +13,10 @@ const StudentEnrollment = () => {
     }
 
     try {
+      console.log("user:", userData);
+      console.log("course ID:", courseId);
+
+
       setEnrollingId(courseId);
 
       const result = await enrollStudent(userData.email, courseId);

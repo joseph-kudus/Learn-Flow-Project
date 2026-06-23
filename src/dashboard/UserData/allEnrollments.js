@@ -1,6 +1,12 @@
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { db } from "../../../firebaseconfig";
-
 
 export const allEnrollments = [
   {
@@ -138,5 +144,44 @@ export const validateEnrollment = async (email, courseId) => {
     success: true,
     user,
     course,
+  };
+};
+//validate user and course
+export const enrollStudent = async (email, courseId) => {
+  const validation = await validateEnrollment(email, courseId);
+  if (!validation.success) {
+    return validation;
+  }
+  const { user, course } = validation;
+  //check if alredy enrolled
+  const enrollmentQuery = query(
+    collection(db, "enrollments"),
+    where("userId", "==", user.id),
+    where("courseId", "==", course.id),
+  );
+
+  const enrollmentSnapshot = await getDocs(enrollmentQuery);
+  if (!enrollmentSnapshot.empty) {
+    return {
+      success: false,
+      message: "you are already enrolled in course",
+    };
+  }
+  //save enrollment
+  await addDoc(collection(db, "enrollments"), {
+    userId: user.id,
+    userName:
+      user.username || `${user.firstname || ""} ${user.lastname || ""}`.trim(),
+    email: user.email,
+
+    courseId: course.id,
+    courseTitle: course.title,
+    category: course.category,
+    status: "active",
+    enrolledAt: serverTimestamp(),
+  });
+  return {
+    success: true,
+    message: `successfully enrolled in ${course.title}`,
   };
 };

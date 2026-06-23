@@ -10,3 +10,6 @@ const RecomendedCourse = () => {
 };
 
 export default RecomendedCourse;
+
+
+

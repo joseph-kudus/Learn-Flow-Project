@@ -1,6 +1,7 @@
 import React from "react";
+const CourseCard = ({ item, isEnrolled, onEnroll, loading }) => {
+  if (!item) return null;
 
-const CourseCard = ({ item, isEnrolled, onEnroll }) => {
   return (
     <div className="single_course_card">
       <h2>{item.title}</h2>
@@ -9,12 +10,14 @@ const CourseCard = ({ item, isEnrolled, onEnroll }) => {
       {isEnrolled ? (
         <button className="btn-resume">Resume Learning</button>
       ) : (
-        <button className="btn-enroll" onClick={() => onEnroll?.(item.id)}>
-          Enroll Now
+        <button
+          className="btn-enroll"
+          onClick={() => onEnroll?.(item.id)}
+          disabled={loading}
+        >
+          {loading ? "Enrolling" : "Enroll Now"}
         </button>
       )}
     </div>
   );
 };
-
-export default CourseCard;

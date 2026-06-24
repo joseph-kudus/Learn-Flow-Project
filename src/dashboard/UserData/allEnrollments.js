@@ -5,9 +5,10 @@ import {
   getDocs,
   addDoc,
   serverTimestamp,
+  doc,
 } from "firebase/firestore";
 import { db } from "../../../firebaseconfig";
-import { useAuth } from "../../context/AuthContext";
+//import { useAuth } from "../../context/AuthContext";
 
 export const allEnrollments = [
   {
@@ -102,6 +103,14 @@ export const allEnrollments = [
     allowedRoles: ["learner", "student"],
   },
 ];
+export const getUserEnrollments = async (firebaseUid) => {
+  const q = query(
+    collection(db, "enrollments"),
+    where("userId", "==", firebaseUid),
+  );
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((doc) => Number(doc.data().courseId));
+};
 
 //Fetch users from firebase
 export const getUserByEmail = async (email) => {
@@ -119,10 +128,10 @@ export const getUserByEmail = async (email) => {
 // Validate courses and user roles
 
 export const validateEnrollment = async (email, courseId) => {
-  //const user = await getUserByEmail(email);
-  const { userData, currentUser } = useAuth();
+  const user = await getUserByEmail(email);
+  //const { userData, currentUser } = useAuth();
 
-  if (!currentUser) {
+  if (!user) {
     return {
       success: false,
       message: "user not found",
@@ -149,39 +158,53 @@ export const validateEnrollment = async (email, courseId) => {
   };
 };
 //validate user and course
-export const enrollStudent = async (email, courseId) => {
+export const enrollStudent = async (firebaseUid, email, courseId) => {
+  console.log("firebaseUid:", firebaseUid);
+  console.log("email:", email);
+  console.log("courseId:", courseId);
+
   const validation = await validateEnrollment(email, courseId);
+
+  console.log("Validation result:", validation);
+
   if (!validation.success) {
     return validation;
   }
+
   const { user, course } = validation;
-  //check if alredy enrolled
+
   const enrollmentQuery = query(
     collection(db, "enrollments"),
-    where("userId", "==", user.id),
+    where("userId", "==", firebaseUid),
     where("courseId", "==", course.id),
   );
 
   const enrollmentSnapshot = await getDocs(enrollmentQuery);
+
+  console.log("Existing enrollments:", enrollmentSnapshot.size);
+
   if (!enrollmentSnapshot.empty) {
     return {
       success: false,
       message: "you are already enrolled in course",
     };
   }
-  //save enrollment
-  await addDoc(collection(db, "enrollments"), {
-    userId: currentUser.uid,
-    userName:
-      user.username || `${user.firstname || ""} ${user.lastname || ""}`.trim(),
-    email: user.email,
 
+  console.log("Saving enrollment...");
+
+  const docRef = await addDoc(collection(db, "enrollments"), {
+    userId: firebaseUid,
+    userName: user.username,
+    email: user.email,
     courseId: course.id,
     courseTitle: course.title,
     category: course.category,
     status: "active",
     enrolledAt: serverTimestamp(),
   });
+
+  console.log("Enrollment saved:", docRef.id);
+
   return {
     success: true,
     message: `successfully enrolled in ${course.title}`,

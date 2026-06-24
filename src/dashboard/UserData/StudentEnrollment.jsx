@@ -4,24 +4,28 @@ import { useAuth } from "../../context/AuthContext";
 import CourseCard from "./CourseCard";
 
 const StudentEnrollment = () => {
-  const { userData } = useAuth();
-
+  const { userData, currentUser } = useAuth();
   const [enrollingId, setEnrollingId] = useState(null);
 
-  const handleEnroll = async (courseId) => {
-    if (!userData?.email) {
-      alert("Please login first");
-      return;
-    }
+  console.log("currentUser:", currentUser);
+  console.log("userData:", userData);
 
+  const handleEnroll = async (courseId) => {
     try {
+      console.log("Clicked course:", courseId);
+
       setEnrollingId(courseId);
 
-      const result = await enrollStudent(userData.email, courseId);
+      const result = await enrollStudent(
+        currentUser.uid,
+        userData.email,
+        courseId,
+      );
 
+      console.log("Enrollment result:", result);
       alert(result.message);
     } catch (error) {
-      console.error(error);
+      console.error("Enrollment error:", error);
       alert("Enrollment failed");
     } finally {
       setEnrollingId(null);
@@ -36,6 +40,7 @@ const StudentEnrollment = () => {
           item={course}
           isEnrolled={false}
           onEnroll={handleEnroll}
+          loading={enrollingId === course.id}
         />
       ))}
     </div>

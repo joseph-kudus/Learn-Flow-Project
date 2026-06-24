@@ -1,28 +1,68 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./learnerdashboard.css";
-import { allEnrollments } from "../UserData/allEnrollments";
+import {
+  allEnrollments,
+  enrollStudent,
+  getUserByEmail,
+} from "../UserData/allEnrollments";
 import CourseCard from "../UserData/CourseCard";
 
+import { useAuth } from "../../context/AuthContext";
+
 const WelcomeLearner = ({ user }) => {
+  const { currentUser, userData } = useAuth();
+  const [myCourseIds, setMyCourseIds] = useState([]);
+  const [loadingId, setLoadingId] = useState(null);
   const displayusername =
     user?.nickname ||
     user?.displayname ||
     user?.email?.split("@")[0] ||
-    "student";
-  // Defaults to an empty array if they haven't enrolled in anything yet
-  const studentEnrollments = user?.enrolledCourses || [];
-  // FILTER 1: Get courses the student has actually enrolled in
+    "learner";
+
+  // fetch real enrollments from firebase on load
+
+  (useEffect(() => {
+    if (!currentUser?.uid) return;
+
+    const fetchEnrollments = async () => {
+      const courseIds = await getUserEnrollment(currentUser.uid);
+      setMyCourseIds(courseIds);
+    };
+    fetchEnrollments();
+  }),
+    [currentUser]);
+  // Filter base on real firebase data
   const myEnrolledCourses = allEnrollments.filter((course) =>
-    studentEnrollments.includes(course.id),
+    myCourseIds.includes(Number(course.id)),
   );
-  // 3. FILTER 2: Get courses available for their role that they HAVEN'T joined yet
-  const recommendedCourses = allEnrollments.filter(
-    (course) => !studentEnrollments.includes(course.id),
-  );
-  const handleEnroll = (courseId) => {
-    console.log("Enroll:", courseId);
+
+  // Actualy enroll student
+  const handleEnroll = async (courseId) => {
+    if (!currentUser || !userData) {
+      alert("Please log in first");
+      return;
+    }
+    try {
+      setLoadingId(courseId);
+      const result = await enrollStudent(
+        currentUser.uid,
+        userData.email,
+        courseId,
+      );
+      if (result.success) {
+        alert(result.message);
+        //update ui instantly
+        setMyCourseIds((prev) => [...prev, Number(courseId)]);
+      } else {
+        alert(result.message); //show already enrolled or user not found
+      }
+    } catch (error) {
+      console.error("Enrrollment error", error);
+      alert("Enrollment failed. Try again.");
+    } finally {
+      setLoadingId(null);
+    }
   };
-  
 
   return (
     <div className="course-container">
@@ -33,14 +73,21 @@ const WelcomeLearner = ({ user }) => {
             <p>Let's boost your knowledge and learn new things today.</p>
             <button>join</button>
           </div>
-        </div>{" "}
+        </div>
+
         {/* SECTION 1: ENROLLED COURSES */}
         <div className="myco">
           <h1>My Active Courses ({myEnrolledCourses.length})</h1>
           <div className="grid_course_card">
             {myEnrolledCourses.length > 0 ? (
               myEnrolledCourses.map((course) => (
-                <CourseCard key={course.id} item={course} isEnrolled={true} onEnroll={handleEnroll}/>
+                <CourseCard
+                  key={course.id}
+                  item={course}
+                  isEnrolled={true}
+                  onEnroll={handleEnroll}
+                  loadingId={false}
+                />
               ))
             ) : (
               <p>
@@ -55,7 +102,13 @@ const WelcomeLearner = ({ user }) => {
           <h1>Recommended For You</h1>
           <div className="grid_course_card">
             {recommendedCourses.slice(0, 3).map((course) => (
-              <CourseCard key={course.id} item={course} isEnrolled={false} />
+              <CourseCard
+                key={course.id}
+                item={course}
+                isEnrolled={false}
+                onEnroll={handleEnroll}
+                loading={loadingId === course.id}
+              />
             ))}
           </div>
         </div>

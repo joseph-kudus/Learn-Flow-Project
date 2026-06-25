@@ -15,9 +15,11 @@ const CourseCard = ({ item, isEnrolled, onEnroll, loading }) => {
           onClick={() => onEnroll?.(item.id)}
           disabled={loading}
         >
-          {loading ? "Enrolling" : "Enroll Now"}
+          {loading ? "Enrolling..." : "Enroll Now"}
         </button>
       )}
     </div>
   );
 };
+
+export default CourseCard; // Add this line

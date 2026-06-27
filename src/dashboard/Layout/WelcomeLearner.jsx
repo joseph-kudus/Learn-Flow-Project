@@ -37,7 +37,7 @@ const WelcomeLearner = () => {
           <div className="welcome-text">
             <h1>Welcome Back {displayusername}!</h1>
             <p>Let's boost your knowledge and learn new things today.</p>
-            <button>Join</button>
+            <button className="welcome-text-btn">Join</button>
           </div>
         </div>
 
@@ -69,6 +69,7 @@ const WelcomeLearner = () => {
         </div>
 
         <div className="achievement">
+          <h2>Your Achievement</h2>
           <h5>
             Celebrate Your Learning Journey with {completed}/10 badges earned.
           </h5>

@@ -87,6 +87,8 @@ const StudentEnrollment = ({
   if (limit) {
     coursesToShow = coursesToShow.slice(0, limit);
   }
+  console.log("coursesToShow", coursesToShow);
+  console.log("Length:", coursesToShow.length);
 
   return (
     <div className="myco">

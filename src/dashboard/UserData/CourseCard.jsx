@@ -4,17 +4,17 @@ const CourseCard = ({ item, isEnrolled, onEnroll, loading }) => {
   if (!item) return null;
 
   return (
-    <div className="course-card">
+    <div className="single_course_card">
       <img
-        src={item.image} // <-- this was missing
+        src={item.image} 
         alt={item.title}
-        onError={(e) => (e.target.src = "/placeholder.jpg")} // fallback if path is wrong
+        onError={(e) => (e.target.src = "/placeholder.jpg")} 
       />
-      <h3>{item.title}</h3> {/* h3 matches your CSS, not h2 */}
       <p>{item.category}</p>
+      <h3>{item.title}</h3> 
       <div className="course-card-actions">
         {isEnrolled ? (
-          <button className="btn-resume">Resume Learning</button>
+          <button className="btn-resume">Resume</button>
         ) : (
           <button
             className="btn-enroll"

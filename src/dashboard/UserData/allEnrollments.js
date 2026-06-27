@@ -16,15 +16,17 @@ export const allEnrollments = [
     category: "MANAGEMENT",
     image: courseImages[1],
     description:
-      "Learn how to lead teams, delegate tasks, and manage people effectively in tech.", // NEW
+      "Beginner’s Guide to becoming a professional frontend developer",
     allowedRoles: ["learner", "student"],
   },
-  //... repeat for all 13
+
   {
     id: 2,
     title: "Advance Rush",
     category: "BLOCKCHAIN",
     image: courseImages[2],
+    description:
+      "Beginner’s Guide to becoming a professional frontend developer",
     allowedRoles: ["learner", "student"],
   },
   {
@@ -32,6 +34,8 @@ export const allEnrollments = [
     title: "Robotics & Machine Learning",
     category: "ARTIFICIAL INTELLIGENCE",
     image: courseImages[3],
+    description:
+      "Beginner’s Guide to becoming a professional frontend developer",
     allowedRoles: ["learner", "student"],
   },
   {
@@ -39,6 +43,8 @@ export const allEnrollments = [
     title: "Intro to Python",
     category: "Coding",
     image: courseImages[4],
+    description:
+      "Beginner’s Guide to becoming a professional frontend developer",
     allowedRoles: ["learner", "student"],
   },
   {
@@ -46,6 +52,8 @@ export const allEnrollments = [
     title: "Intro to Javascript",
     category: "Coding",
     image: courseImages[5],
+    description:
+      "Beginner’s Guide to becoming a professional frontend developer",
     allowedRoles: ["learner", "student"],
   },
   {
@@ -53,6 +61,8 @@ export const allEnrollments = [
     title: "Ethical Hacking",
     category: "Coding",
     image: courseImages[6],
+    description:
+      "Beginner’s Guide to becoming a professional frontend developer",
     allowedRoles: ["learner", "student"],
   },
   {
@@ -60,6 +70,8 @@ export const allEnrollments = [
     title: "Intro to C++",
     category: "Coding",
     image: courseImages[7],
+    description:
+      "Beginner’s Guide to becoming a professional frontend developer",
     allowedRoles: ["learner", "student"],
   },
   {
@@ -74,6 +86,8 @@ export const allEnrollments = [
     title: "Intro to C",
     category: "Coding",
     image: courseImages[9],
+    description:
+      "Beginner’s Guide to becoming a professional frontend developer",
     allowedRoles: ["learner", "student"],
   },
   {
@@ -81,6 +95,8 @@ export const allEnrollments = [
     title: "JavaScript for Frontend Developers",
     category: "Javascript",
     image: courseImages[10],
+    description:
+      "Beginner’s Guide to becoming a professional frontend developer",
     allowedRoles: ["learner", "student"],
   },
   {
@@ -88,6 +104,8 @@ export const allEnrollments = [
     title: "React JS Fundamentals",
     category: "React JS",
     image: courseImages[11],
+    description:
+      "Beginner’s Guide to becoming a professional frontend developer",
     allowedRoles: ["learner", "student"],
   },
   {
@@ -95,6 +113,8 @@ export const allEnrollments = [
     title: "Python for Web Development",
     category: "Python",
     image: courseImages[12],
+    description:
+      "Beginner’s Guide to becoming a professional frontend developer",
     allowedRoles: ["learner", "student"],
   },
   {
@@ -102,6 +122,8 @@ export const allEnrollments = [
     title: "Beginner's Guide to Software Engineering",
     category: "Software Engineering",
     image: courseImages[13],
+    description:
+      "Beginner’s Guide to becoming a professional Software Engineer.",
     allowedRoles: ["learner", "student"],
   },
 ];

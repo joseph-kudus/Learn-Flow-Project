@@ -29,7 +29,7 @@
   /*sidebar for user role*/
   --sidebar-student: #2a2a2a;
   --sidebar-instructor: #ffffff;
-  --sidebar-learner: #ffffff;
+  --sidebar-learner: #2C2C2C;
 
   /* Shadows */
   --shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
@@ -142,10 +142,11 @@ sidebar-learner*/
 
 .sidebar-learner .logob,
 .sidebar-instructor .logob {
-  color: #000;
+  color: #FFFFFF;
 }
 .sidebar-learner {
   background: var(--sidebar-learner);
+  color: #FFFFFF;
 }
 .sidebar-instructor {
   background: var(--sidebar-instructor);
@@ -166,7 +167,7 @@ sidebar-learner*/
 }
 .sidebar-student {
   background: var(--sidebar-student);
-  color: white;
+  color: #FFFFFF;
 }
 
 .sidebar-student .logo-wraper,

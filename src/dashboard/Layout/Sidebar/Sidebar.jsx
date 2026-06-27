@@ -22,6 +22,7 @@ import { FiDownload } from "react-icons/fi";
 import yellowLogo from "../../../assets/learnflow-yellow.svg";
 import blackLogo from "../../../assets/learnflow-black.svg";
 import whiteLogo from "../../../assets/learnflow-white.svg";
+import Stars from "../../UserData/Stars";
 
 const Sidebar = ({ className, onClose, onLogout }) => {
   const { logout } = useAuth();
@@ -153,6 +154,8 @@ const Sidebar = ({ className, onClose, onLogout }) => {
           </NavLink>
         ))}
         <hr />
+        {role === "learner" && <Stars />}
+
         <div className="logout-section">
           <button
             className="dasff logout-btn"

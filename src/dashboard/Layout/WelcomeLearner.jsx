@@ -6,80 +6,118 @@ import StudentEnrollment from "../UserData/StudentEnrollment";
 
 const WelcomeLearner = () => {
   const { userData, currentUser } = useAuth();
+
   const [myCourseIds, setMyCourseIds] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!currentUser?.uid) return;
-
     const fetchEnrollments = async () => {
-      const ids = await getUserEnrollments(currentUser.uid);
-      setMyCourseIds(ids);
+      if (!currentUser?.uid) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const ids = await getUserEnrollments(currentUser.uid);
+        setMyCourseIds(ids);
+      } catch (error) {
+        console.error("Failed to load enrollments:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchEnrollments();
   }, [currentUser]);
 
-  const displayusername =
+  const displayUsername =
     userData?.nickname ||
-    userData?.displayname ||
+    userData?.displayName ||
+    userData?.username ||
     userData?.email?.split("@")[0] ||
-    "learner";
+    "Learner";
 
   const totalCourses = allEnrollments.length;
-  const completed = myCourseIds.length;
-  const notStarted = Math.max(0, totalCourses - completed);
+  const enrolledCourses = myCourseIds.length;
+
+  // Temporary statistics
+  const completedCourses = 0;
+  const inProgressCourses = enrolledCourses;
+  const notStartedCourses = totalCourses - enrolledCourses;
+
+  if (loading) {
+    return <p>Loading learner dashboard...</p>;
+  }
 
   return (
     <div className="course-container">
-      {/* Left Column */}
+      {/* LEFT COLUMN */}
       <div className="course-wrapper">
         <div className="welcome-click">
           <div className="welcome-text">
-            <h1>Welcome Back {displayusername}!</h1>
-            <p>Let's boost your knowledge and learn new things today.</p>
-            <button className="welcome-text-btn">Join</button>
+            <h1>Welcome Back, {displayUsername}</h1>
+
+            <p>Lets boost your knowledge and learn new things today.</p>
+
+            <button className="welcome-text-btn">Continue Learning</button>
           </div>
         </div>
 
+        {/* MY COURSES */}
         <StudentEnrollment
-          filter="enrolled"
           title="My Courses"
+          filter="enrolled"
           myCourseIds={myCourseIds}
           setMyCourseIds={setMyCourseIds}
         />
 
+        {/* RECOMMENDED */}
         <StudentEnrollment
-          filter="recommended"
           title="Recommended For You"
+          filter="recommended"
           limit={3}
           myCourseIds={myCourseIds}
           setMyCourseIds={setMyCourseIds}
         />
       </div>
 
-      {/* Right Column */}
+      {/* RIGHT COLUMN */}
       <div className="coursecompletion">
         <div className="overview">
           <h1>Course Completion Overview</h1>
+
           <ol>
-            <li>Completed: {completed}</li>
-            <li>In Progress: 0</li>
-            <li>Not Started: {notStarted}</li>
+            <li>
+              <strong>Completed:</strong> {completedCourses}
+            </li>
+
+            <li>
+              <strong>In Progress:</strong> {inProgressCourses}
+            </li>
+
+            <li>
+              <strong>Not Started:</strong> {notStartedCourses}
+            </li>
           </ol>
         </div>
 
         <div className="achievement">
-          <h2>Your Achievement</h2>
+          <h2>Your Achievements</h2>
+
           <h5>
-            Celebrate Your Learning Journey with {completed}/10 badges earned.
+            Celebrate your learning journey with {Math.min(enrolledCourses, 10)}
+            /10 badges earned.
           </h5>
+
           <div className="badges">
             {[...Array(10)].map((_, index) => (
               <img
                 key={index}
                 src={`/badges/badge${index + 1}.svg`}
-                alt={`badge${index + 1}`}
-                className={index < completed ? "earned" : "locked"}
+                alt={`Badge ${index + 1}`}
+                className={
+                  index < Math.min(enrolledCourses, 10) ? "earned" : "locked"
+                }
               />
             ))}
           </div>

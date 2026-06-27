@@ -3,11 +3,11 @@ import {
   allEnrollments,
   enrollStudent,
   getUserEnrollments,
+  getEnrollmentDetails,
 } from "./allEnrollments";
 import { useAuth } from "../../context/AuthContext";
 import CourseCard from "./CourseCard";
-import "../../dashboard/Layout/learnerdashboard.css"
-
+import "../../dashboard/Layout/learnerdashboard.css";
 
 const StudentEnrollment = ({
   filter = "all",
@@ -15,12 +15,13 @@ const StudentEnrollment = ({
   limit = null,
   category = null,
   search = "",
-  myCourseIds,
+  myCourseIds = [],
   setMyCourseIds,
 }) => {
   const { currentUser, userData } = useAuth();
 
   const [enrollingId, setEnrollingId] = useState(null);
+  const [enrollmentData, setEnrollmentData] = useState([]);
 
   const handleEnroll = async (courseId) => {
     if (!currentUser || !userData) {
@@ -40,11 +41,16 @@ const StudentEnrollment = ({
       alert(result.message);
 
       if (result.success) {
+        // Refresh enrolled course IDs
         const ids = await getUserEnrollments(currentUser.uid);
         setMyCourseIds(ids);
+
+        // Refresh enrollment details
+        const details = await getEnrollmentDetails(currentUser.uid);
+        setEnrollmentData(details);
       }
     } catch (error) {
-      console.error(error);
+      console.error("Enrollment Error:", error);
       alert("Enrollment failed.");
     } finally {
       setEnrollingId(null);
@@ -53,14 +59,20 @@ const StudentEnrollment = ({
 
   let coursesToShow = [...allEnrollments];
 
-  // Category filter
+  /* ===========================
+     Category Filter
+  =========================== */
+
   if (category) {
     coursesToShow = coursesToShow.filter(
       (course) => course.category.toLowerCase() === category.toLowerCase(),
     );
   }
 
-  // Search filter
+  /* ===========================
+     Search Filter
+  =========================== */
+
   if (search.trim()) {
     const term = search.toLowerCase();
 
@@ -71,24 +83,27 @@ const StudentEnrollment = ({
     );
   }
 
-  // Enrolled / Recommended
+  /* ===========================
+     Enrolled / Recommended
+  =========================== */
+
   if (filter === "enrolled") {
     coursesToShow = coursesToShow.filter((course) =>
       myCourseIds.includes(course.id),
     );
-  }
-
-  if (filter === "recommended") {
+  } else if (filter === "recommended") {
     coursesToShow = coursesToShow.filter(
       (course) => !myCourseIds.includes(course.id),
     );
   }
 
+  /* ===========================
+     Limit
+  =========================== */
+
   if (limit) {
     coursesToShow = coursesToShow.slice(0, limit);
   }
-  console.log("coursesToShow", coursesToShow);
-  console.log("Length:", coursesToShow.length);
 
   return (
     <div className="myco">
@@ -98,17 +113,26 @@ const StudentEnrollment = ({
 
       <div className="grid_course_card">
         {coursesToShow.length > 0 ? (
-          coursesToShow.map((course) => (
-            <CourseCard
-              key={course.id}
-              item={course}
-              isEnrolled={myCourseIds.includes(course.id)}
-              onEnroll={handleEnroll}
-              loading={enrollingId === course.id}
-            />
-          ))
+          coursesToShow.map((course) => {
+            const enrollment = enrollmentData.find(
+              (e) => Number(e.courseId) === Number(course.id),
+            );
+
+            return (
+              <CourseCard
+                key={course.id}
+                item={course}
+                enrollment={enrollment}
+                isEnrolled={myCourseIds.includes(course.id)}
+                onEnroll={handleEnroll}
+                loading={enrollingId === course.id}
+              />
+            );
+          })
         ) : (
-          <p>No courses found.</p>
+          <div className="no-courses">
+            <p>No courses found.</p>
+          </div>
         )}
       </div>
     </div>

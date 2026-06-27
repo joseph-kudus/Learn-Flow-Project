@@ -9,6 +9,10 @@ import {
 import { db } from "../../../firebaseconfig";
 import { courseImages } from "../../assets/courses/courseImages";
 
+/* ======================================================
+   COURSE DATA
+====================================================== */
+
 export const allEnrollments = [
   {
     id: 1,
@@ -16,17 +20,22 @@ export const allEnrollments = [
     category: "MANAGEMENT",
     image: courseImages[1],
     description:
-      "Beginner’s Guide to becoming a professional frontend developer",
+      "Beginner's Guide to becoming a professional frontend developer.",
+    duration: "8 Weeks",
+    lessons: 24,
+    rating: 4.8,
     allowedRoles: ["learner", "student"],
   },
-
   {
     id: 2,
     title: "Advance Rush",
     category: "BLOCKCHAIN",
     image: courseImages[2],
     description:
-      "Beginner’s Guide to becoming a professional frontend developer",
+      "Learn blockchain development from beginner to advanced level.",
+    duration: "10 Weeks",
+    lessons: 30,
+    rating: 4.7,
     allowedRoles: ["learner", "student"],
   },
   {
@@ -35,7 +44,10 @@ export const allEnrollments = [
     category: "ARTIFICIAL INTELLIGENCE",
     image: courseImages[3],
     description:
-      "Beginner’s Guide to becoming a professional frontend developer",
+      "Build intelligent robotics and machine learning applications.",
+    duration: "12 Weeks",
+    lessons: 40,
+    rating: 4.9,
     allowedRoles: ["learner", "student"],
   },
   {
@@ -43,8 +55,10 @@ export const allEnrollments = [
     title: "Intro to Python",
     category: "Coding",
     image: courseImages[4],
-    description:
-      "Beginner’s Guide to becoming a professional frontend developer",
+    description: "Learn Python programming from absolute beginner level.",
+    duration: "6 Weeks",
+    lessons: 20,
+    rating: 4.8,
     allowedRoles: ["learner", "student"],
   },
   {
@@ -52,8 +66,10 @@ export const allEnrollments = [
     title: "Intro to Javascript",
     category: "Coding",
     image: courseImages[5],
-    description:
-      "Beginner’s Guide to becoming a professional frontend developer",
+    description: "Master JavaScript fundamentals for web development.",
+    duration: "7 Weeks",
+    lessons: 22,
+    rating: 4.7,
     allowedRoles: ["learner", "student"],
   },
   {
@@ -61,8 +77,10 @@ export const allEnrollments = [
     title: "Ethical Hacking",
     category: "Coding",
     image: courseImages[6],
-    description:
-      "Beginner’s Guide to becoming a professional frontend developer",
+    description: "Introduction to penetration testing and cybersecurity.",
+    duration: "9 Weeks",
+    lessons: 28,
+    rating: 4.9,
     allowedRoles: ["learner", "student"],
   },
   {
@@ -70,8 +88,10 @@ export const allEnrollments = [
     title: "Intro to C++",
     category: "Coding",
     image: courseImages[7],
-    description:
-      "Beginner’s Guide to becoming a professional frontend developer",
+    description: "Learn object-oriented programming using C++.",
+    duration: "8 Weeks",
+    lessons: 24,
+    rating: 4.6,
     allowedRoles: ["learner", "student"],
   },
   {
@@ -79,6 +99,10 @@ export const allEnrollments = [
     title: "Intro to Programming",
     category: "Language",
     image: courseImages[8],
+    description: "Understand programming fundamentals and logical thinking.",
+    duration: "5 Weeks",
+    lessons: 18,
+    rating: 4.5,
     allowedRoles: ["learner", "student"],
   },
   {
@@ -86,8 +110,10 @@ export const allEnrollments = [
     title: "Intro to C",
     category: "Coding",
     image: courseImages[9],
-    description:
-      "Beginner’s Guide to becoming a professional frontend developer",
+    description: "Learn the C programming language from scratch.",
+    duration: "6 Weeks",
+    lessons: 21,
+    rating: 4.6,
     allowedRoles: ["learner", "student"],
   },
   {
@@ -95,8 +121,10 @@ export const allEnrollments = [
     title: "JavaScript for Frontend Developers",
     category: "Javascript",
     image: courseImages[10],
-    description:
-      "Beginner’s Guide to becoming a professional frontend developer",
+    description: "Become a frontend JavaScript developer.",
+    duration: "8 Weeks",
+    lessons: 26,
+    rating: 4.9,
     allowedRoles: ["learner", "student"],
   },
   {
@@ -104,8 +132,10 @@ export const allEnrollments = [
     title: "React JS Fundamentals",
     category: "React JS",
     image: courseImages[11],
-    description:
-      "Beginner’s Guide to becoming a professional frontend developer",
+    description: "Build modern React applications.",
+    duration: "8 Weeks",
+    lessons: 25,
+    rating: 4.9,
     allowedRoles: ["learner", "student"],
   },
   {
@@ -113,8 +143,10 @@ export const allEnrollments = [
     title: "Python for Web Development",
     category: "Python",
     image: courseImages[12],
-    description:
-      "Beginner’s Guide to becoming a professional frontend developer",
+    description: "Develop backend web applications using Python.",
+    duration: "10 Weeks",
+    lessons: 34,
+    rating: 4.8,
     allowedRoles: ["learner", "student"],
   },
   {
@@ -122,15 +154,17 @@ export const allEnrollments = [
     title: "Beginner's Guide to Software Engineering",
     category: "Software Engineering",
     image: courseImages[13],
-    description:
-      "Beginner’s Guide to becoming a professional Software Engineer.",
+    description: "Everything you need to become a software engineer.",
+    duration: "14 Weeks",
+    lessons: 45,
+    rating: 5.0,
     allowedRoles: ["learner", "student"],
   },
 ];
 
-/* ===========================
-   GET USER ENROLLMENTS
-=========================== */
+/* ======================================================
+   USER ENROLLMENTS (IDs ONLY)
+====================================================== */
 
 export const getUserEnrollments = async (firebaseUid) => {
   try {
@@ -143,14 +177,37 @@ export const getUserEnrollments = async (firebaseUid) => {
 
     return snapshot.docs.map((doc) => Number(doc.data().courseId));
   } catch (error) {
-    console.error("Error fetching enrollments:", error);
+    console.error(error);
     return [];
   }
 };
 
-/* ===========================
-   GET USER BY EMAIL
-=========================== */
+/* ======================================================
+   FULL ENROLLMENT DETAILS
+====================================================== */
+
+export const getEnrollmentDetails = async (firebaseUid) => {
+  try {
+    const q = query(
+      collection(db, "enrollments"),
+      where("userId", "==", firebaseUid),
+    );
+
+    const snapshot = await getDocs(q);
+
+    return snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+/* ======================================================
+   GET USER
+====================================================== */
 
 export const getUserByEmail = async (email) => {
   const q = query(collection(db, "users"), where("email", "==", email));
@@ -165,9 +222,9 @@ export const getUserByEmail = async (email) => {
   };
 };
 
-/* ===========================
+/* ======================================================
    VALIDATE ENROLLMENT
-=========================== */
+====================================================== */
 
 export const validateEnrollment = async (email, courseId) => {
   const user = await getUserByEmail(email);
@@ -204,57 +261,74 @@ export const validateEnrollment = async (email, courseId) => {
   };
 };
 
-/* ===========================
+/* ======================================================
    ENROLL STUDENT
-=========================== */
+====================================================== */
 
 export const enrollStudent = async (firebaseUid, email, courseId) => {
-  const validation = await validateEnrollment(email, courseId);
+  try {
+    const validation = await validateEnrollment(email, courseId);
 
-  if (!validation.success) {
-    return validation;
-  }
+    if (!validation.success) {
+      return validation;
+    }
 
-  const { user, course } = validation;
+    const { user, course } = validation;
 
-  // Check if already enrolled
-  const enrollmentQuery = query(
-    collection(db, "enrollments"),
-    where("userId", "==", firebaseUid),
-    where("courseId", "==", course.id),
-  );
+    const existing = query(
+      collection(db, "enrollments"),
+      where("userId", "==", firebaseUid),
+      where("courseId", "==", course.id),
+    );
 
-  const enrollmentSnapshot = await getDocs(enrollmentQuery);
+    const snapshot = await getDocs(existing);
 
-  if (!enrollmentSnapshot.empty) {
+    if (!snapshot.empty) {
+      return {
+        success: false,
+        message: "You are already enrolled in this course.",
+      };
+    }
+
+    await addDoc(collection(db, "enrollments"), {
+      userId: firebaseUid,
+
+      userName:
+        user.username ||
+        user.nickname ||
+        user.displayName ||
+        user.email.split("@")[0],
+
+      email: user.email,
+
+      courseId: course.id,
+      courseTitle: course.title,
+      category: course.category,
+
+      progress: 0,
+      completedLessons: 0,
+      totalLessons: course.lessons,
+
+      status: "active",
+
+      certificateIssued: false,
+
+      lastAccessed: serverTimestamp(),
+
+      enrolledAt: serverTimestamp(),
+    });
+
+    return {
+      success: true,
+      course,
+      message: `Successfully enrolled in "${course.title}".`,
+    };
+  } catch (error) {
+    console.error(error);
+
     return {
       success: false,
-      message: "You are already enrolled in this course.",
+      message: "Enrollment failed. Please try again.",
     };
   }
-
-  // Save enrollment
-  await addDoc(collection(db, "enrollments"), {
-    userId: firebaseUid,
-    userName:
-      user.username ||
-      user.nickname ||
-      user.displayName ||
-      user.email.split("@")[0],
-
-    email: user.email,
-
-    courseId: course.id,
-    courseTitle: course.title,
-    category: course.category,
-
-    status: "active",
-
-    enrolledAt: serverTimestamp(),
-  });
-
-  return {
-    success: true,
-    message: `Successfully enrolled in "${course.title}".`,
-  };
 };

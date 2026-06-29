@@ -220,8 +220,6 @@
     line-height: 1.4;
 }
   /* ========================================= */
-
-  
   .overview,
   .achievement {
     background: #fff;
@@ -229,7 +227,6 @@
     border-radius: 12px;
     padding: 18px;
   }
-  
   .overview h1 {
     font-size: 20px;
     text-align: center;
@@ -237,11 +234,9 @@
     letter-spacing: 0px;
     line-height: 140%;
   }
-  
   .overview ol {
     padding-left: 20px;
   }
-  
   .overview li {
     margin: 10px 0;
   }

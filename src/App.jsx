@@ -26,6 +26,7 @@ import LandingPage from "./pages/LandingPage";
 import Mycourse from "./dashboard/UserData/students/Mycourses.jsx";
 import Settings from "./dashboard/UserData/students/Settings.jsx";
 import Contact from "./pages/Contact.jsx";
+import ProfileSetting from "./dashboard/UserData/ProfileSetting.jsx";
 
 /**
  * Layout: Wraps public pages with Navbar + Footer
@@ -183,6 +184,7 @@ function AppRoutes() {
         <Route path="achievement" element={<Achievement />} />
         <Route path="setting" element={<Settings />} />
         <Route path="support" element={<Support />} />
+        <Route path="profilesetting" element={<ProfileSetting />} />
       </Route>
 
       {/* Catch all 404 - redirect to home */}

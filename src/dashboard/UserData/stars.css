@@ -101,3 +101,64 @@
         font-size: 13px;
     }
 }
+
+
+/* profile_seting*/
+.profile_seting_container{
+    color: #1E1E1E;
+}
+.profile_wrapper{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+.personal_information{
+    background: #FFFFFF;
+    padding: 20px;
+}
+.personal_setting{
+    background-color: #FFFFFF;
+}
+.psetting_wraper{
+    padding: 20px;
+}
+.psetting_wraper h4{
+    border-bottom: 10px;
+}
+.personalside{
+    display: flex;
+    flex-direction: column;
+    justify-items: flex-start;
+}
+.image_container{
+display: flex;
+gap: 10px;
+}
+.image_container img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    background-color: #cac8c8;
+}
+.btn-btn .btn-upload .btn-delete{
+    gap: 20px;
+}
+.btn-upload{
+    background-color: #F7CA4E;
+    border: 1px solid 
+#F7CA4E;
+border-radius: 10px;
+}
+
+.btn-delete{
+    background-color: 
+#FFFFFF;
+border: 1px solid #F7CA4E;
+border-radius: 10px;
+}
+
+form{
+    display: flex;
+    flex: 1;
+    gap: 10px;
+}

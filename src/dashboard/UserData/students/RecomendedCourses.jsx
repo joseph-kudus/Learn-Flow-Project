@@ -2,8 +2,9 @@ import React from "react";
 
 const RecomendedCourse = () => {
   return (
-    <div>
+    <div className="recommend_container">
       <h1>RecomendedCourse here</h1>
+      
       
     </div>
   );

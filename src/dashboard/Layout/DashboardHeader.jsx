@@ -7,6 +7,7 @@ import { IoIosArrowDown, IoIosNotificationsOutline } from "react-icons/io";
 import { RiAccountBoxFill } from "react-icons/ri";
 import { IoSettingsOutline } from "react-icons/io5";
 import { SlSettings } from "react-icons/sl";
+import ProfileSetting from "../UserData/ProfileSetting";
 
 function DashboardHeader() {
   const { currentUser, userData, loading } = useAuth();
@@ -95,16 +96,17 @@ function DashboardHeader() {
                   <h4>{displayName}</h4>
                   <p>{role}</p>
                 </div>
-
-                <div className="userimg">
-                  <img
-                    src={avatar}
-                    alt="avatar"
-                    onError={(e) => {
-                      e.target.src = defaultAvatar;
-                    }}
-                  />
-                </div>
+                <Link to="/dashboard/profilesetting">
+                  <div className="userimg">
+                    <img
+                      src={avatar}
+                      alt="avatar"
+                      onError={(e) => {
+                        e.target.src = defaultAvatar;
+                      }}
+                    />
+                  </div>
+                </Link>
               </div>
 
               {role === "student" && (

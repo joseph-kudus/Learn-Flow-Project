@@ -27,7 +27,7 @@
   --border-color: #d0d3da;
   --gray-100: #f3f4f6;
   /*sidebar for user role*/
-  --sidebar-student: #2a2a2a;
+  --sidebar-student: #2C2C2C;
   --sidebar-instructor: #ffffff;
   --sidebar-learner: #2C2C2C;
 
@@ -455,7 +455,10 @@ sidebar-learner*/
 .searchBox {
   display: flex;
   align-items: center;
-  max-width: 400px;
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+  align-items: center;
   height: auto;
   border-radius: 6px;
   border: 2px solid var(--border-color);
@@ -463,13 +466,19 @@ sidebar-learner*/
 }
 .searchBox input {
   background-color: transparent;
+  width: 100%;
   border: 0px;
   outline: none;
-  padding-left: 0px;
+ box-sizing: border-box;
+  padding: 0 36px 0 12px;
   font-size: 15px;
   color: #292929;
   align-items: center;
   justify-content: center;
+}
+.searchBox input:focus{
+  outline: none;
+  border-color: #F3CA4e;
 }
 .searchBox input::-webkit-input-placeholder {
   color: rgb(0, 0, 0, 0.6);
@@ -478,6 +487,18 @@ sidebar-learner*/
   font-size: 20px;
   color: #292929;
 }
+.clear-btn{
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  line-height: 1;
+  color: #888;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
 .notification-header-drop {
   position: absolute;
   top: calc(100% + 10px);

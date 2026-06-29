@@ -10,10 +10,6 @@ import { TfiWorld } from "react-icons/tfi";
 import { CgNotes } from "react-icons/cg";
 
 const ProfileSetting = () => {
-  const [firstName, setFirstName] = useState("");
-const [lastName, setLastName] = useState("");
-const [email, setEmail] = useState("");
-const [phone, setPhone] = useState("");
   const [profileTap, setProfileTap] = useState("personinfo");
   const { currentUser, userData, loading } = useAuth();
   const avatar = userData?.photoURl || currentUser.photoURl || defautAvatar;
@@ -119,7 +115,7 @@ const [phone, setPhone] = useState("");
   </button>
 </div>
 
-
+</div>
         </div>
         <div className="personal_setting">
           {profileTap === "profileinfo" && (
@@ -171,63 +167,7 @@ const [phone, setPhone] = useState("");
           )}
         </div>
       </div>
-      </div>
-      
-
-      <form>
-        {/* First Name & Last Name */}
-        <div className="name_row">
-          <div className="form_group">
-            <label htmlFor="firstname">First Name</label>
-            <input
-              id="firstname"
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-          </div>
-
-          <div className="form_group">
-            <label htmlFor="lastname">Last Name</label>
-            <input
-              id="lastname"
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
-          </div>
-        </div>
-
-        {/* Email */}
-        <div className="form_group">
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-
-        {/* Phone */}
-        <div className="form_group">
-          <label htmlFor="phone">Phone Number</label>
-          <input
-            id="phone"
-            type="tel"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
-        </div>
-
-        <button className="edit-btn" type="submit">
-          Edit Profile
-        </button>
-      </form>
-      </div>
-  )}
-    
-  
- 
-
+    </div>
+  );
+};
 export default ProfileSetting;

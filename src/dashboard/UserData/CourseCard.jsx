@@ -58,5 +58,4 @@ const CourseCard = ({ item, isEnrolled, onEnroll, loading }) => {
     </div>
   );
 };
-
 export default CourseCard;

@@ -101,95 +101,211 @@
         font-size: 13px;
     }
 }
-<<<<<<< HEAD
 
+/* ===========================
+   Profile Settings
+=========================== */
 
-/* profile_seting*/
-.profile_seting_container{
-    color: #1E1E1E;
+.profile_seting_container {
+    color: #1e1e1e;
+    width: 100%;
 }
-.profile_wrapper{
+
+.profile_wrapper {
     display: flex;
-    flex-direction: row;
     gap: 20px;
+    align-items: flex-start;
 }
-.personal_information{
-    background: #FFFFFF;
+
+/* Left */
+
+.personal_information {
+    flex: 1;
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 10px;
     padding: 20px;
 }
-.personal_setting{
-    background-color: #FFFFFF;
+
+/* Right */
+
+.personal_setting {
+    flex: 2;
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 10px;
 }
-.psetting_wraper{
+
+.psetting_wraper {
     padding: 20px;
 }
-.psetting_wraper h4{
-    border-bottom: 10px;
+
+.psetting_wraper h4 {
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e6e6e6;
 }
-.personalside{
+
+/* ===========================
+   Image
+=========================== */
+
+.personalside {
     display: flex;
     flex-direction: column;
-    justify-items: flex-start;
-}
-.image_container{
-display: flex;
-gap: 10px;
-}
-.image_container img{
-    width: 50px;
-    height: 50px;
-    border-radius: 50px;
-    background-color: #cac8c8;
-}
-.btn-btn .btn-upload .btn-delete{
-    gap: 20px;
-}
-.btn-upload{
-    background-color: #F7CA4E;
-    border: 1px solid 
-#F7CA4E;
-border-radius: 10px;
+    align-items: center;
+    text-align: center;
 }
 
-.btn-delete{
-    background-color: 
-#FFFFFF;
-border: 1px solid #F7CA4E;
-border-radius: 10px;
-}
-
-form{
+.image_container {
     display: flex;
-    flex: 1;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.image_container img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #d9d9d9;
+}
+
+.image_deta p {
+    margin: 0 0 12px;
+    font-size: 14px;
+}
+
+/* ===========================
+   Buttons
+=========================== */
+
+.btn-btn {
+    display: flex;
     gap: 10px;
 }
-=======
-.main{
-    color: black;
+
+.btn-upload,
+.btn-delete {
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .3s;
 }
-.recommended_card{
+
+.btn-upload {
+    background: #F7CA4E;
+    border: 1px solid #F7CA4E;
+}
+
+.btn-upload:hover {
+    background: #e8bc43;
+}
+
+.btn-delete {
+    background: #fff;
+    border: 1px solid #F7CA4E;
+}
+
+.btn-delete:hover {
+    background: #F7CA4E;
+}
+
+/* ===========================
+   Form
+=========================== */
+
+form {
     display: flex;
-    width: 100%;
-    max-width: 250px;
-    height: auto;
-    border-radius: 10px;
-    border: 1px solid red;
-    transition: .4s;
-    padding: 10px;
+    flex-direction: column;
+    gap: 20px;
 }
-.image_cardx{
-   
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    box-shadow: #1ad879;
-   
+
+.form-row {
+    display: flex;
+    gap: 20px;
 }
-.image_cardx button{
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form-group input {
     width: 100%;
+    height: 45px;
+    padding: 0 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.form-group input:focus {
+    border-color: #F7CA4E;
+}
+
+/* Button */
+
+.save-btn {
+    width: 180px;
+    height: 45px;
     background: #000;
-    color: white;
+    color: #fff;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
 }
->>>>>>> testing
+
+.save-btn:hover {
+    opacity: .9;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media (max-width:900px) {
+
+    .profile_wrapper {
+        flex-direction: column;
+    }
+
+    .personal_information,
+    .personal_setting {
+        width: 100%;
+    }
+
+    .image_container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .btn-btn {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn-upload,
+    .btn-delete,
+    .save-btn {
+        width: 100%;
+    }
+
+    .form-row {
+        flex-direction: column;
+    }
+
+}

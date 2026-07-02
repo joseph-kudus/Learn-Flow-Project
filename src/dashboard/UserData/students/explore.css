@@ -281,18 +281,68 @@
   align-items: center;
   text-align: center;
   justify-content: space-between;
-  border: 1px solid grey;
+  
   padding: 10px;
 }
 .active-course-active{
-  width: 100%;
-  max-width: 400px;
-  height: auto;
-  border: 1px solid grey;
   color: black;
   display: flex;
   flex-direction: row;
   align-items: center;
   text-align: center;
   justify-content: space-evenly;
+}
+.course-card{
+  justify-content: flex-start;
+}
+.arrows button{
+  gap: 10px;
+}
+
+.card_container{
+  align-items: flex-start;
+  color: black;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  max-width: 250px;
+}
+.intro{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.active-course-activ{
+  width: 100%;
+    max-width: 304px;
+    min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  color: #000;
+}
+.actives-wrapper{
+  padding: 10px;
+}
+.active-cours{
+display: flex;
+flex-direction: row;
+gap: 10px;
+color: #000;
+}
+.resume-btn{
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  gap: 60px;
+}
+
+.todays_activies{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.lesson_schedule{
+  gap: 20px;
+  display: flex;
+  flex-direction: row;
 }

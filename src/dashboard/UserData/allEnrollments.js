@@ -8,7 +8,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../../firebaseconfig";
 import { courseImages } from "../../assets/courses/courseImages";
-import { id } from "date-fns/locale";
+import { id } from "date-fns/locale"
 
 /* ======================================================
    COURSE DATA

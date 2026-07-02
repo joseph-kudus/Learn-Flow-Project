@@ -3,11 +3,14 @@ import React from "react";
 import "./layout.css";
 import { IoIosSearch } from "react-icons/io";
 
-const SearchBox = () => {
+const SearchBox = ({search, setSearch}) => {
   return (
-    <div className="searchBox position-relative d-flex align-items-center">
+    <div className="searchBox">
       <IoIosSearch className="mr-2"/>
-      <input type="text" placeholder="Search ..." />
+      <input type="text" placeholder="Search course, tpoics, instructors..." value={search} onChange={(e) => setSearch(e.value)} />
+      {search && (// only show X if their's text
+        <button  type="button" className="clear-btn" onClick={()=>setSearch("")} aria-label="Clear search">X</button>
+      )}
     </div>
   );
 };

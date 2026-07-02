@@ -1,26 +1,31 @@
+/* ==================================================
+   PREMIUM CARD
+================================================== */
+
 .star-container {
     width: 100%;
     max-width: 206px;
-    min-height: 200px;
-    background: linear-gradient(135deg, #f9f8f8 0%, #fdf9f9 100%);
+    min-height: 220px;
+    background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 100%);
     border-radius: 16px;
-    padding: 10px;
+    padding: 18px;
     margin: 10px 0;
     box-sizing: border-box;
-    box-shadow: 0 8px 20px rgba(0,0,0,.15);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .12);
 }
 
 .stars-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    gap: 18px;
     text-align: center;
-    gap: 16px;
 }
 
 .stars-wrapper h1 {
     margin: 0;
-    color: #000000CC;
+    color: #1E1E1E;
     font-size: 15px;
     font-weight: 600;
     line-height: 1.6;
@@ -39,7 +44,7 @@
 
 .star {
     font-size: 18px;
-    color: #555;
+    color: #d5d5d5;
     transition: .3s;
 }
 
@@ -49,44 +54,391 @@
 
 .star-text {
     margin: 0;
-    color: rgba(255,255,255,.8);
     font-size: 13px;
+    color: #666;
     line-height: 1.4;
-}
-
-.star-text strong {
-    color: #F7CA4E;
 }
 
 .premium-btn {
     width: 100%;
     height: 44px;
-    background: #1E1E1E;
-    color: #FFFFFF;
     border: none;
     border-radius: 10px;
-    cursor: pointer;
+    background: #1E1E1E;
+    color: #fff;
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 600;
+    cursor: pointer;
     transition: .3s;
 }
 
 .premium-btn:hover {
-    background: #FFD75C;
+    background: #F7CA4E;
+    color: #000;
     transform: translateY(-2px);
-    box-shadow: 0 8px 18px rgba(247,202,78,.35);
 }
 
-.premium-btn:active {
-    transform: scale(.98);
+/* ==================================================
+   PROFILE SETTINGS
+================================================== */
+
+.profile_seting_container {
+    width: 100%;
+    color: #1E1E1E;
 }
 
-@media (max-width:768px) {
+.profile_wrapper {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+/* LEFT */
+
+.personal_information {
+    width: 270px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.05);
+}
+
+/* RIGHT */
+
+.personal_setting {
+    flex: 1;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.05);
+}
+
+.psetting_wraper {
+    padding: 25px;
+}
+
+.psetting_wraper h4 {
+    margin: 0 0 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec;
+}
+
+/* ==================================================
+   PROFILE IMAGE
+================================================== */
+
+.image_container {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.image_container img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #d9d9d9;
+}
+
+.image_deta {
+    flex: 1;
+}
+
+.image_deta p {
+    margin-bottom: 15px;
+    color: #777;
+    font-size: 14px;
+}
+
+/* ==================================================
+   BUTTONS
+================================================== */
+
+.btn-btn {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-upload,
+.btn-delete {
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.btn-upload {
+    background: #F7CA4E;
+    border: 1px solid #F7CA4E;
+}
+
+.btn-upload:hover {
+    background: #efbe35;
+}
+
+.btn-delete {
+    background: #fff;
+    border: 1px solid #F7CA4E;
+}
+
+.btn-delete:hover {
+    background: #F7CA4E;
+}
+
+/* ==================================================
+   FORM
+================================================== */
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form-data {
+    display: flex;
+    gap: 24px;
+}
+
+.labeforname {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.labeforname label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.labeforname input {
+    width: 100%;
+    height: 44px;
+    padding: 0 14px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    outline: none;
+    font-size: 14px;
+    transition: .3s;
+}
+
+.labeforname input:focus {
+    border-color: #F7CA4E;
+}
+
+.edit-profile {
+    align-self: flex-end;
+    width: 180px;
+    height: 45px;
+    border: none;
+    border-radius: 10px;
+    background: #F7CA4E;
+    color: #000;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.edit-profile:hover {
+    background: #efbe35;
+}
+/* ==================================================
+   PROFILE SIDEBAR
+================================================== */
+
+.personalside {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.profile-btn {
+    width: 100%;
+}
+
+.profile-btn button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 16px;
+    border: 1px solid #ececec;
+    border-radius: 12px;
+    background: #fff;
+    cursor: pointer;
+    transition: all .3s ease;
+    text-align: left;
+}
+
+.profile-btn button:hover {
+    background: #fafafa;
+    border-color: #F7CA4E;
+}
+
+/* Active Tab */
+
+.tab-active {
+    background: #F7CA4E !important;
+    border-color: #F7CA4E !important;
+}
+
+.tab-active .tab-icon {
+    background: #fff;
+}
+
+.tab-active .tab-content strong,
+.tab-active .tab-content p {
+    color: #1E1E1E;
+}
+
+/* ==================================================
+   TAB ICON
+================================================== */
+
+.tab-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    color: #1E1E1E;
+    flex-shrink: 0;
+    transition: .3s;
+}
+
+/* ==================================================
+   TAB CONTENT
+================================================== */
+
+.tab-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.tab-content strong {
+    font-size: 15px;
+    color: #1E1E1E;
+    font-weight: 600;
+}
+
+.tab-content p {
+    margin: 4px 0 0;
+    font-size: 12px;
+    color: #777;
+    line-height: 1.4;
+}
+
+/* ==================================================
+   RECOMMENDED COURSE CARD
+================================================== */
+
+.recommended_card {
+    width: 100%;
+    max-width: 250px;
+    padding: 12px;
+    background: #fff;
+    border: 1px solid #ececec;
+    border-radius: 12px;
+    transition: .3s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .05);
+}
+
+.recommended_card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .12);
+}
+
+.image_cardx {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.image_cardx img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.image_cardx button {
+    width: 100%;
+    height: 42px;
+    border: none;
+    border-radius: 10px;
+    background: #1E1E1E;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.image_cardx button:hover {
+    background: #F7CA4E;
+    color: #000;
+}
+
+/* ==================================================
+   UTILITY
+================================================== */
+
+.main {
+    color: #000;
+}
+
+/* ==================================================
+   RESPONSIVE
+================================================== */
+
+@media (max-width: 900px) {
+
+    .profile_wrapper {
+        flex-direction: column;
+    }
+
+    .personal_information,
+    .personal_setting {
+        width: 100%;
+    }
+
+    .form-data {
+        flex-direction: column;
+    }
+
+    .image_container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .btn-btn {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn-upload,
+    .btn-delete,
+    .edit-profile {
+        width: 100%;
+    }
 
     .star-container {
-        margin: 16px 0;
-        padding: 18px;
+        max-width: 100%;
     }
+
+    .recommended_card {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
 
     .stars-wrapper h1 {
         font-size: 14px;
@@ -100,65 +452,135 @@
         height: 40px;
         font-size: 13px;
     }
+
+    .profile-btn button {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .tab-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+
+    .tab-content strong {
+        font-size: 14px;
+    }
+
+    .tab-content p {
+        font-size: 11px;
+    }
 }
 
-
-/* profile_seting*/
-.profile_seting_container{
-    color: #1E1E1E;
+.profile_seting_container {
+    width: 100%;
+    background: #F7F8FA;
+    padding: 25px;
+    border-radius: 16px;
 }
-.profile_wrapper{
+.personal_information,
+.personal_setting {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .06);
+}
+
+.profile-btn button {
+    width: 100%;
     display: flex;
-    flex-direction: row;
-    gap: 20px;
-}
-.personal_information{
-    background: #FFFFFF;
-    padding: 20px;
-}
-.personal_setting{
-    background-color: #FFFFFF;
-}
-.psetting_wraper{
-    padding: 20px;
-}
-.psetting_wraper h4{
-    border-bottom: 10px;
-}
-.personalside{
-    display: flex;
-    flex-direction: column;
-    justify-items: flex-start;
-}
-.image_container{
-display: flex;
-gap: 10px;
-}
-.image_container img{
-    width: 50px;
-    height: 50px;
-    border-radius: 50px;
-    background-color: #cac8c8;
-}
-.btn-btn .btn-upload .btn-delete{
-    gap: 20px;
-}
-.btn-upload{
-    background-color: #F7CA4E;
-    border: 1px solid 
-#F7CA4E;
-border-radius: 10px;
+    align-items: center;
+    gap: 15px;
+    padding: 16px;
+    border: none;
+    border-radius: 14px;
+    background: #fff;
+    transition: .3s;
 }
 
-.btn-delete{
-    background-color: 
-#FFFFFF;
-border: 1px solid #F7CA4E;
-border-radius: 10px;
+.profile-btn button:hover {
+    background: #FFF8E4;
 }
 
-form{
-    display: flex;
-    flex: 1;
-    gap: 10px;
+.tab-active {
+    background: #F7CA4E !important;
+    color: #000;
 }
+.tab-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #F5F5F5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+}
+
+.tab-active .tab-icon {
+    background: #fff;
+}
+.labeforname input {
+    width: 100%;
+    height: 48px;
+    padding: 0 15px;
+    border: 1px solid #E5E5E5;
+    border-radius: 12px;
+    background: #FAFAFA;
+    transition: .3s;
+}
+
+.labeforname input:focus {
+    border-color: #F7CA4E;
+    background: #fff;
+}
+.btn-upload,
+.btn-delete {
+    height: 42px;
+    padding: 0 20px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.btn-upload {
+    background: #F7CA4E;
+}
+
+.btn-delete {
+    background: #fff;
+}
+
+.edit-profile {
+    height: 48px;
+    width: 200px;
+    background: #1E1E1E;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: .3s;
+}
+
+.edit-profile:hover {
+    background: #F7CA4E;
+    color: #000;
+}
+.psetting_wraper h4 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+@media(max-width:768px) {
+
+    .form-data {
+        grid-template-columns: 1fr;
+    }
+
+    .profile_wrapper {
+        flex-direction: column;
+    }
+
+    .personal_information {
+        width: 100%;
+    }   }

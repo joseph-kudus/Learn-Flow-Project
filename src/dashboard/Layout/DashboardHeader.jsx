@@ -56,7 +56,7 @@ function DashboardHeader() {
       <div className="header-nav">
         <div className="header-left">
           {/* Show search bar only for students */}
-          {role === "student" && <SearchBox />}
+          {role === "student" || "learner" && <SearchBox />}
         </div>
         <div className="header-right">
           {role === "student" && (

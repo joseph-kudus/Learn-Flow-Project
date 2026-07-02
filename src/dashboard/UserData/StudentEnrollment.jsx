@@ -1,10 +1,6 @@
-import React, { useState } from "react";
-import {
-  allEnrollments,
-  enrollStudent,
-  getUserEnrollments,
-  getEnrollmentDetails,
-} from "./allEnrollments";
+import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { allEnrollments, enrollStudent } from "./allEnrollments"; // removed the 2 fetchers
 import { useAuth } from "../../context/AuthContext";
 import CourseCard from "./CourseCard";
 import "../../dashboard/Layout/learnerdashboard.css";
@@ -17,37 +13,65 @@ const StudentEnrollment = ({
   search = "",
   myCourseIds = [],
   setMyCourseIds,
+  enrollmentData: enrollmentDataProp = null,
+  setEnrollmentData: setEnrollmentDataProp = null,
+  onRefresh, // 1. Add this - parent gives us a refetch function
 }) => {
   const { currentUser, userData } = useAuth();
-
+  const navigate = useNavigate();
   const [enrollingId, setEnrollingId] = useState(null);
-  const [enrollmentData, setEnrollmentData] = useState([]);
+  const [enrollmentDataInternal, setEnrollmentDataInternal] = useState([]);
+  const [loading, setLoading] = useState(!enrollmentDataProp);
+
+  const enrollmentData = enrollmentDataProp ?? enrollmentDataInternal;
+  const setEnrollmentData = setEnrollmentDataProp ?? setEnrollmentDataInternal;
+
+  // 2. Only fetch if parent is NOT controlling
+  useEffect(() => {
+    if (enrollmentDataProp) {
+      setLoading(false);
+      return;
+    }
+    if (!currentUser) {
+      setLoading(false);
+      return;
+    }
+    const load = async () => {
+      setLoading(true);
+      try {
+        const { getUserEnrollments, getEnrollmentDetails } =
+          await import("./allEnrollments");
+        const [ids, details] = await Promise.all([
+          getUserEnrollments(currentUser.uid),
+          getEnrollmentDetails(currentUser.uid),
+        ]);
+        setMyCourseIds?.(ids);
+        setEnrollmentData(details);
+      } catch (err) {
+        console.error("Failed to load enrollments:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, [currentUser, enrollmentDataProp, setMyCourseIds, setEnrollmentData]);
 
   const handleEnroll = async (courseId) => {
     if (!currentUser || !userData) {
       alert("Please login first.");
       return;
     }
-
     try {
       setEnrollingId(courseId);
-
       const result = await enrollStudent(
         currentUser.uid,
         userData.email,
         courseId,
       );
-
       alert(result.message);
-
       if (result.success) {
-        // Refresh enrolled course IDs
-        const ids = await getUserEnrollments(currentUser.uid);
-        setMyCourseIds(ids);
-
-        // Refresh enrollment details
-        const details = await getEnrollmentDetails(currentUser.uid);
-        setEnrollmentData(details);
+        await onRefresh?.(); // 3. Single source of truth -> ask parent to refetch once
+        navigate(`/learn/${courseId}`);
       }
     } catch (error) {
       console.error("Enrollment Error:", error);
@@ -57,81 +81,75 @@ const StudentEnrollment = ({
     }
   };
 
-  let coursesToShow = [...allEnrollments];
+  const handleResume = (courseId) => {
+    navigate(`/learn/${courseId}`);
+  };
 
-  /* ===========================
-     Category Filter
-  =========================== */
+  const coursesToShow = useMemo(() => {
+    let list = [...allEnrollments];
+    if (category)
+      list = list.filter(
+        (c) => c.category.toLowerCase() === category.toLowerCase(),
+      );
+    if (search.trim()) {
+      const term = search.toLowerCase();
+      list = list.filter(
+        (c) =>
+          c.title.toLowerCase().includes(term) ||
+          c.category.toLowerCase().includes(term),
+      );
+    }
+    if (filter === "enrolled")
+      list = list.filter((c) => myCourseIds.includes(c.id));
+    else if (filter === "recommended")
+      list = list.filter((c) => !myCourseIds.includes(c.id));
+    if (limit) list = list.slice(0, limit);
+    return list;
+  }, [category, search, filter, myCourseIds, limit]);
 
-  if (category) {
-    coursesToShow = coursesToShow.filter(
-      (course) => course.category.toLowerCase() === category.toLowerCase(),
+  const enrollmentMap = useMemo(() => {
+    const map = new Map();
+    enrollmentData.forEach((e) => map.set(Number(e.courseId), e));
+    return map;
+  }, [enrollmentData]);
+
+  if (loading)
+    return (
+      <div className="myco">
+        <h1>{title}</h1>
+        <p>Loading courses...</p>
+      </div>
     );
-  }
-
-  /* ===========================
-     Search Filter
-  =========================== */
-
-  if (search.trim()) {
-    const term = search.toLowerCase();
-
-    coursesToShow = coursesToShow.filter(
-      (course) =>
-        course.title.toLowerCase().includes(term) ||
-        course.category.toLowerCase().includes(term),
-    );
-  }
-
-  /* ===========================
-     Enrolled / Recommended
-  =========================== */
-
-  if (filter === "enrolled") {
-    coursesToShow = coursesToShow.filter((course) =>
-      myCourseIds.includes(course.id),
-    );
-  } else if (filter === "recommended") {
-    coursesToShow = coursesToShow.filter(
-      (course) => !myCourseIds.includes(course.id),
-    );
-  }
-
-  /* ===========================
-     Limit
-  =========================== */
-
-  if (limit) {
-    coursesToShow = coursesToShow.slice(0, limit);
-  }
 
   return (
     <div className="myco">
       <h1>
         {title} ({coursesToShow.length})
       </h1>
-
       <div className="grid_course_card">
         {coursesToShow.length > 0 ? (
           coursesToShow.map((course) => {
-            const enrollment = enrollmentData.find(
-              (e) => Number(e.courseId) === Number(course.id),
-            );
-
+            const enrollment = enrollmentMap.get(Number(course.id));
+            const isEnrolled = myCourseIds.includes(course.id);
             return (
               <CourseCard
                 key={course.id}
                 item={course}
                 enrollment={enrollment}
-                isEnrolled={myCourseIds.includes(course.id)}
+                isEnrolled={isEnrolled}
                 onEnroll={handleEnroll}
+                onResume={handleResume}
                 loading={enrollingId === course.id}
               />
             );
           })
         ) : (
           <div className="no-courses">
-            <p>No courses found.</p>
+            <p>
+              {filter === "enrolled"
+                ? "You haven’t enrolled in any courses yet."
+                : "No courses found."}
+            </p>
           </div>
         )}
       </div>

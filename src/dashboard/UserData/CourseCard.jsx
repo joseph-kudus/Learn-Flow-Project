@@ -1,8 +1,26 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
+import { formatDistanceToNow } from "date-fns";
 
-const CourseCard = ({ item, isEnrolled, onEnroll, loading }) => {
+const CourseCard = ({
+  item,
+  enrollment,
+  isEnrolled,
+  onEnroll,
+  onResume,
+  loading,
+}) => {
   if (!item) return null;
+
+  const progress = enrollment?.progress ?? 0;
+  const rating = item.rating ?? 4.5;
+  const lessonsDone = enrollment?.completedLessons ?? 0;
+  const totalLessons = enrollment?.totalLessons ?? item.lessons ?? 0;
+
+  const lastAccessedTs = enrollment?.lastAccessed?.toDate?.();
+  const lastAccessedText = lastAccessedTs
+    ? `Last accessed: ${formatDistanceToNow(lastAccessedTs, { addSuffix: true })}`
+    : "Not started yet";
 
   return (
     <div className="single_course_card">
@@ -10,17 +28,17 @@ const CourseCard = ({ item, isEnrolled, onEnroll, loading }) => {
         <img
           src={item.image}
           alt={item.title}
+          loading="lazy"
           onError={(e) => {
             e.target.src = "/placeholder.jpg";
           }}
         />
 
         <div className="btn-plus">
-          <p>{item.category}</p>
-
+          <p className="category">{item.category}</p>
           <div className="rating">
             <FaStar color="#f7ca4e" size={14} />
-            <span>4.5</span>
+            <span>{rating.toFixed(1)}</span>
           </div>
         </div>
 
@@ -30,20 +48,26 @@ const CourseCard = ({ item, isEnrolled, onEnroll, loading }) => {
           <div className="course-progress">
             <div className="progress-header">
               <span>Progress</span>
-              <span>60%</span>
+              <span>{progress}%</span>
             </div>
-
             <div className="progress-bar">
-              <div className="progress-fill" style={{ width: "60%" }}></div>
+              <div
+                className="progress-fill"
+                style={{ width: `${progress}%` }}
+              />
             </div>
-
-            <p className="last-accessed">Last accessed: October 12, 2024</p>
+            <p className="lesson-count">
+              {lessonsDone}/{totalLessons} lessons
+            </p>
+            <p className="last-accessed">{lastAccessedText}</p>
           </div>
         )}
 
         <div className="course-card-actions">
           {isEnrolled ? (
-            <button className="btn-resume">Resume</button>
+            <button className="btn-resume" onClick={() => onResume?.(item.id)}>
+              {progress === 0 ? "Start" : "Resume"}
+            </button>
           ) : (
             <button
               className="btn-enroll"

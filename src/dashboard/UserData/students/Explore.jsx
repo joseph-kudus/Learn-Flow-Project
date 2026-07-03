@@ -13,17 +13,25 @@ import {
   enrollStudent,
   getUserEnrollments,
   getEnrollmentDetails,
-} from "..//allEnrollments";
+} from "../allEnrollments"; // fixed double slash
 import { useAuth } from "../../../context/AuthContext";
 
-const Explore = () => {
+// 1. Build filter options from your real data
+const CATEGORY_OPTIONS = [
+  { label: "All", value: "ALL" },
+  ...Array.from(
+    new Set(allEnrollments.map((c) => c.category.toUpperCase())),
+  ).map((cat) => ({ label: cat, value: cat })),
+];
+
+const Explore = ({onEnrolled}) => {
   const { currentUser, userData } = useAuth();
   const [myCourseIds, setMyCourseIds] = useState([]);
   const [enrollmentData, setEnrollmentData] = useState([]);
   const [enrollingId, setEnrollingId] = useState(null);
   const navigate = useNavigate();
 
-  // 1. Load user enrollments once
+  // 2. Load user enrollments once
   useEffect(() => {
     if (!currentUser?.uid) return;
     const load = async () => {
@@ -67,7 +75,7 @@ const Explore = () => {
     }
   };
 
-  // 2. Map your allEnrollments to Explore card shape
+  // 3. Map your allEnrollments to Explore card shape
   const courses = useMemo(
     () =>
       allEnrollments.map((c) => ({
@@ -78,27 +86,38 @@ const Explore = () => {
         classes: c.lessons,
         duration: `${c.durationWeeks} Weeks`,
         rating: c.rating.toFixed(1),
-        type: c.category.toUpperCase(), // use category for filter
+        type: c.category.toUpperCase(), // used for filter
       })),
     [],
   );
 
-  // 3. Split into Trending = top rated, Recommended = not enrolled
+  // 4. Split data for sections
   const trendingCourses = useMemo(
     () =>
       [...courses]
         .sort((a, b) => Number(b.rating) - Number(a.rating))
-        .slice(0, 6),
+        .slice(0, 8),
     [courses],
   );
 
   const recommendedCourses = useMemo(
-    () => courses.filter((c) => !myCourseIds.includes(c.id)).slice(0, 6),
+    () => courses.filter((c) => !myCourseIds.includes(c.id)).slice(0, 8),
     [courses, myCourseIds],
   );
 
   return (
     <div className="explore-page">
+      {/* 5. ALL COURSES SECTION ADDED */}
+      <CourseSection
+        title="All Courses"
+        courses={courses}
+        myCourseIds={myCourseIds}
+        enrollmentData={enrollmentData}
+        onEnroll={handleEnroll}
+        enrollingId={enrollingId}
+        options={CATEGORY_OPTIONS}
+      />
+
       <CourseSection
         title="Trending Courses"
         courses={trendingCourses}
@@ -106,6 +125,7 @@ const Explore = () => {
         enrollmentData={enrollmentData}
         onEnroll={handleEnroll}
         enrollingId={enrollingId}
+        options={CATEGORY_OPTIONS}
       />
       <CourseSection
         title="Recommended Courses"
@@ -114,6 +134,7 @@ const Explore = () => {
         enrollmentData={enrollmentData}
         onEnroll={handleEnroll}
         enrollingId={enrollingId}
+        options={CATEGORY_OPTIONS}
       />
     </div>
   );
@@ -126,6 +147,7 @@ const CourseSection = ({
   enrollmentData,
   onEnroll,
   enrollingId,
+  options,
 }) => {
   const [activeFilter, setActiveFilter] = useState("ALL");
   const navigate = useNavigate();
@@ -144,6 +166,7 @@ const CourseSection = ({
         <FilterButtons
           activeFilter={activeFilter}
           setActiveFilter={setActiveFilter}
+          options={options} // 6. Pass real categories here
         />
       </div>
 

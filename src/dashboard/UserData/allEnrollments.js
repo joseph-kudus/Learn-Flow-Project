@@ -87,7 +87,7 @@ export const allEnrollments = [
   {
     id: 7,
     title: "Intro to C++",
-    category: "Coding",
+    category: "Programming",
     image: courseImages[7],
     description: "Learn object-oriented programming using C++.",
     durationWeeks: 8,

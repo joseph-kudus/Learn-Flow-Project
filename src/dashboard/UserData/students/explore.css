@@ -264,6 +264,7 @@
 
 /*Mycourses*/
 .myclass {
+  font-family: DM Sans;
   background: #FFFFFF;
   display: flex;
   gap: 24px;
@@ -274,7 +275,7 @@
 .Course-Content-Container {
   width: 100%;
   flex: 1 1 0;
-  min-width: 0; /* allows horizontal scroll children to shrink */
+  min-width: 0;  
 }
 
 .active-course {
@@ -286,8 +287,8 @@
   padding: 10px 0;
 }
 .active-course h3 {
-  font-size: 24px;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 500;
   margin: 0;
 }
 
@@ -296,7 +297,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between; /* was space-evenly, made it jumpy */
+  justify-content: space-between; 
   padding: 10px 0;
 }
 .active-course-active h3 {
@@ -322,7 +323,7 @@
 }
 
 /* Horizontal scroll row */
-.active-cours { /* fixed typo: was active-cours vs active-course */
+.active-cours {
   display: flex;
   flex-direction: row;
   gap: 16px;
@@ -335,7 +336,7 @@
 .active-cours::-webkit-scrollbar { display: none; }
 
 .course-card {
-  flex: 0 0 260px; /* fixed width cards, no shrink */
+  flex: 0 0 260px; 
   scroll-snap-align: start;
   border: 1px solid #E5E5E5;
   border-radius: 16px;
@@ -346,14 +347,17 @@
   gap: 12px;
 }
 
-.card_container {
+.card_container, .card_container_start {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 12px;
   width: 100%;
 }
-.card_container img {
+.card_container_start {
+  align-items: flex-start;
+}
+.card_container img, .card_container_start img {
   width: 64px;
   height: 64px;
   object-fit: cover;
@@ -365,6 +369,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 4px;
+  flex: 1;
 }
 .intro p {
   margin: 0;
@@ -383,13 +388,15 @@
   background: #E5E5E5;
   border-radius: 999px;
   overflow: hidden;
+  position: relative;
 }
-.progress-bar::after { /* fake progress, replace with inline style later */
+.progress-bar::after {
   content: '';
   display: block;
-  width: 38%; /* 12/32 = 37.5% */
+  width: var(--progress, 38%); 
   height: 100%;
-  background: #FFD166;
+  background: #333333;
+  border-radius: 999px;
 }
 
 .card_details {
@@ -429,6 +436,12 @@
   display: grid;
   place-items: center;
   cursor: pointer;
+}
+
+/* Black start button override */
+.resume-btn-start {
+  background-color: #000 !important;
+  color: #FFFFFF !important;
 }
 
 /* Right sidebar */
@@ -481,13 +494,52 @@
   font-size: 12px;
   color: #666;
 }
+
+/* Status buttons */
 .lesson_schedule button {
   border: 1px solid #E5E5E5;
-  background: #FFF;
+  background: #E6FAEE;
   padding: 6px 10px;
   border-radius: 8px;
   font-size: 12px;
   cursor: pointer;
+  white-space: nowrap;
+  color: #0F7A3F;
+  font-weight: 600;
+  transition: filter 0.2s;
+}
+.lesson_schedule button:hover { filter: brightness(0.95); }
+
+.upcoming {
+  background-color: #FFF8E5;
+  color: #3F2F03;
+  border-color: #F5E4B8;
+}
+.submitted {
+  background-color: #E8EEFF;
+  color: #295BFF;
+  border-color: #C7D6FF;
+}
+.missed {
+  background-color: #FFEB; /* was #FFEB */
+  color: #B91C1C;
+  border-color: #FECACA;
+}
+.attended, .graded {
+  background-color: #E6FAEE;
+  color: #0F7A3F;
+  border-color: #BBF7D0;
+}
+
+/* Graded pill to match buttons */
+.graded-text {
+  background-color: #E6FAEE;
+  color: #0F7A3F;
+  border: 1px solid #BBF7D0;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
   white-space: nowrap;
 }
 
@@ -504,6 +556,759 @@
     padding-top: 20px;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

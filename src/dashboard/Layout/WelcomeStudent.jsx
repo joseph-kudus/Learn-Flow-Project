@@ -1,89 +1,25 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Courseicon } from "../../assets/images/Myimg";
-import { book2, termina } from "../../assets/images/logos";
+import { book2 } from "../../assets/images/logos";
 import "./welcomeStudent.css";
 import { FaArrowRightLong } from "react-icons/fa6";
-import { GrMore } from "react-icons/gr";
 import { MdAccessTime } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import FilterButtons from "../UserData/FilterButtons";
 
-
-const categories = [
-  { label: "All", value: "ALL" },
-  { label: "Coding", value: "CODING" },
-  { label: "Programming", value: "PROGRAMMING" },
-];
-
-const enrolledCourses = [
-  {
-    id: 1,
-    title: "Intro to C++",
-    category: "CODING",
-    img: Courseicon,
-    classesCompleted: 42,
-    totalClasses: 50,
-    duration: "1hr 45m",
-    nextLesson: "Pointers & Memory",
-  },
-  {
-    id: 2,
-    title: "Intro to Programming",
-    category: "PROGRAMMING",
-    img: termina,
-    classesCompleted: 12,
-    totalClasses: 32,
-    duration: "2hr 10m",
-    nextLesson: "Variables and Functions",
-  },
-];
-
-const completedCourses = [
-  {
-    id: 1001,
-    code: "JavaScript 101",
-    title: "Introduction to Javascript",
-    grade: "100/100",
-    date: "October 13, 2024",
-    status: "pass",
-  },
-  {
-    id: 1002,
-    code: "HTML 102",
-    title: "HTML as a Programming Language",
-    grade: "40/100",
-    date: "October 21, 2024",
-    status: "fail",
-  },
-  {
-    id: 1003,
-    code: "HTML 103",
-    title: "HTML as a Programming Language",
-    grade: "40/100",
-    date: "October 21, 2024",
-    status: "fail",
-  },
-  {
-    id: 1004,
-    code: "JavaScript 102",
-    title: "Introduction to Javascript",
-    grade: "100/100",
-    date: "October 13, 2024",
-    status: "pass",
-  },
-  {
-    id: 1005,
-    code: "HTML 104",
-    title: "HTML as a Programming Language",
-    grade: "40/100",
-    date: "October 21, 2024",
-    status: "fail",
-  },
-];
-
-const WelcomeStudent = ({ user }) => {
+const WelcomeStudent = ({
+  user,
+  allEnrollments = [],
+  enrollmentData = [],
+  completedCourses = [],
+  onRefresh,
+}) => {
   const [activeCategory, setActiveCategory] = useState("ALL");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    onRefresh?.(); // refetch when you land back here from /lesson/:id
+  }, [onRefresh]);
 
   const firstnamedisplay =
     user?.nickname ||
@@ -91,17 +27,84 @@ const WelcomeStudent = ({ user }) => {
     user?.email?.split("@")[0] ||
     "student";
 
-  const filteredCourses = useMemo(() => {
-    return activeCategory === "ALL"
-      ? enrolledCourses
-      : enrolledCourses.filter((course) => course.category === activeCategory);
-  }, [activeCategory]);
+  // 1. Tabs: ALL + CODING + PROGRAMMING + MORE... only
+  const categoryOptions = useMemo(() => {
+    const PINNED = ["CODING", "PROGRAMMING"]; // only these get tabs
+    const existingCats = new Set(
+      allEnrollments.map((c) => c.category.toUpperCase()),
+    );
 
-  const getProgress = (course) => {
-    if (course.progress !== undefined && course.progress !== null)
-      return course.progress;
-    return Math.round((course.classesCompleted / course.totalClasses) * 100);
-  };
+    const pinnedWithData = PINNED.filter((v) => existingCats.has(v));
+    const hasOthers = allEnrollments.some(
+      (c) => !PINNED.includes(c.category.toUpperCase()),
+    );
+
+    const opts = [
+      { label: "All", value: "ALL" },
+      ...pinnedWithData.map((v) => ({ label: v, value: v })),
+    ];
+
+    if (hasOthers) opts.push({ label: "More...", value: "MORE" }); 
+    return opts;
+  }, [allEnrollments]);
+
+  // 2. Map id -> course catalog. Use String keys for type safety
+  const courseMap = useMemo(
+    () => new Map(allEnrollments.map((c) => [String(c.id), c])),
+    [allEnrollments],
+  );
+
+  // 3. FLOW: Enrolled + Active only = status!== completed
+  const enrolledCourses = useMemo(() => {
+    if (enrollmentData.length === 0) {
+      console.log("WelcomeStudent: enrollmentData is []");
+      return [];
+    }
+
+    return enrollmentData
+      .filter((e) => e.status !== "completed" && e.courseId != null) 
+      .map((e) => {
+        const course = courseMap.get(String(e.courseId)); // String both sides
+        if (!course) {
+          console.warn(
+            "Course id not found:",
+            e.courseId,
+            typeof e.courseId,
+            "in catalog ids:",
+            allEnrollments.map((c) => c.id),
+          );
+          return null;
+        }
+        const total = e.totalLessons || course.lessons || 1;
+        const done = e.completedLessons || 0;
+        const percent = Math.round((done / total) * 100);
+        return {
+          id: course.id,
+          title: course.title,
+          category: course.category.toUpperCase(),
+          img: course.image || Courseicon,
+          classesCompleted: done,
+          totalClasses: total,
+          duration: `${course.durationWeeks || 6}w`,
+          nextLesson: e.nextLesson || "Next Lesson",
+          progress: percent,
+        };
+      })
+      .filter(Boolean);
+  }, [enrollmentData, courseMap, allEnrollments]);
+
+  // 4. Filter logic to match tabs
+  const filteredCourses = useMemo(() => {
+    if (activeCategory === "ALL") return enrolledCourses;
+    if (activeCategory === "MORE") {
+      return enrolledCourses.filter(
+        (course) => !["CODING", "PROGRAMMING"].includes(course.category),
+      );
+    }
+    return enrolledCourses.filter(
+      (course) => course.category === activeCategory,
+    );
+  }, [activeCategory, enrolledCourses]);
 
   return (
     <section className="content-section">
@@ -114,79 +117,73 @@ const WelcomeStudent = ({ user }) => {
         <FilterButtons
           activeFilter={activeCategory}
           setActiveFilter={setActiveCategory}
-          options={categories}
-          showMore={false}
+          options={categoryOptions} 
         />
       </div>
 
-      {/* Active Courses Cards */}
       <div className="card-container">
         {filteredCourses.length === 0 ? (
-          <p className="coursent">No courses found.</p>
+          <p className="coursent">No active courses found.</p>
         ) : (
-          filteredCourses.map((course) => {
-            const progress = getProgress(course);
-
-            return (
-              <div key={course.id} className="course-card-container">
-                <div className="card-header">
-                  <img
-                    src={course.img}
-                    alt={course.title}
-                    className="card-image"
-                  />
-                  <div className="bek">
-                    <h3>{course.title}</h3>
-                    <span className="card-category">{course.category}</span>
-                  </div>
-                </div>
-
-                <div className="progress-section">
-                  <div className="progress-bard">
-                    <div
-                      className="progress-fill"
-                      style={{ width: `${progress}%` }}
-                    ></div>
-                  </div>
-                  <span className="progress-text">{progress}%</span>
-                </div>
-
-                <div className="lessons">
-                  <div className="lessons-logo">
-                    <img src={book2} alt="ff" />
-                    <p>
-                      {course.classesCompleted}/{course.totalClasses} Classes
-                    </p>
-                  </div>
-                  <div className="durationy">
-                    <MdAccessTime size={20} />
-                    <p>{course.duration}</p>
-                  </div>
-                </div>
-                <hr />
-                <div className="card-footer">
-                  <button onClick={() => navigate(`/course/${course.id}`)}>
-                    Resume Classes
-                  </button>
-
-                  <button
-                    className="arrow-btn"
-                    onClick={() =>
-                      navigate(`/lesson/${course.id}`, {
-                        state: { lesson: course.nextLesson },
-                      })
-                    }
-                  >
-                    <FaArrowRightLong />
-                  </button>
+          filteredCourses.map((course) => (
+            <div key={course.id} className="course-card-container">
+              <div className="card-header">
+                <img
+                  src={course.img}
+                  alt={course.title}
+                  className="card-image"
+                />
+                <div className="bek">
+                  <h3>{course.title}</h3>
+                  <span className="card-category">{course.category}</span>
                 </div>
               </div>
-            );
-          })
+
+              <div className="progress-section">
+                <div className="progress-bard">
+                  <div
+                    className="progress-fill"
+                    style={{ width: `${course.progress}%` }}
+                  ></div>
+                </div>
+                <span className="progress-text">{course.progress}%</span>
+              </div>
+
+              <div className="lessons">
+                <div className="lessons-logo">
+                  <img src={book2} alt="ff" />
+                  <p>
+                    {course.classesCompleted}/{course.totalClasses} Classes
+                  </p>
+                </div>
+                <div className="durationy">
+                  <MdAccessTime size={20} />
+                  <p>{course.duration}</p>
+                </div>
+              </div>
+              <hr />
+              <div className="card-footer">
+                <button onClick={() => navigate(`/course/${course.id}`)}>
+                  Resume Classes
+                </button>
+
+                <button
+                  className="arrow-btn"
+                  onClick={() =>
+                    navigate(`/lesson/${course.id}`, {
+                      state: { lesson: course.nextLesson },
+                    })
+                  }
+                >
+                  <FaArrowRightLong />
+                </button>
+              </div>
+            </div>
+          ))
         )}
       </div>
 
-      {/* Completed Courses Table */}
+      {/* Completed Courses Table - unchanged */}
       <div className="course-main">
         <div className="table-header">
           <h3>Completed courses</h3>
@@ -204,19 +201,34 @@ const WelcomeStudent = ({ user }) => {
             </tr>
           </thead>
           <tbody>
-            {completedCourses.map((course) => (
-              <tr key={course.id}>
-                <td>{course.code}</td>
-                <td>{course.title}</td>
-                <td>{course.grade}</td>
-                <td>{course.date}</td>
-                <td>
-                  <span className={`status ${course.status}`}>
-                    {course.status === "pass" ? "Pass" : "Fail"}
-                  </span>
+            {completedCourses.length === 0 ? (
+              <tr>
+                <td
+                  colSpan="5"
+                  style={{
+                    textAlign: "center",
+                    padding: "12px",
+                    color: "#666",
+                  }}
+                >
+                  No completed courses yet.
                 </td>
               </tr>
-            ))}
+            ) : (
+              completedCourses.map((course) => (
+                <tr key={course.id}>
+                  <td>{course.code || course.courseCode}</td>
+                  <td>{course.title || course.courseTitle}</td>
+                  <td>{course.grade}</td>
+                  <td>{course.date || course.completedAt}</td>
+                  <td>
+                    <span className={`status ${course.status}`}>
+                      {course.status === "pass" ? "Pass" : "Fail"}
+                    </span>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

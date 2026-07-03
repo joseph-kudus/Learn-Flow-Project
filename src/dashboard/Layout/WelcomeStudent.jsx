@@ -27,9 +27,11 @@ const WelcomeStudent = ({
     user?.email?.split("@")[0] ||
     "student";
 
+  const isLoading = !allEnrollments.length || !enrollmentData.length; // <-- 1. loading flag
+
   // 1. Tabs: ALL + CODING + PROGRAMMING + MORE... only
   const categoryOptions = useMemo(() => {
-    const PINNED = ["CODING", "PROGRAMMING"]; // only these get tabs
+    const PINNED = ["CODING", "PROGRAMMING"];
     const existingCats = new Set(
       allEnrollments.map((c) => c.category.toUpperCase()),
     );
@@ -44,7 +46,7 @@ const WelcomeStudent = ({
       ...pinnedWithData.map((v) => ({ label: v, value: v })),
     ];
 
-    if (hasOthers) opts.push({ label: "More...", value: "MORE" }); 
+    if (hasOthers) opts.push({ label: "More...", value: "MORE" });
     return opts;
   }, [allEnrollments]);
 
@@ -54,22 +56,18 @@ const WelcomeStudent = ({
     [allEnrollments],
   );
 
-  // 3. FLOW: Enrolled + Active only = status!== completed
+  // 3. FLOW: Enrolled + Active only = status!== completed. Must return [] not JSX
   const enrolledCourses = useMemo(() => {
-    if (enrollmentData.length === 0) {
-      console.log("WelcomeStudent: enrollmentData is []");
-      return [];
-    }
+    if (isLoading) return []; // <-- 2. return [] here
 
     return enrollmentData
-      .filter((e) => e.status !== "completed" && e.courseId != null) 
+      .filter((e) => e.status !== "completed" && e.courseId != null)
       .map((e) => {
-        const course = courseMap.get(String(e.courseId)); // String both sides
+        const course = courseMap.get(String(e.courseId));
         if (!course) {
           console.warn(
             "Course id not found:",
             e.courseId,
-            typeof e.courseId,
             "in catalog ids:",
             allEnrollments.map((c) => c.id),
           );
@@ -91,7 +89,7 @@ const WelcomeStudent = ({
         };
       })
       .filter(Boolean);
-  }, [enrollmentData, courseMap, allEnrollments]);
+  }, [enrollmentData, courseMap, allEnrollments, isLoading]); // <-- add dep
 
   // 4. Filter logic to match tabs
   const filteredCourses = useMemo(() => {
@@ -106,6 +104,15 @@ const WelcomeStudent = ({
     );
   }, [activeCategory, enrolledCourses]);
 
+  // 5. Loading UI in render, not in memo
+  if (isLoading) {
+    return (
+      <section className="content-section">
+        <p className="coursent">Loading courses...</p>
+      </section>
+    );
+  }
+
   return (
     <section className="content-section">
       <div className="welcome-banner">
@@ -117,7 +124,7 @@ const WelcomeStudent = ({
         <FilterButtons
           activeFilter={activeCategory}
           setActiveFilter={setActiveCategory}
-          options={categoryOptions} 
+          options={categoryOptions}
         />
       </div>
 
@@ -183,7 +190,7 @@ const WelcomeStudent = ({
         )}
       </div>
 
-      {/* Completed Courses Table - unchanged */}
+      {/* Completed Courses Table */}
       <div className="course-main">
         <div className="table-header">
           <h3>Completed courses</h3>

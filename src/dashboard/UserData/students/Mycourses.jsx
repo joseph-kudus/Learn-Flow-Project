@@ -30,8 +30,8 @@ const formatDateLabel = (dateStr) => {
 };
 
 const Mycourses = ({
-  allEnrollments = [], // catalog from allEnrollments.js
-  enrollmentData = [], // user progress from Firestore
+  allEnrollments = [], 
+  enrollmentData = [], 
   activitiesData = [],
 }) => {
   const navigate = useNavigate();
@@ -92,10 +92,8 @@ const Mycourses = ({
       return acc;
     }, {});
   }, [activitiesData]);
-
   const CourseCard = ({ enrollment, variant = "resume" }) => {
-    // 3. ONLY CHANGE: use joined enrollment, no courseMap lookup here
-    const percent = enrollment.progress;
+    const percent = enrollment.progress || 0;
 
     return (
       <div className="course-card">
@@ -104,33 +102,49 @@ const Mycourses = ({
             variant === "start" ? "card_container_start" : "card_container"
           }
         >
-          <img src={enrollment.image || "#"} alt={enrollment.title} />
+          <img
+            src={enrollment.image}
+            alt={enrollment.title}
+            onError={(e) => {
+              e.target.src = "/placeholder.jpg";
+            }}
+          />
+
           <div className="intro">
             <p>
               <strong>{enrollment.title}</strong>
             </p>
-            <p>{enrollment.category || "CODING"}</p>
+
+            <p>{enrollment.category}</p>
           </div>
         </div>
 
         {variant === "resume" && (
-          <div
-            className="progress-bar"
-            style={{ "--progress": `${percent}%` }}
-          ></div>
-        )}
+          <>
+            <div
+              className="progress-bar"
+              style={{ "--progress": `${percent}%` }}
+            ></div>
 
-        {variant === "resume" && <hr />}
+            <hr />
+          </>
+        )}
 
         <div className="card_details">
           <p>
-            {enrollment.completedLessons || 0}/
-            {enrollment.lessons || enrollment.totalLessons} Classes
+            {enrollment.completedLessons}/{enrollment.lessons} Classes
           </p>
+
           <p>{enrollment.timeSpent || "1hr 45 Minutes"}</p>
-          {variant === "start" && enrollment.rating && (
+
+          {variant === "start" && (
             <p>
-              <FaStar style={{ color: "#FFD166", marginRight: 4 }} />
+              <FaStar
+                style={{
+                  color: "#FFD166",
+                  marginRight: 4,
+                }}
+              />
               {enrollment.rating} ratings
             </p>
           )}
@@ -141,8 +155,9 @@ const Mycourses = ({
             className={variant === "start" ? "resume-btn-start" : ""}
             onClick={() => navigate(`/learn/${enrollment.courseId}`)}
           >
-            {variant === "start" ? "Start Course" : "Resume classes"}
+            {variant === "start" ? "Start Course" : "Resume Classes"}
           </button>
+
           <button onClick={() => navigate(`/learn/${enrollment.courseId}`)}>
             <FaArrowRight />
           </button>
@@ -150,7 +165,6 @@ const Mycourses = ({
       </div>
     );
   };
-
   return (
     <div className="myclass">
       <div className="Course-Content-Container">
@@ -171,7 +185,7 @@ const Mycourses = ({
         <div className="active-cours" ref={activeRef}>
           {activeCourses.length ? (
             activeCourses.map((e) => (
-              <CourseCard key={e.id} enrollment={e} variant="resume" />
+              <CourseCard key={e.courseId} enrollment={e} variant="resume" />
             ))
           ) : (
             <p style={{ padding: "12px", color: "#666" }}>
@@ -197,7 +211,7 @@ const Mycourses = ({
         <div className="active-cours" ref={recentRef}>
           {recentCourses.length ? (
             recentCourses.map((e) => (
-              <CourseCard key={e.id} enrollment={e} variant="start" />
+              <CourseCard key={e.courseId} enrollment={e} variant="start" />
             ))
           ) : (
             <p style={{ padding: "12px", color: "#666" }}>

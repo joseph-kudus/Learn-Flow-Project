@@ -56,7 +56,7 @@ const WelcomeStudent = ({
     [allEnrollments],
   );
 
-  // 3. FLOW: Enrolled + Active only = status!== completed. Must return [] not JSX
+  // 3. FLOW: Enrolled + Active only = status!== completed. Must return [] 
   const enrolledCourses = useMemo(() => {
     if (isLoading) return []; // <-- 2. return [] here
 

@@ -2,7 +2,7 @@ import React, { useRef, useMemo } from "react";
 import { FaArrowLeftLong, FaArrowRight, FaStar } from "react-icons/fa6";
 import { IoIosMore } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import "./explore.css";
+import "./mycourse.css";
 
 const statusClassMap = {
   upcoming: "upcoming",

@@ -58,6 +58,8 @@ const Explore = () => {
   const [trendingFilter, setTrendingFilter] = useState("ALL");
   const [recommendedFilter, setRecommendedFilter] = useState("ALL");
 
+  const categories = ["ALL", "CODING", "PROGRAMMING", "MORE"];
+
   // LOAD ENROLLMENTS
   useEffect(() => {
     if (!currentUser?.uid) return;
@@ -133,7 +135,7 @@ const Explore = () => {
     () =>
       [...courses]
         .sort((a, b) => b.rating - a.rating)
-        .slice(0, 8),
+        .slice(0, 4),
     [courses]
   );
 
@@ -142,7 +144,7 @@ const Explore = () => {
     () =>
       courses
         .filter((c) => !myCourseIds.includes(c.id))
-        .slice(0, 8),
+        .slice(0, 4),
     [courses, myCourseIds]
   );
 
@@ -167,17 +169,17 @@ const Explore = () => {
             <h1>Trending Courses</h1>
 
             <div className="categories_wrapper">
-              <button onClick={() => setTrendingFilter("ALL")}>All</button>
-              <button onClick={() => setTrendingFilter("CODING")}>Coding</button>
-              <button onClick={() => setTrendingFilter("PROGRAMMING")}>
-                Programming
-              </button>
-              <button onClick={() => setTrendingFilter("MORE")}>
-                <IoIosMore />
-              </button>
-            </div>
+  {categories.map((cat) => (
+    <button
+      key={cat}
+      className={trendingFilter === cat ? "active" : ""}
+      onClick={() => setTrendingFilter(cat)}
+    >
+      {cat === "MORE" ? <IoIosMore /> : cat}
+    </button>
+  ))}
+</div>
           </div>
-
           <div className="course-grid">
             {filteredTrending.map((course) => (
               <CourseCard
@@ -199,15 +201,16 @@ const Explore = () => {
             <h1>Recommended Courses</h1>
 
             <div className="categories_wrapper">
-              <button onClick={() => setRecommendedFilter("ALL")}>All</button>
-              <button onClick={() => setRecommendedFilter("CODING")}>Coding</button>
-              <button onClick={() => setRecommendedFilter("PROGRAMMING")}>
-                Programming
-              </button>
-              <button onClick={() => setRecommendedFilter("MORE")}>
-                <IoIosMore />
-              </button>
-            </div>
+  {categories.map((cat) => (
+    <button
+      key={cat}
+      className={trendingFilter === cat ? "active" : ""}
+      onClick={() => setTrendingFilter(cat)}
+    >
+      {cat === "MORE" ? <IoIosMore /> : cat}
+    </button>
+  ))}
+</div>
           </div>
 
           <div className="course-grid">

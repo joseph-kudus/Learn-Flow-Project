@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react"; // 1. useCallback
+import React, { useState, useEffect, useMemo, useCallback } from "react"; 
 import { useNavigate } from "react-router-dom";
 import "./learnerdashboard.css";
 import { useAuth } from "../../context/AuthContext";
@@ -100,7 +100,7 @@ const WelcomeLearner = () => {
           setMyCourseIds={setMyCourseIds}
           enrollmentData={enrollmentData}
           setEnrollmentData={setEnrollmentData}
-          onRefresh={refetchEnrollments} // 4. Let child trigger refresh
+          onRefresh={refetchEnrollments} 
         />
 
         {/* RECOMMENDED */}
@@ -112,7 +112,7 @@ const WelcomeLearner = () => {
           setMyCourseIds={setMyCourseIds}
           enrollmentData={enrollmentData}
           setEnrollmentData={setEnrollmentData}
-          onRefresh={refetchEnrollments} // 4. Same here
+          onRefresh={refetchEnrollments} 
         />
       </div>
 
@@ -120,6 +120,7 @@ const WelcomeLearner = () => {
       <div className="coursecompletion">
         <div className="overview">
           <h1>Course Completion Overview</h1>
+          <h1>Grap</h1>
           <ol>
             <li>
               <strong>Completed:</strong> {stats.completed}

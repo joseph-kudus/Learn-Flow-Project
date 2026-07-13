@@ -9,6 +9,7 @@ import programmingImg from "../images/programming.jpg";
 import cImg from "../images/c.jpg";
 import reactImg from "../images/react.jpg";
 import softwareEngImg from "../images/software-engineering.jpg";
+import CourseVideo from "../images/CourseImage.png";
 
 export const courseImages = {
   1: managementImg,
@@ -24,4 +25,5 @@ export const courseImages = {
   11: reactImg,
   12: pythonImg,
   13: softwareEngImg,
+  CourseVideo,
 };

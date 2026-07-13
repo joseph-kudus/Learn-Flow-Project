@@ -2,6 +2,7 @@ import { like, type } from "firebase/firestore/pipelines";
 import React from "react";
 import "../stars.css";
 import { BiRightArrow } from "react-icons/bi";
+import CourseDetails from "./CourseDetails";
 
 const RecomendedCourse = (usse) => {
   const Card_co = [
@@ -60,6 +61,7 @@ const RecomendedCourse = (usse) => {
           </button>
         </div>
       </div>
+      <CourseDetails/>
     </div>
   );
 };

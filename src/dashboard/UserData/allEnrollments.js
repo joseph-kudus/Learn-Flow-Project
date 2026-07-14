@@ -8,7 +8,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../../firebaseconfig";
 import { courseImages } from "../../assets/courses/courseImages";
-import { id } from "date-fns/locale"
+import { id } from "date-fns/locale";
 
 /* ======================================================
    COURSE DATA
@@ -20,25 +20,67 @@ export const allEnrollments = [
     title: "People Management",
     category: "Management",
     image: courseImages[1],
+    video: "/videos/people-management.mp4",
     description:
       "Beginner's Guide to becoming a professional frontend developer.",
     durationWeeks: 8,
-    lessons: 24,
+    lessons: [
+      {
+        title: "Introduction to People Management",
+        video: "/videos/people-management-intro.mp4",
+        notes: "...",
+        assignment: "...",
+      },
+      {
+        title: "Leadership Skills",
+        video: "/videos/leadership-skills.mp4",
+        notes: "...",
+        assignment: "...",
+      },
+      {
+        title: "Team Communication",
+        video: "/videos/team-communication.mp4",
+        notes: "...",
+        assignment: "...",
+      },
+    ],
     rating: 4.8,
     allowedRoles: ["learner", "student"],
   },
+
   {
     id: 2,
     title: "Advance Rush",
     category: "BLOCKCHAIN",
     image: courseImages[2],
+    video: "/videos/advance-rush.mp4",
     description:
       "Learn blockchain development from beginner to advanced level.",
     durationWeeks: 7,
-    lessons: 30,
+    lessons: [
+      {
+        title: "Blockchain Introduction",
+        video: "/videos/blockchain-introduction.mp4",
+        notes: "...",
+        assignment: "...",
+      },
+      {
+        title: "Blockchain Architecture",
+        video: "/videos/blockchain-architecture.mp4",
+        notes: "...",
+        assignment: "...",
+      },
+      {
+        title: "Smart Contracts",
+        video: "/videos/smart-contracts.mp4",
+        notes: "...",
+        assignment: "...",
+      },
+    ],
     rating: 4.7,
     allowedRoles: ["learner", "student"],
   },
+
   {
     id: 3,
     title: "Robotics & Machine Learning",
@@ -47,10 +89,30 @@ export const allEnrollments = [
     description:
       "Build intelligent robotics and machine learning applications.",
     durationWeeks: 12,
-    lessons: 40,
+    lessons: [
+      {
+        title: "Introduction to Robotics",
+        video: "/videos/robotics-introduction.mp4",
+        notes: "...",
+        assignment: "...",
+      },
+      {
+        title: "Machine Learning Basics",
+        video: "/videos/machine-learning-basics.mp4",
+        notes: "...",
+        assignment: "...",
+      },
+      {
+        title: "Building Intelligent Systems",
+        video: "/videos/intelligent-systems.mp4",
+        notes: "...",
+        assignment: "...",
+      },
+    ],
     rating: 4.9,
     allowedRoles: ["learner", "student"],
   },
+
   {
     id: 4,
     title: "Intro to Python",
@@ -58,10 +120,30 @@ export const allEnrollments = [
     image: courseImages[4],
     description: "Learn Python programming from absolute beginner level.",
     durationWeeks: 6,
-    lessons: 20,
+    lessons: [
+      {
+        title: "Python Introduction",
+        video: "/videos/python-introduction.mp4",
+        notes: "...",
+        assignment: "...",
+      },
+      {
+        title: "Python Variables",
+        video: "/videos/python-variables.mp4",
+        notes: "...",
+        assignment: "...",
+      },
+      {
+        title: "Python Functions",
+        video: "/videos/python-functions.mp4",
+        notes: "...",
+        assignment: "...",
+      },
+    ],
     rating: 4.8,
     allowedRoles: ["learner", "student"],
   },
+
   {
     id: 5,
     title: "Intro to Javascript",
@@ -69,7 +151,26 @@ export const allEnrollments = [
     image: courseImages[5],
     description: "Master JavaScript fundamentals for web development.",
     durationWeeks: 7,
-    lessons: 22,
+    lessons: [
+      {
+        title: "JavaScript Introduction",
+        video: "/videos/javascript-introduction.mp4",
+        notes: "...",
+        assignment: "...",
+      },
+      {
+        title: "JavaScript Variables",
+        video: "/videos/javascript-variables.mp4",
+        notes: "...",
+        assignment: "...",
+      },
+      {
+        title: "DOM Manipulation",
+        video: "/videos/javascript-dom.mp4",
+        notes: "...",
+        assignment: "...",
+      },
+    ],
     rating: 4.7,
     allowedRoles: ["learner", "student"],
   },
@@ -80,7 +181,7 @@ export const allEnrollments = [
     image: courseImages[6],
     description: "Introduction to penetration testing and cybersecurity.",
     durationWeeks: 9,
-    lessons: 28,
+    totalLessons: 28,
     rating: 4.9,
     allowedRoles: ["learner", "student"],
   },
@@ -91,7 +192,33 @@ export const allEnrollments = [
     image: courseImages[7],
     description: "Learn object-oriented programming using C++.",
     durationWeeks: 8,
-    lessons: 24,
+    totalLessons: 24,
+    lessons: [
+      {
+        title: "The Introduction",
+        video: "...",
+        notes: "...",
+        assignment: "...",
+      },
+      {
+        title: "C++ Foundation",
+        video: "...",
+        notes: "...",
+        assignment: "...",
+      },
+      {
+        title: "C++ 101",
+        video: "...",
+        notes: "...",
+        assignment: "...",
+      },
+      {
+        title: "C++ 102",
+        video: "...",
+        notes: "...",
+        assignment: "...",
+      },
+    ],
     rating: 4.6,
     allowedRoles: ["learner", "student"],
   },
@@ -199,7 +326,7 @@ export const getEnrollmentDetails = async (firebaseUid) => {
 
     return snapshot.docs.map((doc) => ({
       id: doc.id, // Firestore doc id, needed for updateDoc later
-    ...doc.data(),
+      ...doc.data(),
       courseId: Number(doc.data().courseId), // 2. Ensure number for Map lookups
     }));
   } catch (error) {
@@ -224,7 +351,12 @@ export const markLessonComplete = async (enrollmentDocId, totalLessons) => {
     });
 
     // Clamp to 100% if we overshoot
-    const snap = await getDocs(query(collection(db, "enrollments"), where("__name__", "==", enrollmentDocId)));
+    const snap = await getDocs(
+      query(
+        collection(db, "enrollments"),
+        where("__name__", "==", enrollmentDocId),
+      ),
+    );
     const data = snap.docs[0]?.data();
     if (data && data.progress > 100) {
       await updateDoc(ref, { progress: 100, status: "completed" });
@@ -246,7 +378,7 @@ export const getUserByEmail = async (email) => {
   const q = query(collection(db, "users"), where("email", "==", email));
   const snapshot = await getDocs(q);
   if (snapshot.empty) return null;
-  return { id: snapshot.docs[0].id,...snapshot.docs[0].data() };
+  return { id: snapshot.docs[0].id, ...snapshot.docs[0].data() };
 };
 
 /* ======================================================
@@ -262,7 +394,10 @@ export const validateEnrollment = async (email, courseId) => {
 
   const role = user.role || "student";
   if (!course.allowedRoles.includes(role)) {
-    return { success: false, message: `${role} cannot enroll in ${course.title}` };
+    return {
+      success: false,
+      message: `${role} cannot enroll in ${course.title}`,
+    };
   }
   return { success: true, user, course };
 };
@@ -286,12 +421,19 @@ export const enrollStudent = async (firebaseUid, email, courseId) => {
 
     const snapshot = await getDocs(existingQ);
     if (!snapshot.empty) {
-      return { success: false, message: "You are already enrolled in this course." };
+      return {
+        success: false,
+        message: "You are already enrolled in this course.",
+      };
     }
 
     await addDoc(collection(db, "enrollments"), {
       userId: firebaseUid,
-      userName: user.username || user.nickname || user.displayName || user.email.split("@")[0],
+      userName:
+        user.username ||
+        user.nickname ||
+        user.displayName ||
+        user.email.split("@")[0],
       email: user.email,
       courseId: Number(course.id),
       courseTitle: course.title,
@@ -305,54 +447,13 @@ export const enrollStudent = async (firebaseUid, email, courseId) => {
       enrolledAt: serverTimestamp(),
     });
 
-    return { success: true, course, message: `Successfully enrolled in "${course.title}".` };
+    return {
+      success: true,
+      course,
+      message: `Successfully enrolled in "${course.title}".`,
+    };
   } catch (error) {
     console.error("enrollStudent error:", error);
     return { success: false, message: "Enrollment failed. Please try again." };
   }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

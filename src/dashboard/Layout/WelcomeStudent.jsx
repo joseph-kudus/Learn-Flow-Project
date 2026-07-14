@@ -56,7 +56,7 @@ const WelcomeStudent = ({
     [allEnrollments],
   );
 
-  // 3. FLOW: Enrolled + Active only = status!== completed. Must return [] 
+  // 3. FLOW: Enrolled + Active only = status!== completed. Must return []
   const enrolledCourses = useMemo(() => {
     if (isLoading) return []; // <-- 2. return [] here
 
@@ -170,7 +170,7 @@ const WelcomeStudent = ({
               </div>
               <hr />
               <div className="card-footer">
-                <button onClick={() => navigate(`/course/${course.id}`)}>
+                <button onClick={() => navigate(`/dashboard/course/${course.id}`)}>
                   Resume Classes
                 </button>
 

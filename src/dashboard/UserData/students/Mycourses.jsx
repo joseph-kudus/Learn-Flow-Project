@@ -18,9 +18,19 @@ const formatDateLabel = (dateStr) => {
   const d = new Date(dateStr).toDateString();
 
   if (d === today)
-    return `Today, ${new Date(dateStr).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}`;
+    return `Today, ${new Date(dateStr).toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    })}`;
+
   if (d === yesterday)
-    return `Yesterday, ${new Date(dateStr).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}`;
+    return `Yesterday, ${new Date(dateStr).toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    })}`;
+
   return new Date(dateStr).toLocaleDateString("en-GB", {
     weekday: "long",
     day: "2-digit",
@@ -30,8 +40,8 @@ const formatDateLabel = (dateStr) => {
 };
 
 const Mycourses = ({
-  allEnrollments = [], 
-  enrollmentData = [], 
+  allEnrollments = [],
+  enrollmentData = [],
   activitiesData = [],
 }) => {
   const navigate = useNavigate();
@@ -41,33 +51,54 @@ const Mycourses = ({
 
   const scroll = (ref, dir) => {
     if (!ref.current) return;
-    const amount = dir === "left" ? -280 : 280;
-    ref.current.scrollBy({ left: amount, behavior: "smooth" });
+
+    ref.current.scrollBy({
+      left: dir === "left" ? -280 : 280,
+      behavior: "smooth",
+    });
   };
 
-  // 1. ONLY CHANGE: Map from allEnrollments catalog, not enrollmentData
   const courseMap = useMemo(
     () => new Map(allEnrollments.map((c) => [String(c.id), c])),
     [allEnrollments],
   );
 
-  // 2. ONLY CHANGE: Join data once so JSX stays identical
   const myCourses = useMemo(() => {
     return enrollmentData
       .map((e) => {
         const course = courseMap.get(String(e.courseId));
+
         if (!course) return null;
-        const percent = e.totalLessons
-          ? Math.round((e.completedLessons / e.totalLessons) * 100)
+
+        const totalLessons = Array.isArray(course.lessons)
+          ? course.lessons.length
+          : Number(course.lessons) || course.totalLessons || 0;
+
+        const completedLessons = e.completedLessons || 0;
+
+        const percent = totalLessons
+          ? Math.round((completedLessons / totalLessons) * 100)
           : e.progress || 0;
+
         return {
           ...e,
+
           courseId: String(e.courseId),
+
           title: course.title,
           category: course.category,
           image: course.image,
           rating: course.rating,
-          lessons: course.lessons,
+
+          // IMPORTANT:
+          // keep lessons as a number for JSX rendering
+          lessons: totalLessons,
+
+          // keep actual lesson objects separately
+          lessonList: Array.isArray(course.lessons) ? course.lessons : [],
+
+          totalLessons,
+
           progress: percent,
         };
       })
@@ -87,11 +118,15 @@ const Mycourses = ({
   const groupedActivities = useMemo(() => {
     return activitiesData.reduce((acc, item) => {
       const key = item.date;
+
       if (!acc[key]) acc[key] = [];
+
       acc[key].push(item);
+
       return acc;
     }, {});
   }, [activitiesData]);
+
   const CourseCard = ({ enrollment, variant = "resume" }) => {
     const percent = enrollment.progress || 0;
 
@@ -123,8 +158,10 @@ const Mycourses = ({
           <>
             <div
               className="progress-bar"
-              style={{ "--progress": `${percent}%` }}
-            ></div>
+              style={{
+                "--progress": `${percent}%`,
+              }}
+            />
 
             <hr />
           </>
@@ -132,7 +169,8 @@ const Mycourses = ({
 
         <div className="card_details">
           <p>
-            {enrollment.completedLessons}/{enrollment.lessons} Classes
+            {enrollment.completedLessons || 0}/{enrollment.totalLessons || 0}{" "}
+            Classes
           </p>
 
           <p>{enrollment.timeSpent || "1hr 45 Minutes"}</p>
@@ -165,16 +203,19 @@ const Mycourses = ({
       </div>
     );
   };
+
   return (
     <div className="myclass">
       <div className="Course-Content-Container">
         <div className="active-course">
           <h3>Active Courses</h3>
+
           {activeCourses.length > 1 && (
             <div className="arrows">
               <button onClick={() => scroll(activeRef, "left")}>
                 <FaArrowLeftLong />
               </button>
+
               <button onClick={() => scroll(activeRef, "right")}>
                 <FaArrowRight />
               </button>
@@ -196,11 +237,13 @@ const Mycourses = ({
 
         <div className="active-course">
           <h3>Recently Enrolled</h3>
+
           {recentCourses.length > 1 && (
             <div className="arrows">
               <button onClick={() => scroll(recentRef, "left")}>
                 <FaArrowLeftLong />
               </button>
+
               <button onClick={() => scroll(recentRef, "right")}>
                 <FaArrowRight />
               </button>
@@ -224,28 +267,36 @@ const Mycourses = ({
       <div className="active-course-activ">
         <div className="active-course-active">
           <h3>Recent Activities</h3>
+
           <div className="arrows">
             <button>
               <IoIosMore />
             </button>
           </div>
         </div>
+
         <div className="actives-wrapper">
           {Object.keys(groupedActivities).length ? (
             Object.entries(groupedActivities)
+
               .sort(([a], [b]) => new Date(b) - new Date(a))
+
               .map(([date, items]) => (
                 <div className="todays_activies" key={date}>
                   <p>{formatDateLabel(date)}</p>
-                  {items.map((act, idx) => (
-                    <div className="lesson_schedule" key={idx}>
+
+                  {items.map((act, index) => (
+                    <div className="lesson_schedule" key={index}>
                       <p>
                         <strong>{act.time}</strong>
                       </p>
+
                       <div className="classes_view">
                         <p>{act.title}</p>
+
                         <p>{act.type}</p>
                       </div>
+
                       {act.status === "graded" ? (
                         <p className="graded-text">Graded {act.grade}</p>
                       ) : (

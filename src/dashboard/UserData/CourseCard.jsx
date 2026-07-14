@@ -13,13 +13,23 @@ const CourseCard = ({
   if (!item) return null;
 
   const progress = enrollment?.progress ?? 0;
-  const rating = item.rating ?? 4.5;
+
+  const rating = Number(item.rating ?? 4.5);
+
   const lessonsDone = enrollment?.completedLessons ?? 0;
-  const totalLessons = enrollment?.totalLessons ?? item.lessons ?? 0;
+
+  const totalLessons =
+    enrollment?.totalLessons ??
+    (Array.isArray(item.lessons)
+      ? item.lessons.length
+      : Number(item.lessons) || 0);
 
   const lastAccessedTs = enrollment?.lastAccessed?.toDate?.();
+
   const lastAccessedText = lastAccessedTs
-    ? `Last accessed: ${formatDistanceToNow(lastAccessedTs, { addSuffix: true })}`
+    ? `Last accessed: ${formatDistanceToNow(lastAccessedTs, {
+        addSuffix: true,
+      })}`
     : "Not started yet";
 
   return (
@@ -36,8 +46,10 @@ const CourseCard = ({
 
         <div className="btn-plus">
           <p className="category">{item.category}</p>
+
           <div className="rating">
             <FaStar color="#f7ca4e" size={14} />
+
             <span>{rating.toFixed(1)}</span>
           </div>
         </div>
@@ -48,17 +60,23 @@ const CourseCard = ({
           <div className="course-progress">
             <div className="progress-header">
               <span>Progress</span>
+
               <span>{progress}%</span>
             </div>
+
             <div className="progress-bar">
               <div
                 className="progress-fill"
-                style={{ width: `${progress}%` }}
+                style={{
+                  width: `${progress}%`,
+                }}
               />
             </div>
+
             <p className="lesson-count">
               {lessonsDone}/{totalLessons} lessons
             </p>
+
             <p className="last-accessed">{lastAccessedText}</p>
           </div>
         )}
@@ -82,4 +100,5 @@ const CourseCard = ({
     </div>
   );
 };
+
 export default CourseCard;

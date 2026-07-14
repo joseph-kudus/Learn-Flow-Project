@@ -27,6 +27,7 @@ import Mycourse from "./dashboard/UserData/students/Mycourses.jsx";
 import Settings from "./dashboard/UserData/students/Settings.jsx";
 import Contact from "./pages/Contact.jsx";
 import ProfileSetting from "./dashboard/UserData/ProfileSetting.jsx";
+import CourseDetails from "./dashboard/UserData/students/CourseDetails";
 
 /**
  * Layout: Wraps public pages with Navbar + Footer
@@ -185,6 +186,7 @@ function AppRoutes() {
         <Route path="setting" element={<Settings />} />
         <Route path="support" element={<Support />} />
         <Route path="profilesetting" element={<ProfileSetting />} />
+        <Route path="course/:id" element={<CourseDetails />} />
       </Route>
 
       {/* Catch all 404 - redirect to home */}

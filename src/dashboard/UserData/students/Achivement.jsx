@@ -1,22 +1,34 @@
 import React from "react";
 import { useState } from "react";
-import { Image1 } from "../../../assets/images/Myimg";
+import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
+import "./achievement.css";
+import certtemp from "../../../assets/Cert/cert-Template.png";
 
 const Achievement = () => {
-  const [category, setCategory] = useState();
-
-  const courses = [
-    {
-      id: 1,
-      img: Image1,
-
-    }
-  ]
   return (
-    <div className="courses">
-      <button onClick={()=>setCategory("All")}>All</button>
-      <button onClick={()=>setCategory("Coding")}>Coding</button>
-      <button onClick={()=>setCategory("Programing")}>Programing</button>
+    <div className="achievement-container">
+      <div className="label-header">
+        <div className="labels">
+          <button>
+            Achievements <BiRightArrow />
+          </button>
+          <button>Certificates</button>
+        </div>
+        <div className="next-btns">
+          <BiLeftArrow />
+          <BiRightArrow />
+        </div>
+      </div>
+      <div className="certificate-card">
+        <div className="cert-card">
+          <img src={certtemp} alt="certificate" width="500" />
+        </div>
+        <span>Learn Flow Guides</span>
+        <div className="cert-card">
+          <img src={certtemp} alt="certificate" width="500" />
+        </div>
+        <span>Learn Flow Guides</span>
+      </div>
     </div>
   );
 };

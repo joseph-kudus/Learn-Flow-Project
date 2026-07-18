@@ -129,7 +129,7 @@ function DashboardHeader({ onMenuClick }) {
 
                 <div className="userimg">
                   <img
-                    src={avatar}
+                    src={userData?.photoURL || avatar || defaultAvatar}
                     alt={displayName}
                     onError={(e) => {
                       e.currentTarget.src = defaultAvatar;

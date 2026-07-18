@@ -203,19 +203,19 @@ form {
     gap: 24px;
 }
 
-.labeforname {
+.form-column {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-.labeforname label {
+.form-column label {
     font-size: 14px;
     font-weight: 600;
 }
 
-.labeforname input {
+.form-column input {
     width: 100%;
     height: 44px;
     padding: 0 14px;
@@ -226,7 +226,7 @@ form {
     transition: .3s;
 }
 
-.labeforname input:focus {
+.form-column input:focus {
     border-color: #F7CA4E;
 }
 

@@ -1,9 +1,8 @@
-import React, { useRef, useMemo } from "react";
+import React, { useRef, useMemo, useEffect } from "react";
 import { FaArrowLeftLong, FaArrowRight, FaStar } from "react-icons/fa6";
 import { IoIosMore } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import "./mycourse.css";
-
+import "./mycourse.css"
 const statusClassMap = {
   upcoming: "upcoming",
   submitted: "submitted",
@@ -39,11 +38,84 @@ const formatDateLabel = (dateStr) => {
   });
 };
 
-const Mycourses = ({
-  allEnrollments = [],
-  enrollmentData = [],
-  activitiesData = [],
-}) => {
+const getDate = (value) => {
+  if (!value) return new Date();
+
+  return value.toDate ? value.toDate() : new Date(value);
+};
+
+const generateActivities = (enrollmentData) => {
+  const activities = [];
+
+  enrollmentData.forEach((course) => {
+    // 1. Enrollment activity
+    if (course.enrolledAt) {
+      const date = getDate(course.enrolledAt);
+
+      activities.push({
+        date: date.toISOString(),
+        time: date.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+        title: course.courseTitle,
+        type: "Course Enrollment",
+        status: "attended",
+      });
+    }
+
+    // 2. Lesson completed activities
+    if (
+      Array.isArray(course.completedLessonIds) &&
+      course.completedLessonIds.length
+    ) {
+      course.completedLessonIds.forEach((lessonIndex) => {
+        const date = getDate(course.lastAccessed);
+
+        activities.push({
+          date: date.toISOString(),
+
+          time: date.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+
+          title: course.courseTitle,
+
+          type: `Lesson ${lessonIndex + 1} Completed`,
+
+          status: "submitted",
+        });
+      });
+    }
+
+    // 3. Course completed
+    if (course.status === "completed" && course.lastAccessed) {
+      const date = getDate(course.lastAccessed);
+
+      activities.push({
+        date: date.toISOString(),
+
+        time: date.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+
+        title: course.courseTitle,
+
+        type: "Course Completed",
+
+        status: "graded",
+
+        grade: "100%",
+      });
+    }
+  });
+
+  return activities;
+};
+
+const Mycourses = ({ allEnrollments = [], enrollmentData = [] }) => {
   const navigate = useNavigate();
 
   const activeRef = useRef(null);
@@ -82,23 +154,14 @@ const Mycourses = ({
 
         return {
           ...e,
-
           courseId: String(e.courseId),
-
           title: course.title,
           category: course.category,
           image: course.image,
           rating: course.rating,
-
-          // IMPORTANT:
-          // keep lessons as a number for JSX rendering
           lessons: totalLessons,
-
-          // keep actual lesson objects separately
           lessonList: Array.isArray(course.lessons) ? course.lessons : [],
-
           totalLessons,
-
           progress: percent,
         };
       })
@@ -115,21 +178,21 @@ const Mycourses = ({
     [myCourses],
   );
 
+  const realActivities = useMemo(() => {
+    return generateActivities(enrollmentData);
+  }, [enrollmentData]);
+
   const groupedActivities = useMemo(() => {
-    return activitiesData.reduce((acc, item) => {
-      const key = item.date;
-
+    return realActivities.reduce((acc, item) => {
+      const key = item.date.split("T")[0];
       if (!acc[key]) acc[key] = [];
-
       acc[key].push(item);
-
       return acc;
     }, {});
-  }, [activitiesData]);
+  }, [realActivities]);
 
   const CourseCard = ({ enrollment, variant = "resume" }) => {
     const percent = enrollment.progress || 0;
-
     return (
       <div className="course-card">
         <div

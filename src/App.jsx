@@ -28,6 +28,7 @@ import Settings from "./dashboard/UserData/students/Settings.jsx";
 import Contact from "./pages/Contact.jsx";
 import ProfileSetting from "./dashboard/UserData/ProfileSetting.jsx";
 import CourseDetails from "./dashboard/UserData/students/CourseDetails";
+import MyCoursesPage from "./dashboard/UserData/students/MyCoursesPage.jsx";
 
 /**
  * Layout: Wraps public pages with Navbar + Footer
@@ -179,7 +180,7 @@ function AppRoutes() {
         <Route path="coursebuilder/create" element={<CreateCourse />} />
 
         {/* Student/Learner routes */}
-        <Route path="courses" element={<Mycourse />} />
+        <Route path="courses" element={<MyCoursesPage />} />
         <Route path="explore" element={<Explore />} />
         <Route path="recomendedcourse" element={<RecomendedCourse />} />
         <Route path="achievement" element={<Achievement />} />

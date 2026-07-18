@@ -53,7 +53,7 @@ const DashboardMain = () => {
 
   // Only wait for authentication
   if (authLoading) {
-    return <div style={{ padding: 24 }}>Loading dashboard...</div>;
+    return <div style={{ padding: 12 }}>Loading dashboard...</div>;
   }
 
   if (!user) {

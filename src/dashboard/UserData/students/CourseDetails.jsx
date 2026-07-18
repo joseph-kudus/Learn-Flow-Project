@@ -1,33 +1,112 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../../../context/AuthContext";
+import {
+  allEnrollments,
+  getEnrollmentDetails,
+  markLessonComplete,
+} from "../allEnrollments";
 import { IoHeart } from "react-icons/io5";
 import { BiRightArrow } from "react-icons/bi";
 import { PiBookBookmarkThin } from "react-icons/pi";
 import { AiOutlinePlayCircle } from "react-icons/ai";
 import { HiMiniInboxArrowDown, HiOutlineDocumentText } from "react-icons/hi2";
 import { IoIosMore } from "react-icons/io";
-import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
-import { MdOutlineAssignment } from "react-icons/md";
-
+import {
+  MdKeyboardArrowDown,
+  MdKeyboardArrowUp,
+  MdOutlineAssignment,
+} from "react-icons/md";
+import { useLocation, useParams } from "react-router-dom";
 import "./coursedetails.css";
 
-import { useParams } from "react-router-dom";
-import { allEnrollments } from "../allEnrollments";
-
 const CourseDetails = () => {
+  const { currentUser } = useAuth();
+  const location = useLocation();
+  const { id } = useParams();
+
   const [openLesson, setOpenLesson] = useState(null);
   const [courseTab, setCourseTab] = useState("coursedetail");
   const [selectedLesson, setSelectedLesson] = useState(0);
+  const [enrollment, setEnrollment] = useState(null);
+  const course = allEnrollments.find((item) => item.id === Number(id));
+  const [completed, setCompleted] = useState(false);
 
-  const { id } = useParams();
-  const course = allEnrollments.find((c) => c.id === Number(id));
   if (!course) {
-    return <h2>course not found</h2>;
+    return <h2>Course not found</h2>;
   }
+  const lessons = Array.isArray(course.lessons) ? course.lessons : [];
+  const currentLesson = lessons[selectedLesson] || null;
+
+  const handleCompleteLesson = async () => {
+    try {
+      if (!enrollment) return;
+
+      if ((enrollment.completedLessonIds || []).includes(selectedLesson)) {
+        return;
+      }
+
+      const result = await markLessonComplete(
+        enrollment.id,
+        selectedLesson,
+        enrollment.completedLessonIds || [],
+        enrollment.totalLessons,
+      );
+
+      if (result.success) {
+        setEnrollment((prev) => ({
+          ...prev,
+          completedLessons: result.completedLessons,
+          completedLessonIds: [
+            ...(prev.completedLessonIds || []),
+            selectedLesson,
+          ],
+          progress: result.progress,
+        }));
+
+        setCompleted(true);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    if (!enrollment) return;
+
+    setCompleted(
+      (enrollment.completedLessonIds || []).includes(selectedLesson),
+    );
+  }, [selectedLesson, enrollment]);
+  useEffect(() => {
+    const loadEnrollment = async () => {
+      try {
+        if (!currentUser) return;
+
+        const data = await getEnrollmentDetails(currentUser.uid);
+
+        const found = data.find((item) => Number(item.courseId) === Number(id));
+
+        setEnrollment(found || null);
+      } catch (error) {
+        console.error("Loading enrollment failed:", error);
+      }
+    };
+
+    loadEnrollment();
+  }, [currentUser, id]);
+
+  // Resume saved lesson
+  useEffect(() => {
+    const lessonIndex = location.state?.lessonIndex;
+
+    if (lessonIndex !== undefined && lessonIndex < lessons.length) {
+      setSelectedLesson(lessonIndex);
+      setOpenLesson(lessonIndex);
+    }
+  }, [location.state, lessons.length]);
 
   return (
     <div className="main_course">
-      {/* LEFT CONTENT */}
-
       <div className="course_resume">
         <div className="course_nxt">
           <span>Course</span>
@@ -36,31 +115,22 @@ const CourseDetails = () => {
           <BiRightArrow />
           <span>{course.title}</span>
         </div>
-        {/*<img src={courseImages.CourseVideo} alt="Intro to C++ course video" />*/}
 
-        {Array.isArray(course.lessons) &&
-        course.lessons?.[selectedLesson]?.video ? (
+        {/* VIDEO */}
+
+        {currentLesson?.video ? (
           <video
-            key={course.lessons[selectedLesson].video}
+            key={currentLesson.video}
             controls
             width="100%"
             poster={course.image}
           >
-            <source
-              src={course.lessons[selectedLesson].video}
-              type="video/mp4"
-            />
-            Your browser does not support the video tag.
+            <source src={currentLesson.video} type="video/mp4" />
+            Your browser does not support video.
           </video>
         ) : course.video ? (
-          <video
-            key={course.lessons[selectedLesson].video}
-            controls
-            width="100%"
-            poster={course.image}
-          >
+          <video key={course.video} controls width="100%" poster={course.image}>
             <source src={course.video} type="video/mp4" />
-            Your browser does not support the video tag.
           </video>
         ) : (
           <img src={course.image} alt={course.title} />
@@ -68,12 +138,17 @@ const CourseDetails = () => {
 
         <div className="course_info">
           <div className="lessonby">
-            <h1>{course.title}</h1>
+            <h1>
+              {typeof currentLesson?.title === "string"
+                ? currentLesson.title
+                : course.title}
+            </h1>
+
             <div className="course_author">By Jim Kandrey</div>
           </div>
 
           <div className="classes_tap">
-            <button>{course.totalLessons} Classes</button>
+            <button>{course.totalLessons || lessons.length} Classes</button>
 
             <button>{course.durationWeeks} Weeks</button>
 
@@ -97,18 +172,18 @@ const CourseDetails = () => {
 
             <button
               className={
-                courseTab === "course_resources" ? "active-tab" : "tap-course"
+                courseTab === "resources" ? "active-tab" : "tap-course"
               }
-              onClick={() => setCourseTab("course_resources")}
+              onClick={() => setCourseTab("resources")}
             >
               Resources
             </button>
 
             <button
               className={
-                courseTab === "course_community" ? "active-tab" : "tap-course"
+                courseTab === "community" ? "active-tab" : "tap-course"
               }
-              onClick={() => setCourseTab("course_community")}
+              onClick={() => setCourseTab("community")}
             >
               Community
             </button>
@@ -116,19 +191,40 @@ const CourseDetails = () => {
 
           <div className="course_icon">
             <PiBookBookmarkThin />
-
             <AiOutlinePlayCircle />
-
             <HiMiniInboxArrowDown />
-
             <IoIosMore />
           </div>
         </div>
 
         {courseTab === "coursedetail" && (
           <div className="courseNotes">
-            <h2>The Introduction</h2>
-            <p>{course.description}</p>
+            <h2>
+              {typeof currentLesson?.title === "string"
+                ? currentLesson.title
+                : "Select lesson"}
+            </h2>
+
+            <p>
+              {typeof currentLesson?.notes === "string"
+                ? currentLesson.notes
+                : "No notes available for this lesson."}
+            </p>
+
+            <h3>Assignment</h3>
+
+            <p>
+              {typeof currentLesson?.assignment === "string"
+                ? currentLesson.assignment
+                : "No assignment available."}
+            </p>
+            <button
+              className="complete-btn"
+              onClick={handleCompleteLesson}
+              disabled={!enrollment || completed}
+            >
+              {completed ? "Lesson Completed" : "Mark Lesson Complete"}
+            </button>
           </div>
         )}
       </div>
@@ -140,29 +236,41 @@ const CourseDetails = () => {
 
         <div className="progress-btn">
           <div className="progress_btn">
-            <h3>44%</h3>
+            <h3>{enrollment?.progress || 0}%</h3>
 
-            <h3>12/32 Lessons</h3>
+            <h3>
+              {enrollment?.completedLessons || 0}/
+              {enrollment?.totalLessons || lessons.length} Lessons
+            </h3>
           </div>
 
           <div className="progress_bar">
-            <div className="progress_fill"></div>
+            <div
+              className="progress_fill"
+              style={{
+                width: `${enrollment?.progress || 0}%`,
+              }}
+            ></div>
           </div>
         </div>
 
         <div className="course_intro">
-          {Array.isArray(course.lessons) &&
-            course.lessons.map((lesson, index) => (
+          {lessons.length > 0 ? (
+            lessons.map((lesson, index) => (
               <div className="lesson_card" key={lesson.id || index}>
                 <div
                   className="lesson_header"
                   onClick={() => {
-                    setOpenLesson(openLesson === index ? null : index);
                     setSelectedLesson(index);
+
+                    setOpenLesson(openLesson === index ? null : index);
                   }}
                 >
                   <span>
-                    Class {index + 1}: {lesson.title}
+                    Class {index + 1}:{" "}
+                    {typeof lesson.title === "string"
+                      ? lesson.title
+                      : "Untitled Lesson"}
                   </span>
 
                   {openLesson === index ? (
@@ -175,26 +283,43 @@ const CourseDetails = () => {
                 {openLesson === index && (
                   <div className="lesson_content">
                     <p
-                      onClick={() => setSelectedLesson(index)}
-                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        setSelectedLesson(index);
+                      }}
                     >
                       <AiOutlinePlayCircle />
-                      Play {lesson.title}
+                      Play{" "}
+                      {typeof lesson.title === "string"
+                        ? lesson.title
+                        : "Lesson"}
                     </p>
 
-                    <p>
+                    <p
+                      onClick={() => {
+                        setSelectedLesson(index);
+                        setCourseTab("coursedetail");
+                      }}
+                    >
                       <HiOutlineDocumentText />
                       Notes
                     </p>
 
-                    <p>
+                    <p
+                      onClick={() => {
+                        setSelectedLesson(index);
+                        setCourseTab("coursedetail");
+                      }}
+                    >
                       <MdOutlineAssignment />
                       Assignment
                     </p>
                   </div>
                 )}
               </div>
-            ))}
+            ))
+          ) : (
+            <p>No lessons available.</p>
+          )}
         </div>
       </div>
     </div>

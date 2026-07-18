@@ -1,133 +1,140 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react"; 
+import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import "./learnerdashboard.css";
 import { useAuth } from "../../context/AuthContext";
-import {
-  allEnrollments,
-  getUserEnrollments,
-  getEnrollmentDetails,
-} from "../UserData/allEnrollments";
 import StudentEnrollment from "../UserData/StudentEnrollment";
 
-const WelcomeLearner = () => {
-  const { userData, currentUser } = useAuth();
+const WelcomeLearner = ({
+  user,
+  allEnrollments,
+  enrollmentData = [],
+  enrollmentsLoading,
+}) => {
+  const { userData } = useAuth();
   const navigate = useNavigate();
 
-  const [myCourseIds, setMyCourseIds] = useState([]);
-  const [enrollmentData, setEnrollmentData] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // 2. Extract fetch to reuse after enroll
-  const refetchEnrollments = useCallback(async () => {
-    if (!currentUser?.uid) return;
-    try {
-      const [ids, details] = await Promise.all([
-        getUserEnrollments(currentUser.uid),
-        getEnrollmentDetails(currentUser.uid),
-      ]);
-      setMyCourseIds(ids);
-      setEnrollmentData(details);
-    } catch (error) {
-      console.error("Failed to load enrollments:", error);
-    }
-  }, [currentUser?.uid]);
-
-  useEffect(() => {
-    const init = async () => {
-      setLoading(true);
-      await refetchEnrollments();
-      setLoading(false);
-    };
-    init();
-  }, [refetchEnrollments]);
+  const myCourseIds = useMemo(
+    () => enrollmentData.map((e) => e.courseId),
+    [enrollmentData],
+  );
 
   const displayUsername =
     userData?.nickname ||
     userData?.displayName ||
     userData?.username ||
     userData?.email?.split("@")[0] ||
+    user?.displayName ||
+    user?.email?.split("@")[0] ||
     "Learner";
 
-  const totalCourses = allEnrollments.length;
-  const enrolledCourses = myCourseIds.length;
+  const enrolledCourses = enrollmentData.length;
+
+  const isNewLearner = !enrollmentsLoading && enrolledCourses === 0;
 
   const stats = useMemo(() => {
     const completed = enrollmentData.filter((e) => e.progress >= 100).length;
+
     const inProgress = enrollmentData.filter(
       (e) => e.progress > 0 && e.progress < 100,
     ).length;
-    const notStarted = Math.max(0, enrolledCourses - inProgress - completed); // 3. Clamp to 0
-    return { completed, inProgress, notStarted };
+
+    const notStarted = Math.max(0, enrolledCourses - completed - inProgress);
+
+    return {
+      completed,
+      inProgress,
+      notStarted,
+    };
   }, [enrollmentData, enrolledCourses]);
 
   const courseToContinue = useMemo(() => {
-    if (enrollmentData.length === 0) return null;
-    const sorted = [...enrollmentData].sort((a, b) => b.progress - a.progress);
-    return sorted.find((e) => e.progress < 100) ?? sorted[0];
-  }, [enrollmentData]);
+    if (!enrollmentData.length) return null;
 
-  if (loading) {
-    return <p>Loading learner dashboard...</p>;
-  }
+    return (
+      [...enrollmentData]
+        .sort((a, b) => b.progress - a.progress)
+        .find((e) => e.progress < 100) || enrollmentData[0]
+    );
+  }, [enrollmentData]);
 
   return (
     <div className="course-container">
-      {/* LEFT COLUMN */}
       <div className="course-wrapper">
         <div className="welcome-click">
           <div className="welcome-text">
-            <h1>Welcome Back, {displayUsername}</h1>
-            <p>Lets boost your knowledge and learn new things today.</p>
+            <h1>
+              {isNewLearner
+                ? `Welcome to LearnFlow, ${displayUsername}`
+                : `Welcome Back, ${displayUsername}`}
+            </h1>
+
+            <p>
+              {isNewLearner
+                ? "Start your learning journey by choosing one of the recommended courses below."
+                : "Let's continue your learning journey today."}
+            </p>
 
             <button
               className="welcome-text-btn"
-              disabled={!courseToContinue}
               onClick={() =>
-                courseToContinue &&
-                navigate(`/learn/${courseToContinue.courseId}`)
+                courseToContinue
+                  ? navigate(`/learn/${courseToContinue.courseId}`)
+                  : navigate("/catalog")
               }
             >
-              {courseToContinue ? "Continue Learning" : "Browse Courses"}
+              {courseToContinue ? "Continue Learning" : "Browse All Courses"}
             </button>
           </div>
         </div>
 
-        {/* MY COURSES */}
-        <StudentEnrollment
-          title="My Courses"
-          filter="enrolled"
-          myCourseIds={myCourseIds}
-          setMyCourseIds={setMyCourseIds}
-          enrollmentData={enrollmentData}
-          setEnrollmentData={setEnrollmentData}
-          onRefresh={refetchEnrollments} 
-        />
+        {/* Recommended Courses always visible */}
 
-        {/* RECOMMENDED */}
         <StudentEnrollment
           title="Recommended For You"
           filter="recommended"
-          limit={3}
+          limit={6}
           myCourseIds={myCourseIds}
-          setMyCourseIds={setMyCourseIds}
-          enrollmentData={enrollmentData}
-          setEnrollmentData={setEnrollmentData}
-          onRefresh={refetchEnrollments} 
+          allEnrollments={allEnrollments}
         />
+
+        {/* Empty state */}
+
+        {isNewLearner && (
+          <div className="empty-state">
+            <h2>🚀 Pick Your First Course</h2>
+
+            <p>
+              You haven't enrolled in any courses yet. Start with one of the
+              recommendations above.
+            </p>
+          </div>
+        )}
+
+        {/* My Courses */}
+
+        {!enrollmentsLoading && enrolledCourses > 0 && (
+          <StudentEnrollment
+            title="My Courses"
+            filter="enrolled"
+            myCourseIds={myCourseIds}
+            enrollmentData={enrollmentData}
+          />
+        )}
       </div>
 
-      {/* RIGHT COLUMN */}
       <div className="coursecompletion">
         <div className="overview">
           <h1>Course Completion Overview</h1>
-          <h1>Grap</h1>
+
           <ol>
             <li>
               <strong>Completed:</strong> {stats.completed}
             </li>
+
             <li>
               <strong>In Progress:</strong> {stats.inProgress}
             </li>
+
             <li>
               <strong>Not Started:</strong> {stats.notStarted}
             </li>
@@ -136,10 +143,12 @@ const WelcomeLearner = () => {
 
         <div className="achievement">
           <h2>Your Achievements</h2>
+
           <h5>
             Celebrate your learning journey with {Math.min(enrolledCourses, 10)}
             /10 badges earned.
           </h5>
+
           <div className="badges">
             {[...Array(10)].map((_, index) => (
               <img

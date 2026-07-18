@@ -5,10 +5,13 @@ import {
   getDocs,
   addDoc,
   serverTimestamp,
+  doc,
+  updateDoc,
+  increment,
 } from "firebase/firestore";
+
 import { db } from "../../../firebaseconfig";
 import { courseImages } from "../../assets/courses/courseImages";
-import { id } from "date-fns/locale";
 
 /* ======================================================
    COURSE DATA
@@ -268,7 +271,15 @@ export const allEnrollments = [
     image: courseImages[8],
     description: "Understand programming fundamentals and logical thinking.",
     durationWeeks: 5,
-    lessons: 18,
+    totalLessons: 18,
+    lessons: [
+      {
+        title: "Coming Soon",
+        video: "",
+        notes: "Lessons will be available soon",
+        assignment: "No assignment",
+      },
+    ],
     rating: 4.5,
     allowedRoles: ["learner", "student"],
   },
@@ -280,6 +291,14 @@ export const allEnrollments = [
     description: "Learn the C programming language from scratch.",
     durationWeeks: 6,
     totalLessons: 21,
+    lessons: [
+      {
+        title: "Coming Soon",
+        video: "",
+        notes: "Lessons coming soon",
+        assignment: "No assignment",
+      },
+    ],
     rating: 4.6,
     allowedRoles: ["learner", "student"],
   },
@@ -291,6 +310,14 @@ export const allEnrollments = [
     description: "Become a frontend JavaScript developer.",
     durationWeeks: 8,
     totalLessons: 26,
+    lessons: [
+      {
+        title: "Coming Soon",
+        video: "",
+        notes: "Lessons coming soon",
+        assignment: "No assignment",
+      },
+    ],
     rating: 4.9,
     allowedRoles: ["learner", "student"],
   },
@@ -301,7 +328,15 @@ export const allEnrollments = [
     image: courseImages[11],
     description: "Build modern React applications.",
     durationWeeks: 8,
-    lessons: 25,
+    totalLessons: 25,
+    lessons: [
+      {
+        title: "Coming Soon",
+        video: "",
+        notes: "Lessons will be available soon",
+        assignment: "No assignment",
+      },
+    ],
     rating: 4.9,
     allowedRoles: ["learner", "student"],
   },
@@ -312,7 +347,15 @@ export const allEnrollments = [
     image: courseImages[12],
     description: "Develop backend web applications using Python.",
     durationWeeks: 10,
-    lessons: 34,
+    totalLessons: 34,
+    lessons: [
+      {
+        title: "Coming Soon",
+        video: "",
+        notes: "Lessons coming soon",
+        assignment: "No assignment",
+      },
+    ],
     rating: 4.8,
     allowedRoles: ["learner", "student"],
   },
@@ -392,37 +435,57 @@ export const getEnrollmentDetails = async (firebaseUid) => {
 /* ======================================================
    MARK LESSON COMPLETE - NEW HELPER FOR CoursePlayer
 ====================================================== */
-
-export const markLessonComplete = async (enrollmentDocId, totalLessons) => {
+export const markLessonComplete = async (
+  enrollmentDocId,
+  lessonIndex,
+  completedLessonIds,
+  totalLessons,
+) => {
   try {
     const ref = doc(db, "enrollments", enrollmentDocId);
 
-    // 3. Atomic update: +1 lesson, recalc progress, update lastAccessed
-    await updateDoc(ref, {
-      completedLessons: increment(1),
-      progress: increment(Math.round(100 / totalLessons)), // approx. clamp in UI
-      lastAccessed: serverTimestamp(),
-    });
-
-    // Clamp to 100% if we overshoot
-    const snap = await getDocs(
-      query(
-        collection(db, "enrollments"),
-        where("__name__", "==", enrollmentDocId),
-      ),
-    );
-    const data = snap.docs[0]?.data();
-    if (data && data.progress > 100) {
-      await updateDoc(ref, { progress: 100, status: "completed" });
+    if (completedLessonIds.includes(lessonIndex)) {
+      return {
+        success: false,
+        message: "Lesson already completed",
+      };
     }
 
-    return { success: true };
+    const updatedLessons = [...new Set([...completedLessonIds, lessonIndex])];
+
+    const completedCount = updatedLessons.length;
+
+    const progress = Math.min(
+      Math.round((completedCount / totalLessons) * 100),
+      100,
+    );
+
+    await updateDoc(ref, {
+      completedLessonIds: updatedLessons,
+      completedLessons: completedCount,
+      progress,
+      lastAccessed: serverTimestamp(),
+
+      ...(progress === 100 && {
+        status: "completed",
+        certificateIssued: true,
+      }),
+    });
+
+    return {
+      success: true,
+      progress,
+      completedLessons: completedCount,
+    };
   } catch (error) {
-    console.error("markLessonComplete error:", error);
-    return { success: false, message: "Failed to update progress" };
+    console.error("Complete lesson error:", error);
+
+    return {
+      success: false,
+      message: error.message,
+    };
   }
 };
-
 /* ======================================================
    GET USER
 ====================================================== */
@@ -494,7 +557,11 @@ export const enrollStudent = async (firebaseUid, email, courseId) => {
       category: course.category,
       progress: 0,
       completedLessons: 0,
-      totalLessons: course.lessons,
+      completedLessonIds: [],
+      totalLessons: Array.isArray(course.lessons)
+        ? course.lessons.length
+        : course.totalLessons || 0,
+
       status: "active",
       certificateIssued: false,
       lastAccessed: serverTimestamp(),

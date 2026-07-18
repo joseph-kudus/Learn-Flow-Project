@@ -6,17 +6,17 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import { MdAccessTime } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import FilterButtons from "../UserData/FilterButtons";
-
+import StudentEnrollment from "../UserData/StudentEnrollment";
 const WelcomeStudent = ({
   user,
   allEnrollments = [],
   enrollmentData = [],
   completedCourses = [],
+  enrollmentsLoading = false,
   onRefresh,
 }) => {
   const [activeCategory, setActiveCategory] = useState("ALL");
   const navigate = useNavigate();
-
   useEffect(() => {
     onRefresh?.(); // refetch when you land back here from /lesson/:id
   }, [onRefresh]);
@@ -27,7 +27,7 @@ const WelcomeStudent = ({
     user?.email?.split("@")[0] ||
     "student";
 
-  const isLoading = !allEnrollments.length || !enrollmentData.length; // <-- 1. loading flag
+  const isLoading = enrollmentsLoading;
 
   // 1. Tabs: ALL + CODING + PROGRAMMING + MORE... only
   const categoryOptions = useMemo(() => {
@@ -57,39 +57,61 @@ const WelcomeStudent = ({
   );
 
   // 3. FLOW: Enrolled + Active only = status!== completed. Must return []
+
   const enrolledCourses = useMemo(() => {
-    if (isLoading) return []; // <-- 2. return [] here
+    if (enrollmentsLoading) return [];
 
     return enrollmentData
-      .filter((e) => e.status !== "completed" && e.courseId != null)
-      .map((e) => {
-        const course = courseMap.get(String(e.courseId));
+      .filter(
+        (enrollment) =>
+          enrollment.courseId &&
+          enrollment.status?.toLowerCase() !== "completed",
+      )
+      .map((enrollment) => {
+        const course = courseMap.get(String(enrollment.courseId));
+
         if (!course) {
-          console.warn(
-            "Course id not found:",
-            e.courseId,
-            "in catalog ids:",
-            allEnrollments.map((c) => c.id),
-          );
+          console.warn("Missing course:", enrollment.courseId);
           return null;
         }
-        const total = e.totalLessons || course.lessons || 1;
-        const done = e.completedLessons || 0;
-        const percent = Math.round((done / total) * 100);
+
+        const totalLessons =
+          enrollment.totalLessons ||
+          course.totalLessons ||
+          course.lessons?.length ||
+          1;
+
+        const completedLessons = enrollment.completedLessons || 0;
+
+        const nextLessonIndex =
+          enrollment.nextLessonIndex ?? completedLessons ?? 0;
+
         return {
           id: course.id,
+
           title: course.title,
-          category: course.category.toUpperCase(),
+
+          category: course.category?.toUpperCase() || "OTHER",
+
           img: course.image || Courseicon,
-          classesCompleted: done,
-          totalClasses: total,
+
+          classesCompleted: completedLessons,
+
+          totalClasses: totalLessons,
+
           duration: `${course.durationWeeks || 6}w`,
-          nextLesson: e.nextLesson || "Next Lesson",
-          progress: percent,
+
+          // IMPORTANT
+          nextLessonIndex,
+
+          progress: Math.min(
+            100,
+            Math.round((completedLessons / totalLessons) * 100),
+          ),
         };
       })
       .filter(Boolean);
-  }, [enrollmentData, courseMap, allEnrollments, isLoading]); // <-- add dep
+  }, [enrollmentData, courseMap, enrollmentsLoading]);
 
   // 4. Filter logic to match tabs
   const filteredCourses = useMemo(() => {
@@ -103,6 +125,14 @@ const WelcomeStudent = ({
       (course) => course.category === activeCategory,
     );
   }, [activeCategory, enrolledCourses]);
+
+  const hasActiveCourses = enrolledCourses.length > 0;
+
+  const hasEnrollmentHistory =
+    enrollmentData.length > 0 || completedCourses.length > 0;
+
+  const isNewStudent =
+    !enrollmentsLoading && !hasEnrollmentHistory && allEnrollments.length > 0;
 
   // 5. Loading UI in render, not in memo
   if (isLoading) {
@@ -129,64 +159,89 @@ const WelcomeStudent = ({
       </div>
 
       <div className="card-container">
-        {filteredCourses.length === 0 ? (
-          <p className="coursent">No active courses found.</p>
+        {isNewStudent ? (
+          <StudentEnrollment
+            title="Recommended For You"
+            filter="recommended"
+            limit={6}
+            myCourseIds={[]}
+            allEnrollments={allEnrollments}
+          />
+        ) : hasActiveCourses ? (
+          filteredCourses.length > 0 ? (
+            filteredCourses.map((course) => (
+              <div key={course.id} className="course-card-container">
+                <div className="card-header">
+                  <img
+                    src={course.img}
+                    alt={course.title}
+                    className="card-image"
+                  />
+                  <div className="bek">
+                    <h3>{course.title}</h3>
+                    <span className="card-category">{course.category}</span>
+                  </div>
+                </div>
+
+                <div className="progress-section">
+                  <div className="progress-bard">
+                    <div
+                      className="progress-fill"
+                      style={{ width: `${course.progress}%` }}
+                    ></div>
+                  </div>
+                  <span className="progress-text">{course.progress}%</span>
+                </div>
+
+                <div className="lessons">
+                  <div className="lessons-logo">
+                    <img src={book2} alt="ff" />
+                    <p>
+                      {course.classesCompleted}/{course.totalClasses} Classes
+                    </p>
+                  </div>
+
+                  <div className="durationy">
+                    <MdAccessTime size={20} />
+                    <p>{course.duration}</p>
+                  </div>
+                </div>
+
+                <hr />
+
+                <div className="card-footer">
+                  <button
+                    onClick={() =>
+                      navigate(`/dashboard/course/${course.id}`, {
+                        state: {
+                          lessonIndex: course.nextLessonIndex,
+                        },
+                      })
+                    }
+                  >
+                    Resume Classes
+                  </button>
+
+                  <button
+                    className="arrow-btn"
+                    onClick={() =>
+                      navigate(`/dashboard/course/${course.id}`, {
+                        state: {
+                          lessonIndex: course.nextLessonIndex,
+                        },
+                      })
+                    }
+                  >
+                    <FaArrowRightLong />
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="coursent">No courses in this category.</p>
+          )
         ) : (
-          filteredCourses.map((course) => (
-            <div key={course.id} className="course-card-container">
-              <div className="card-header">
-                <img
-                  src={course.img}
-                  alt={course.title}
-                  className="card-image"
-                />
-                <div className="bek">
-                  <h3>{course.title}</h3>
-                  <span className="card-category">{course.category}</span>
-                </div>
-              </div>
-
-              <div className="progress-section">
-                <div className="progress-bard">
-                  <div
-                    className="progress-fill"
-                    style={{ width: `${course.progress}%` }}
-                  ></div>
-                </div>
-                <span className="progress-text">{course.progress}%</span>
-              </div>
-
-              <div className="lessons">
-                <div className="lessons-logo">
-                  <img src={book2} alt="ff" />
-                  <p>
-                    {course.classesCompleted}/{course.totalClasses} Classes
-                  </p>
-                </div>
-                <div className="durationy">
-                  <MdAccessTime size={20} />
-                  <p>{course.duration}</p>
-                </div>
-              </div>
-              <hr />
-              <div className="card-footer">
-                <button onClick={() => navigate(`/dashboard/course/${course.id}`)}>
-                  Resume Classes
-                </button>
-
-                <button
-                  className="arrow-btn"
-                  onClick={() =>
-                    navigate(`/lesson/${course.id}`, {
-                      state: { lesson: course.nextLesson },
-                    })
-                  }
-                >
-                  <FaArrowRightLong />
-                </button>
-              </div>
-            </div>
-          ))
+          <p className="coursent">No active courses found.</p>
         )}
       </div>
 

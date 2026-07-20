@@ -7,28 +7,28 @@ import Footer from "./pages/Footer";
 import Login from "./loginsignup/Login";
 import Register from "./loginsignup/Register";
 import { AuthProvider, useAuth } from "./context/AuthContext";
-import ProtectedRoute from "./component/ProtectedRoute";
+import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import "./App.css";
 
 // Dashboard imports
-import DashboardLayout from "./dashboard/Layout/DashboardLayout";
-import DashboardMain from "./dashboard/Layout/DashboardMain";
-import CreateCourse from "./dashboard/courses/CreateCourse";
-import Courses from "./dashboard/courses/Courses";
-import Coursebuilder from "./dashboard/courses/Coursebuilder";
-import AllCourse from "./dashboard/courses/AllCourse";
-import SettingsPage from "./dashboard/Layout/Sidebar/SettingsPage";
-import Explore from "./dashboard/UserData/students/Explore";
-import Achievement from "./dashboard/UserData/students/Achivement";
-import Support from "./dashboard/UserData/Support";
-import RecomendedCourse from "./dashboard/UserData/students/RecomendedCourses.jsx";
+import DashboardLayout from "./component/dashboard/DashboardLayout";
+import DashboardMain from "./component/dashboard/DashboardMain";
+import CreateCourse from "./component/courses/CreateCourse.jsx";
+import Courses from "./component/courses/Courses";
+import Coursebuilder from "./component/courses/Coursebuilder";
+import AllCourse from "./component/courses/AllCourse";
+import SettingsPage from "./component/profile/SettingsPage.jsx";
+import Explore from "./component/explore/Explore.jsx";
+import Achievement from "./component/Achievement/Achivement.jsx";
+import Support from "./component/profile/Support";
+import RecomendedCourse from "./component/explore/RecomendedCourses.jsx";
 import LandingPage from "./pages/LandingPage";
-import Mycourse from "./dashboard/UserData/students/Mycourses.jsx";
-import Settings from "./dashboard/UserData/students/Settings.jsx";
+import Mycourse from "./component/courses/Mycourses.jsx";
+import Settings from "./component/profile/Settings.jsx";
 import Contact from "./pages/Contact.jsx";
-import ProfileSetting from "./dashboard/UserData/ProfileSetting.jsx";
-import CourseDetails from "./dashboard/UserData/students/CourseDetails";
-import MyCoursesPage from "./dashboard/UserData/students/MyCoursesPage.jsx";
+import ProfileSetting from "./component/profile/ProfileSetting.jsx";
+import CourseDetails from "./component/courses/CourseDetails";
+import MyCoursesPage from "./component/courses/MyCoursesPage.jsx";
 
 /**
  * Layout: Wraps public pages with Navbar + Footer

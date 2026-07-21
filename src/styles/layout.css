@@ -99,19 +99,13 @@ body {
   overflow-x: hidden;
 }
 
-button {
-  outline: none;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-  background: transparent;
-  box-sizing: border-box;
+
+.btn-icon-square {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 10px;
 }
-
-
-
-
-
 
 button:focus-visible {
   outline: 2px solid #0c0c0c;
@@ -250,65 +244,10 @@ img {
   color: var(--accent);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.logout-btn {
+  justify-content: flex-start;
+  width: 100%;
+}
 /* BASE DESKTOP DRAWER */
 .dashboardlayout .drawer {
   width: 260px;
@@ -400,6 +339,8 @@ background: inherit;
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+
 
 /* ===== Content Area ===== */
 .main-content {
@@ -632,7 +573,7 @@ background: inherit;
   }
   
   .sidebar-overlay { display: block; }
-  .hamburger { display: flex; }
+  .hamburger { display: inline-flex; }
 
   .nav_close {
     display: flex;

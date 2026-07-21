@@ -14,6 +14,8 @@ import Stars from "../../component/common/Stars";
 import yellowLogo from "../../assets/learnflow-yellow.svg";
 import whiteLogo from "../../assets/learnflow-white.svg";
 import blackLogo from "../../assets/learnflow-black.svg";
+import Button from "../ui/Button/Button";
+
 const Sidebar = ({ className = "", onClose, onLogout }) => {
   const navigate = useNavigate();
   const { logout } = useAuth();
@@ -137,9 +139,15 @@ const Sidebar = ({ className = "", onClose, onLogout }) => {
         <p>LearnFlow</p>
       </div>
 
-      <button className="nav_close" onClick={onClose}>
-        <X size={30} color="#ffffff" />
-      </button>
+      <Button
+        className="nav_close"
+        variant="primary"
+        size="md"
+        onClick={onClose}
+      >
+        <X size={30} />
+      </Button>
+
       {role !== "student" && (
         <div className="nav-title">
           <h1>MENU</h1>
@@ -169,25 +177,25 @@ const Sidebar = ({ className = "", onClose, onLogout }) => {
 
         {role === "learner" && <Stars />}
 
-        <button
+        <Button
           className="dasff logout-btn"
+          variant="ghost"
+          size="md"
           onClick={handleLogout}
           disabled={loggingOut}
         >
           {loggingOut ? (
             <>
               <Loader2 size={20} className="spin" />
-
               <span>Logging out...</span>
             </>
           ) : (
             <>
               <LogOut size={20} />
-
               <span>Logout</span>
             </>
           )}
-        </button>
+        </Button>
       </nav>
     </aside>
   );

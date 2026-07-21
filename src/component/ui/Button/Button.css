@@ -1,15 +1,6 @@
-.btn {
-  box-sizing: border-box;
-  appearance: none;
-  -webkit-appearance: none;
-}
-.btn:focus-visible {
-  outline: 3px solid rgba(247, 202, 78, .45);
-  outline-offset: 2px;
-}
-/* ===================================
+/* ================================
    BUTTON BASE
-=================================== */
+================================ */
 
 .btn {
   display: inline-flex;
@@ -28,11 +19,17 @@
   border-radius: 10px;
 
   transition:
-    background-color .25s ease,
+    background .25s ease,
     color .25s ease,
     border-color .25s ease,
     transform .2s ease,
-    box-shadow .2s ease;
+    box-shadow .2s ease,
+    opacity .2s ease;
+}
+
+.btn:focus-visible {
+  outline: 3px solid rgba(247,202,78,.45);
+  outline-offset: 2px;
 }
 
 .btn:not(:disabled):hover {
@@ -48,141 +45,135 @@
   cursor: not-allowed;
 }
 
-.btn:disabled:hover {
-  transform: none;
-  box-shadow: none;
-}
-.btn-icon-square {
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  border-radius: 12px;
-}
 
-/* ===================================
+/* ================================
    VARIANTS
-=================================== */
+================================ */
 
 .btn-primary {
-  background: var(--accent, #f7ca4e);
-  color: var(--primary, #1a1d29);
+  background: var(--accent);
+  color: var(--primary);
 }
 
-.btn-primary:not(:disabled):hover {
-  background: #e6bb46;
-  box-shadow: 0 6px 18px rgba(247, 202, 78, .35);
+.btn-primary:hover {
+  background:#e6bb46;
+  box-shadow:0 6px 18px rgba(247,202,78,.35);
 }
 
-
-
-
-.btn-primary:not(:disabled):hover {
-  background: #e6bb46;
-  box-shadow: 0 6px 18px rgba(247, 202, 78, .35);
-}
 
 .btn-secondary {
-  background: var(--primary);
-  color: var(--secondary);
+  background:var(--primary);
+  color:var(--secondary);
 }
 
-.btn-secondary:not(:disabled):hover {
-  background: #2b2f42;
+.btn-secondary:hover {
+  background:#2b2f42;
 }
+
 
 .btn-outline {
-  background: transparent;
-  color: var(--primary);
-  border: 1px solid var(--primary);
+  background:transparent;
+  color:var(--primary);
+  border:1px solid var(--primary);
 }
 
-.btn-outline:not(:disabled):hover {
-  background: var(--primary);
-  color: var(--secondary);
+.btn-outline:hover {
+  background:var(--primary);
+  color:var(--secondary);
 }
+
 
 .btn-ghost {
-  background: transparent;
-  color: var(--primary);
+  background:transparent;
+  color:var(--primary);
 }
 
-.btn-ghost:not(:disabled):hover {
-  background: rgba(0,0,0,.05);
+.btn-ghost:hover {
+  background:var(--hover-bg);
 }
+
 
 .btn-danger {
-  background: #dc2626;
-  color: #fff;
+  background:#dc2626;
+  color:white;
 }
 
-.btn-danger:not(:disabled):hover {
-  background: #b91c1c;
+.btn-danger:hover {
+  background:#b91c1c;
 }
 
 
-/* ===================================
+/* ================================
    SIZES
-=================================== */
+================================ */
 
 .btn-sm {
-  height: 36px;
-  padding: 0 16px;
-  font-size: 13px;
+  height:36px;
+  padding:0 16px;
+  font-size:13px;
 }
+
 
 .btn-md {
-  height: 44px;
-  padding: 0 20px;
-  font-size: 14px;
+  height:44px;
+  padding:0 20px;
+  font-size:14px;
 }
+
 
 .btn-lg {
-  height: 52px;
-  padding: 0 28px;
-  font-size: 15px;
+  height:52px;
+  padding:0 28px;
+  font-size:15px;
 }
 
 
-/* ===================================
+/* ================================
    ICONS
-=================================== */
+================================ */
 
 .btn-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
+
 
 .btn-text {
-  display: flex;
-  align-items: center;
+  display:flex;
+  align-items:center;
 }
+
+
+/* ================================
+   ICON ONLY
+================================ */
 
 .btn-icon-only {
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  border-radius: 50%;
+  width:44px;
+  height:44px;
+  padding:0;
+  border-radius:50%;
 }
 
 
-/* ===================================
+/* keep dashboard hamburger square */
+
+.hamburger.btn-icon-only {
+  border-radius:10px;
+}
+
+
+/* ================================
    UTILITIES
-=================================== */
+================================ */
 
 .btn-full {
-  width: 100%;
+  width:100%;
 }
+
 
 .btn-loading {
-  pointer-events: none;
-  cursor: wait;
+  pointer-events:none;
+  cursor:wait;
 }
-.btn-loading .btn-text {
-  opacity: .8;
-}
-
-
-
-

@@ -13,7 +13,10 @@ const Button = ({
   className = "",
   ...props
 }) => {
-  const iconOnly = !children && Boolean(leftIcon || rightIcon);
+  const hasChildren =
+    children !== undefined && children !== null && children !== "";
+
+  const iconOnly = !hasChildren && Boolean(leftIcon || rightIcon);
 
   return (
     <button
@@ -32,13 +35,19 @@ const Button = ({
         .join(" ")}
       {...props}
     >
-      {leftIcon && <span className="btn-icon">{leftIcon}</span>}
+      {loading ? (
+        <>
+          <span className="btn-text">Loading...</span>
+        </>
+      ) : (
+        <>
+          {leftIcon && <span className="btn-icon">{leftIcon}</span>}
 
-      {children && (
-        <span className="btn-text">{loading ? "Loading..." : children}</span>
+          {hasChildren && <span className="btn-text">{children}</span>}
+
+          {rightIcon && <span className="btn-icon">{rightIcon}</span>}
+        </>
       )}
-
-      {rightIcon && <span className="btn-icon">{rightIcon}</span>}
     </button>
   );
 };

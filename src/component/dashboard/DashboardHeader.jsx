@@ -72,7 +72,9 @@ function DashboardHeader({ onMenuClick }) {
             variant="ghost"
             size="md"
             leftIcon={<Menu size={24} />}
-            className="btn-icon-square hamburger"
+            className="hamburger"
+            aria-label="Open menu"
+            onClick={onMenuClick}
           />
 
           {(role === "student" || role === "learner") && <SearchBox />}
@@ -87,8 +89,9 @@ function DashboardHeader({ onMenuClick }) {
                 type="button"
                 variant="ghost"
                 size="md"
-                leftIcon={<IoIosNotificationsOutline size={28} />}
+                leftIcon={<IoIosNotificationsOutline size={25} />}
                 className="notification-btn"
+                aria-label="Open notifications"
                 onClick={() => {
                   setOpen(false);
                   setOpenNotification((prev) => !prev);
@@ -104,11 +107,17 @@ function DashboardHeader({ onMenuClick }) {
                   </div>
 
                   <div className="notification-steps-btn">
-                    <button>All</button>
+                    <Button variant="ghost" size="sm">
+                      All
+                    </Button>
 
-                    <button>Courses</button>
+                    <Button variant="ghost" size="sm">
+                      Courses
+                    </Button>
 
-                    <button>Updates</button>
+                    <Button variant="ghost" size="sm">
+                      Updates
+                    </Button>
                   </div>
                 </div>
               )}
@@ -128,7 +137,7 @@ function DashboardHeader({ onMenuClick }) {
 
                 <div className="userimg">
                   <img
-                    src={userData?.photoURL || avatar || defaultAvatar}
+                    src={avatar}
                     alt={displayName}
                     onError={(e) => {
                       e.currentTarget.src = defaultAvatar;
@@ -142,7 +151,7 @@ function DashboardHeader({ onMenuClick }) {
                   type="button"
                   variant="ghost"
                   size="sm"
-                  leftIcon={<IoIosArrowDown size={28} color="grey" />}
+                  leftIcon={<IoIosArrowDown size={28} />}
                   className="dropdown-toggle"
                   onClick={() => {
                     setOpenNotification(false);

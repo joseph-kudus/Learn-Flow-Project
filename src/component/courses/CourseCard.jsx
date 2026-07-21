@@ -1,6 +1,7 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
 import { formatDistanceToNow } from "date-fns";
+import Button from "../ui/Button/Button";
 
 const CourseCard = ({
   item,
@@ -80,20 +81,24 @@ const CourseCard = ({
             <p className="last-accessed">{lastAccessedText}</p>
           </div>
         )}
-
         <div className="course-card-actions">
           {isEnrolled ? (
-            <button className="btn-resume" onClick={() => onResume?.(item.id)}>
+            <Button
+              variant="secondary"
+              className="btn-resume"
+              onClick={() => onResume?.(item.id)}
+            >
               {progress === 0 ? "Start" : "Resume"}
-            </button>
+            </Button>
           ) : (
-            <button
+            <Button
+              variant="primary"
               className="btn-enroll"
-              disabled={loading}
+              loading={loading}
               onClick={() => onEnroll?.(item.id)}
             >
-              {loading ? "Enrolling..." : "Enroll Now"}
-            </button>
+              Enroll Now
+            </Button>
           )}
         </div>
       </div>

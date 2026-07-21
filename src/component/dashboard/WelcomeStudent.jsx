@@ -5,8 +5,9 @@ import "../../styles/welcomeStudent.css";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { MdAccessTime } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import FilterButtons from "../Button/FilterButtons";
+import FilterButtons from "../ui/Button/FilterButtons";
 import StudentEnrollment from "../../component/courses/StudentEnrollment";
+import Button from "../ui/Button/Button";
 const WelcomeStudent = ({
   user,
   allEnrollments = [],
@@ -210,7 +211,8 @@ const WelcomeStudent = ({
                 <hr />
 
                 <div className="card-footer">
-                  <button
+                  <Button
+                    variant="primary"
                     onClick={() =>
                       navigate(`/dashboard/course/${course.id}`, {
                         state: {
@@ -220,10 +222,12 @@ const WelcomeStudent = ({
                     }
                   >
                     Resume Classes
-                  </button>
+                  </Button>
 
-                  <button
+                  <Button
+                    variant="primary"
                     className="arrow-btn"
+                    rightIcon={<FaArrowRightLong />}
                     onClick={() =>
                       navigate(`/dashboard/course/${course.id}`, {
                         state: {
@@ -231,9 +235,7 @@ const WelcomeStudent = ({
                         },
                       })
                     }
-                  >
-                    <FaArrowRightLong />
-                  </button>
+                  />
                 </div>
               </div>
             ))

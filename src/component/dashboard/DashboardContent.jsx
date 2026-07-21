@@ -109,12 +109,13 @@ function DashboardContent({ user }) {
               </div>
             </div>
           ))}
-          <button
+          <Button
+            variant="primary"
+            size="md"
             onClick={() => navigate("/dashboard/allcourses")}
-            className="News"
           >
             View all courses
-          </button>
+          </Button>
         </div>
       </div>
     </section>

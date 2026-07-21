@@ -3,6 +3,7 @@ import { FaArrowLeftLong, FaArrowRight, FaStar } from "react-icons/fa6";
 import { IoIosMore } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import "../../styles/mycourse.css";
+import Button from "../ui/Button/Button";
 const statusClassMap = {
   upcoming: "upcoming",
   submitted: "submitted",
@@ -252,16 +253,20 @@ const Mycourses = ({ allEnrollments = [], enrollmentData = [] }) => {
         </div>
 
         <div className="resume-btn">
-          <button
+          <Button
+            variant={variant === "start" ? "primary" : "secondary"}
             className={variant === "start" ? "resume-btn-start" : ""}
             onClick={() => navigate(`/learn/${enrollment.courseId}`)}
           >
             {variant === "start" ? "Start Course" : "Resume Classes"}
-          </button>
+          </Button>
 
-          <button onClick={() => navigate(`/learn/${enrollment.courseId}`)}>
-            <FaArrowRight />
-          </button>
+          <Button
+            variant="primary"
+            className="arrow-btn"
+            rightIcon={<FaArrowRight />}
+            onClick={() => navigate(`/learn/${enrollment.courseId}`)}
+          />
         </div>
       </div>
     );
@@ -275,13 +280,20 @@ const Mycourses = ({ allEnrollments = [], enrollmentData = [] }) => {
 
           {activeCourses.length > 1 && (
             <div className="arrows">
-              <button onClick={() => scroll(activeRef, "left")}>
-                <FaArrowLeftLong />
-              </button>
+              <Button
+                variant="outline"
+                className="carousel"
+                size="sm"
+                rightIcon={<FaArrowLeftLong />}
+                onClick={() => scroll(activeRef, "left")}
+              />
 
-              <button onClick={() => scroll(activeRef, "right")}>
-                <FaArrowRight />
-              </button>
+              <Button
+                variant="outline"
+                className="carousel"
+                leftIcon={<FaArrowRight />}
+                onClick={() => scroll(activeRef, "right")}
+              />
             </div>
           )}
         </div>
@@ -303,13 +315,21 @@ const Mycourses = ({ allEnrollments = [], enrollmentData = [] }) => {
 
           {recentCourses.length > 1 && (
             <div className="arrows">
-              <button onClick={() => scroll(recentRef, "left")}>
-                <FaArrowLeftLong />
-              </button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="carousel-btn"
+                rightIcon={<FaArrowLeftLong />}
+                onClick={() => scroll(activeRef, "left")}
+              />
 
-              <button onClick={() => scroll(recentRef, "right")}>
-                <FaArrowRight />
-              </button>
+              <Button
+                variant="outline"
+                className="carousel-btn"
+                size="sm"
+                rightIcon={<FaArrowRight />}
+                onClick={() => scroll(activeRef, "right")}
+              />
             </div>
           )}
         </div>
@@ -332,9 +352,11 @@ const Mycourses = ({ allEnrollments = [], enrollmentData = [] }) => {
           <h3>Recent Activities</h3>
 
           <div className="arrows">
-            <button>
-              <IoIosMore />
-            </button>
+            <Button
+              variant="outline"
+              className="more-btn"
+              rightIcon={<IoIosMore />}
+            />
           </div>
         </div>
 
@@ -363,10 +385,10 @@ const Mycourses = ({ allEnrollments = [], enrollmentData = [] }) => {
                       {act.status === "graded" ? (
                         <p className="graded-text">Graded {act.grade}</p>
                       ) : (
-                        <button className={statusClassMap[act.status]}>
+                        <span className={statusClassMap[act.status]}>
                           {act.status.charAt(0).toUpperCase() +
                             act.status.slice(1)}
-                        </button>
+                        </span>
                       )}
                     </div>
                   ))}

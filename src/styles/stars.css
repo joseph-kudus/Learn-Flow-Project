@@ -64,7 +64,7 @@
     height: 44px;
     border: none;
     border-radius: 10px;
-    background: #1E1E1E;
+    background: #F7CA4E;
     color: #fff;
     font-size: 14px;
     font-weight: 600;
@@ -230,22 +230,14 @@ form {
     border-color: #F7CA4E;
 }
 
-.edit-profile {
-    align-self: flex-end;
-    width: 180px;
-    height: 45px;
-    border: none;
-    border-radius: 10px;
-    background: #F7CA4E;
-    color: #000;
-    font-weight: 600;
-    cursor: pointer;
-    transition: .3s;
+
+
+.save-profile {
+    display: flex;
+    justify-content: flex-end;
 }
 
-.edit-profile:hover {
-    background: #efbe35;
-}
+
 /* ==================================================
    PROFILE SIDEBAR
 ================================================== */

@@ -10,6 +10,7 @@ import { CgNotes } from "react-icons/cg";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../../firebaseconfig";
 import { uploadAvatar } from "../../utils/uploadAvatar";
+import Button from "../ui/Button/Button";
 
 const ProfileSetting = () => {
   const [profileTap, setProfileTap] = useState("profileinfo");
@@ -255,13 +256,9 @@ const ProfileSetting = () => {
                       onChange={handleAvatarChange}
                     />
 
-                    <label htmlFor="photo" className="btn-upload">
-                      {uploading ? "Uploading..." : "Upload your photo"}
-                    </label>
+                    <Button variant="primary">Upload your photo</Button>
 
-                    <button className="btn-delete" type="button">
-                      Delete image
-                    </button>
+                    <Button variant="outline">Delete image</Button>
                   </div>
                 </div>
               </div>
@@ -343,13 +340,17 @@ const ProfileSetting = () => {
                     </div>
                   </div>
                 </div>
-                <button
-                  type="submit"
-                  className="edit-profile"
-                  disabled={saving}
-                >
-                  {saving ? "Saving..." : "Edit profile"}
-                </button>
+
+                <div className="save-profile">
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    size="md"
+                    loading={saving}
+                  >
+                    Edit profile
+                  </Button>
+                </div>
               </form>
             </div>
           )}

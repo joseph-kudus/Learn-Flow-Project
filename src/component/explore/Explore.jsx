@@ -6,7 +6,6 @@ import { IoHeart } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { IoIosMore } from "react-icons/io";
-
 import "../../styles/explore.css";
 
 import {
@@ -17,7 +16,7 @@ import {
 } from "../../services/allEnrollments";
 
 import { useAuth } from "../../context/AuthContext";
-
+import Button from "../ui/Button/Button";
 const PROGRAMMING_CATEGORIES = [
   "CODING",
   "PROGRAMMING",
@@ -26,18 +25,14 @@ const PROGRAMMING_CATEGORIES = [
   "PYTHON",
   "SOFTWARE ENGINEERING",
 ];
-
 const filterCourses = (courses, filter) => {
   switch (filter) {
     case "CODING":
       return courses.filter((c) => c.type === "CODING");
-
     case "PROGRAMMING":
       return courses.filter((c) => PROGRAMMING_CATEGORIES.includes(c.type));
-
     case "MORE":
       return courses.filter((c) => !PROGRAMMING_CATEGORIES.includes(c.type));
-
     default:
       return courses;
   }
@@ -64,22 +59,17 @@ const Explore = () => {
         getUserEnrollments(currentUser.uid),
         getEnrollmentDetails(currentUser.uid),
       ]);
-
       setMyCourseIds(ids);
       setEnrollmentData(details);
     };
-
     load();
   }, [currentUser]);
-
   const handleEnroll = async (courseId) => {
     if (!currentUser || !userData) {
       alert("Please login first.");
       return;
     }
-
     setEnrollingId(courseId);
-
     try {
       const result = await enrollStudent(
         currentUser.uid,
@@ -94,10 +84,8 @@ const Explore = () => {
           getUserEnrollments(currentUser.uid),
           getEnrollmentDetails(currentUser.uid),
         ]);
-
         setMyCourseIds(ids);
         setEnrollmentData(details);
-
         navigate(`/learn/${courseId}`);
       }
     } catch (err) {
@@ -107,7 +95,6 @@ const Explore = () => {
       setEnrollingId(null);
     }
   };
-
   const courses = useMemo(
     () =>
       allEnrollments.map((c) => ({
@@ -136,35 +123,33 @@ const Explore = () => {
     () => courses.filter((c) => !myCourseIds.includes(c.id)).slice(0, 4),
     [courses, myCourseIds],
   );
-
   const filteredTrending = useMemo(
     () => filterCourses(trendingCourses, trendingFilter),
     [trendingCourses, trendingFilter],
   );
-
   const filteredRecommended = useMemo(
     () => filterCourses(recommendedCourses, recommendedFilter),
     [recommendedCourses, recommendedFilter],
   );
-
   return (
     <div className="explore-page">
       <div className="categories_container">
         {/* TRENDING */}
-
         <div className="explore_courses">
           <div className="courses_header">
             <h1>Trending Courses</h1>
-
             <div className="categories_wrapper">
               {categories.map((cat) => (
-                <button
+                <Button
                   key={cat}
+                  variant={trendingFilter === cat ? "primary" : "outline"}
+                  size="sm"
                   className={trendingFilter === cat ? "active" : ""}
+                  rightIcon={cat === "MORE" ? <IoIosMore /> : null}
                   onClick={() => setTrendingFilter(cat)}
                 >
-                  {cat === "MORE" ? <IoIosMore /> : cat}
-                </button>
+                  {cat !== "MORE" && cat}
+                </Button>
               ))}
             </div>
           </div>
@@ -192,13 +177,16 @@ const Explore = () => {
 
             <div className="categories_wrapper">
               {categories.map((cat) => (
-                <button
+                <Button
                   key={cat}
+                  variant={recommendedFilter === cat ? "primary" : "outline"}
+                  size="sm"
                   className={recommendedFilter === cat ? "active" : ""}
+                  rightIcon={cat === "MORE" ? <IoIosMore /> : null}
                   onClick={() => setRecommendedFilter(cat)}
                 >
-                  {cat === "MORE" ? <IoIosMore /> : cat}
-                </button>
+                  {cat !== "MORE" && cat}
+                </Button>
               ))}
             </div>
           </div>
@@ -235,46 +223,37 @@ const CourseCard = ({
   const enrollment = enrollmentData.find(
     (e) => Number(e.courseId) === course.id,
   );
-
   const progress = enrollment?.progress ?? 0;
-
   const isEnrolled = myCourseIds.includes(course.id);
-
   return (
     <div className="course-card">
       <div className="image-wrapper">
         <img src={course.image} alt={course.title} />
 
-        <button className="card-menu">
-          <GrMore />
-        </button>
+        <Button
+          variant="outline"
+          className="card-menu"
+          rightIcon={<GrMore />}
+        />
       </div>
 
       <div className="card-content">
         <h3>{course.title}</h3>
-
         <p className="category">{course.category}</p>
-
         <div className="meta">
           <div>
             <MdOutlineMenuBook />
-
             <span>{course.classes} Classes</span>
           </div>
-
           <div>
             <LuClock3 />
-
             <span>{course.duration}</span>
           </div>
-
           <div>
             <IoHeart />
-
             <span>{course.rating} ratings</span>
           </div>
         </div>
-
         {isEnrolled && (
           <div className="progress-bar">
             <div
@@ -283,36 +262,33 @@ const CourseCard = ({
                 width: `${progress}%`,
               }}
             />
-
             <small>{progress}% complete</small>
           </div>
         )}
-
         {isEnrolled ? (
-          <button
+          <Button
+            variant="secondary"
             className="enroll-btn"
+            rightIcon={<FaArrowRightLong />}
             onClick={() => navigate(`/learn/${course.id}`)}
           >
             {progress === 0 ? "Start" : "Resume"}
-
-            <FaArrowRightLong />
-          </button>
+          </Button>
         ) : (
-          <button
+          <Button
+            variant="primary"
             className="enroll-btn"
             disabled={enrollingId === course.id}
+            rightIcon={<FaArrowRightLong />}
             onClick={() => onEnroll(course.id)}
           >
             {enrollingId === course.id
               ? "Enrolling..."
               : `Enroll for $${course.price}`}
-
-            <FaArrowRightLong />
-          </button>
+          </Button>
         )}
       </div>
     </div>
   );
 };
-
 export default Explore;

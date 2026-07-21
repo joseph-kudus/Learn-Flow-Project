@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/learnerdashboard.css";
-import { useAuth } from "../../context/AuthContext";
 import StudentEnrollment from "../../component/courses/StudentEnrollment";
+import Button from "../ui/Button/Button";
 
 const WelcomeLearner = ({
   user,
@@ -10,7 +10,6 @@ const WelcomeLearner = ({
   enrollmentData = [],
   enrollmentsLoading,
 }) => {
-  const { userData } = useAuth();
   const navigate = useNavigate();
 
   const myCourseIds = useMemo(
@@ -19,13 +18,11 @@ const WelcomeLearner = ({
   );
 
   const displayUsername =
-    userData?.nickname ||
-    userData?.displayName ||
-    userData?.username ||
-    userData?.email?.split("@")[0] ||
+    user?.nickname ||
     user?.displayName ||
+    user?.username ||
     user?.email?.split("@")[0] ||
-    "Learner";
+    "learner";
 
   const enrolledCourses = enrollmentData.length;
 
@@ -74,7 +71,8 @@ const WelcomeLearner = ({
                 : "Let's continue your learning journey today."}
             </p>
 
-            <button
+            <Button
+              variant="primary"
               className="welcome-text-btn"
               onClick={() =>
                 courseToContinue
@@ -83,7 +81,7 @@ const WelcomeLearner = ({
               }
             >
               {courseToContinue ? "Continue Learning" : "Browse All Courses"}
-            </button>
+            </Button>
           </div>
         </div>
 

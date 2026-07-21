@@ -10,6 +10,7 @@ import { IoIosArrowDown, IoIosNotificationsOutline } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
 import { RiAccountBoxFill } from "react-icons/ri";
 import { SlSettings } from "react-icons/sl";
+import Button from "../ui/Button/Button";
 
 function DashboardHeader({ onMenuClick }) {
   const { currentUser, userData, loading } = useAuth();
@@ -67,14 +68,12 @@ function DashboardHeader({ onMenuClick }) {
         {/* LEFT SIDE */}
 
         <div className="header-left">
-          <button
-            className="hamburger"
-            type="button"
-            onClick={onMenuClick}
-            aria-label="Open menu"
-          >
-            <Menu size={24} />
-          </button>
+          <Button
+            variant="ghost"
+            size="md"
+            leftIcon={<Menu size={24} />}
+            className="btn-icon-square hamburger"
+          />
 
           {(role === "student" || role === "learner") && <SearchBox />}
         </div>
@@ -84,17 +83,17 @@ function DashboardHeader({ onMenuClick }) {
         <div className="header-right">
           {role === "student" && (
             <div className="notification-wrapper" ref={notificationRef}>
-              <button
-                className="notification-btn"
+              <Button
                 type="button"
+                variant="ghost"
+                size="md"
+                leftIcon={<IoIosNotificationsOutline size={28} />}
+                className="notification-btn"
                 onClick={() => {
                   setOpen(false);
-
                   setOpenNotification((prev) => !prev);
                 }}
-              >
-                <IoIosNotificationsOutline size={28} />
-              </button>
+              />
 
               {openNotification && (
                 <div className="notification-header-drop">
@@ -139,16 +138,17 @@ function DashboardHeader({ onMenuClick }) {
               </Link>
 
               {role === "student" && (
-                <button
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  leftIcon={<IoIosArrowDown size={28} color="grey" />}
                   className="dropdown-toggle"
                   onClick={() => {
                     setOpenNotification(false);
-
                     setOpen((prev) => !prev);
                   }}
-                >
-                  <IoIosArrowDown size={28} color="grey" />
-                </button>
+                />
               )}
             </div>
 

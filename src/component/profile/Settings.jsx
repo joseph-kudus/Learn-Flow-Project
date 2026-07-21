@@ -1,10 +1,11 @@
-//import "../usedata.css";
+import "../../styles/usedata.css";
 import { bguser } from "../../assets/images/logos.jsx";
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { SlCloudDownload } from "react-icons/sl";
 import { PiPencilSimpleLineLight } from "react-icons/pi";
 import defaultAvatar from "../../assets/images/default.png";
+import Button from "../ui/Button/Button.jsx";
 
 const Settings = () => {
   const [profileTap, setProfileTap] = useState("profile");
@@ -35,12 +36,14 @@ const Settings = () => {
             className="avatar-img"
             alt="user avatar"
             onError={(e) => {
-              e.target.src = defaultAvatar;
+              e.currentTarget.src = defaultAvatar;
             }}
-            alt="avatar"
+           
           />
           <div className="avatar-overlay">
-            <button className="change-avatar-btn">Change</button>
+            <Button variant="outline" size="sm">
+              Change
+            </Button>
           </div>
         </div>
         <p className="change-avatar-text">
@@ -74,9 +77,9 @@ const Settings = () => {
               Subscription
             </button>
           </div>
-          <button className="save-btn">
-            Save changes <SlCloudDownload />
-          </button>
+          <Button variant="primary" rightIcon={<SlCloudDownload />}>
+            Save Changes
+          </Button>
         </div>
 
         <div className="profile-edit">
@@ -85,13 +88,15 @@ const Settings = () => {
               <div className="form-section">
                 <div className="section-header">
                   <h4>Profile Name</h4>
-                  <button
-                    className="edit-btn"
+
+                  <Button
+                    variant={isEditing ? "secondary" : "outline"}
+                    size="sm"
+                    rightIcon={<PiPencilSimpleLineLight />}
                     onClick={() => setIsEditing(!isEditing)}
                   >
                     {isEditing ? "Cancel" : "Edit"}
-                    <PiPencilSimpleLineLight />
-                  </button>
+                  </Button>
                 </div>
 
                 <div className="form-grid">

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { GrMore } from "react-icons/gr";
 import { MdOutlineMenuBook } from "react-icons/md";
 import { LuClock3 } from "react-icons/lu";
@@ -6,6 +6,7 @@ import { IoHeart } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { IoIosMore } from "react-icons/io";
+
 import "../../styles/explore.css";
 
 import {
@@ -17,6 +18,7 @@ import {
 
 import { useAuth } from "../../context/AuthContext";
 import Button from "../ui/Button/Button";
+
 const PROGRAMMING_CATEGORIES = [
   "CODING",
   "PROGRAMMING",
@@ -25,14 +27,22 @@ const PROGRAMMING_CATEGORIES = [
   "PYTHON",
   "SOFTWARE ENGINEERING",
 ];
+
 const filterCourses = (courses, filter) => {
   switch (filter) {
     case "CODING":
-      return courses.filter((c) => c.type === "CODING");
+      return courses.filter((course) => course.type === "CODING");
+
     case "PROGRAMMING":
-      return courses.filter((c) => PROGRAMMING_CATEGORIES.includes(c.type));
+      return courses.filter((course) =>
+        PROGRAMMING_CATEGORIES.includes(course.type),
+      );
+
     case "MORE":
-      return courses.filter((c) => !PROGRAMMING_CATEGORIES.includes(c.type));
+      return courses.filter(
+        (course) => !PROGRAMMING_CATEGORIES.includes(course.type),
+      );
+
     default:
       return courses;
   }
@@ -40,10 +50,12 @@ const filterCourses = (courses, filter) => {
 
 const Explore = () => {
   const { currentUser, userData } = useAuth();
+
   const navigate = useNavigate();
 
   const [myCourseIds, setMyCourseIds] = useState([]);
   const [enrollmentData, setEnrollmentData] = useState([]);
+
   const [enrollingId, setEnrollingId] = useState(null);
 
   const [trendingFilter, setTrendingFilter] = useState("ALL");
@@ -55,21 +67,30 @@ const Explore = () => {
     if (!currentUser?.uid) return;
 
     const load = async () => {
-      const [ids, details] = await Promise.all([
-        getUserEnrollments(currentUser.uid),
-        getEnrollmentDetails(currentUser.uid),
-      ]);
-      setMyCourseIds(ids);
-      setEnrollmentData(details);
+      try {
+        const [ids, details] = await Promise.all([
+          getUserEnrollments(currentUser.uid),
+          getEnrollmentDetails(currentUser.uid),
+        ]);
+
+        setMyCourseIds(ids);
+        setEnrollmentData(details);
+      } catch (error) {
+        console.error("Failed loading enrollments:", error);
+      }
     };
+
     load();
   }, [currentUser]);
+
   const handleEnroll = async (courseId) => {
     if (!currentUser || !userData) {
       alert("Please login first.");
       return;
     }
+
     setEnrollingId(courseId);
+
     try {
       const result = await enrollStudent(
         currentUser.uid,
@@ -84,133 +105,149 @@ const Explore = () => {
           getUserEnrollments(currentUser.uid),
           getEnrollmentDetails(currentUser.uid),
         ]);
+
         setMyCourseIds(ids);
         setEnrollmentData(details);
+
         navigate(`/learn/${courseId}`);
       }
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
       alert("Enrollment failed.");
     } finally {
       setEnrollingId(null);
     }
   };
+
   const courses = useMemo(
     () =>
-      allEnrollments.map((c) => ({
-        id: c.id,
-        title: c.title,
-        category: c.category.toUpperCase(),
-        image: c.image || "/placeholder.jpg",
+      allEnrollments.map((course) => ({
+        id: course.id,
 
-        // FIXED HERE
-        classes: c.lessons?.length || c.totalLessons || 0,
+        title: course.title,
 
-        duration: `${c.durationWeeks} Weeks`,
-        rating: Number(c.rating),
-        type: c.category.toUpperCase(),
+        category: course.category.toUpperCase(),
+
+        type: course.category.toUpperCase(),
+
+        image: course.image || "/placeholder.jpg",
+
+        classes: course.lessons?.length || course.totalLessons || 0,
+
+        duration: `${course.durationWeeks} Weeks`,
+
+        rating: Number(course.rating) || 0,
+
         price: 100,
       })),
+
     [],
   );
 
   const trendingCourses = useMemo(
     () => [...courses].sort((a, b) => b.rating - a.rating).slice(0, 4),
+
     [courses],
   );
 
   const recommendedCourses = useMemo(
-    () => courses.filter((c) => !myCourseIds.includes(c.id)).slice(0, 4),
+    () =>
+      courses.filter((course) => !myCourseIds.includes(course.id)).slice(0, 4),
+
     [courses, myCourseIds],
   );
+
   const filteredTrending = useMemo(
     () => filterCourses(trendingCourses, trendingFilter),
+
     [trendingCourses, trendingFilter],
   );
+
   const filteredRecommended = useMemo(
     () => filterCourses(recommendedCourses, recommendedFilter),
+
     [recommendedCourses, recommendedFilter],
   );
+
   return (
     <div className="explore-page">
       <div className="categories_container">
-        {/* TRENDING */}
-        <div className="explore_courses">
-          <div className="courses_header">
-            <h1>Trending Courses</h1>
-            <div className="categories_wrapper">
-              {categories.map((cat) => (
-                <Button
-                  key={cat}
-                  variant={trendingFilter === cat ? "primary" : "outline"}
-                  size="sm"
-                  className={trendingFilter === cat ? "active" : ""}
-                  rightIcon={cat === "MORE" ? <IoIosMore /> : null}
-                  onClick={() => setTrendingFilter(cat)}
-                >
-                  {cat !== "MORE" && cat}
-                </Button>
-              ))}
-            </div>
-          </div>
+        <CourseSection
+          title="Trending Courses"
+          categories={categories}
+          filter={trendingFilter}
+          setFilter={setTrendingFilter}
+          courses={filteredTrending}
+          myCourseIds={myCourseIds}
+          enrollmentData={enrollmentData}
+          onEnroll={handleEnroll}
+          enrollingId={enrollingId}
+          navigate={navigate}
+        />
 
-          <div className="course-grid">
-            {filteredTrending.map((course) => (
-              <CourseCard
-                key={course.id}
-                course={course}
-                myCourseIds={myCourseIds}
-                enrollmentData={enrollmentData}
-                onEnroll={handleEnroll}
-                enrollingId={enrollingId}
-                navigate={navigate}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* RECOMMENDED */}
-
-        <div className="explore_courses">
-          <div className="courses_header">
-            <h1>Recommended Courses</h1>
-
-            <div className="categories_wrapper">
-              {categories.map((cat) => (
-                <Button
-                  key={cat}
-                  variant={recommendedFilter === cat ? "primary" : "outline"}
-                  size="sm"
-                  className={recommendedFilter === cat ? "active" : ""}
-                  rightIcon={cat === "MORE" ? <IoIosMore /> : null}
-                  onClick={() => setRecommendedFilter(cat)}
-                >
-                  {cat !== "MORE" && cat}
-                </Button>
-              ))}
-            </div>
-          </div>
-
-          <div className="course-grid">
-            {filteredRecommended.map((course) => (
-              <CourseCard
-                key={course.id}
-                course={course}
-                myCourseIds={myCourseIds}
-                enrollmentData={enrollmentData}
-                onEnroll={handleEnroll}
-                enrollingId={enrollingId}
-                navigate={navigate}
-              />
-            ))}
-          </div>
-        </div>
+        <CourseSection
+          title="Recommended Courses"
+          categories={categories}
+          filter={recommendedFilter}
+          setFilter={setRecommendedFilter}
+          courses={filteredRecommended}
+          myCourseIds={myCourseIds}
+          enrollmentData={enrollmentData}
+          onEnroll={handleEnroll}
+          enrollingId={enrollingId}
+          navigate={navigate}
+        />
       </div>
     </div>
   );
 };
 
-// ================= COURSE CARD =================
+const CourseSection = ({
+  title,
+  categories,
+  filter,
+  setFilter,
+  courses,
+  myCourseIds,
+  enrollmentData,
+  onEnroll,
+  enrollingId,
+  navigate,
+}) => (
+  <div className="explore_courses">
+    <div className="courses_header">
+      <h1>{title}</h1>
+
+      <div className="categories_wrapper">
+        {categories.map((cat) => (
+          <Button
+            key={cat}
+            variant={filter === cat ? "primary" : "outline"}
+            size="sm"
+            rightIcon={cat === "MORE" ? <IoIosMore /> : undefined}
+            onClick={() => setFilter(cat)}
+          >
+            {cat}
+          </Button>
+        ))}
+      </div>
+    </div>
+
+    <div className="course-grid">
+      {courses.map((course) => (
+        <CourseCard
+          key={course.id}
+          course={course}
+          myCourseIds={myCourseIds}
+          enrollmentData={enrollmentData}
+          onEnroll={onEnroll}
+          enrollingId={enrollingId}
+          navigate={navigate}
+        />
+      ))}
+    </div>
+  </div>
+);
 
 const CourseCard = ({
   course,
@@ -221,39 +258,54 @@ const CourseCard = ({
   navigate,
 }) => {
   const enrollment = enrollmentData.find(
-    (e) => Number(e.courseId) === course.id,
+    (item) => String(item.courseId) === String(course.id),
   );
+
   const progress = enrollment?.progress ?? 0;
+
   const isEnrolled = myCourseIds.includes(course.id);
+
   return (
     <div className="course-card">
       <div className="image-wrapper">
-        <img src={course.image} alt={course.title} />
+        <img
+          src={course.image}
+          alt={course.title}
+          onError={(e) => {
+            e.currentTarget.src = "/placeholder.jpg";
+          }}
+        />
 
         <Button
           variant="outline"
           className="card-menu"
           rightIcon={<GrMore />}
+          aria-label="More course options"
         />
       </div>
 
       <div className="card-content">
         <h3>{course.title}</h3>
+
         <p className="category">{course.category}</p>
+
         <div className="meta">
           <div>
             <MdOutlineMenuBook />
             <span>{course.classes} Classes</span>
           </div>
+
           <div>
             <LuClock3 />
             <span>{course.duration}</span>
           </div>
+
           <div>
             <IoHeart />
             <span>{course.rating} ratings</span>
           </div>
         </div>
+
         {isEnrolled && (
           <div className="progress-bar">
             <div
@@ -262,9 +314,11 @@ const CourseCard = ({
                 width: `${progress}%`,
               }}
             />
+
             <small>{progress}% complete</small>
           </div>
         )}
+
         {isEnrolled ? (
           <Button
             variant="secondary"
@@ -278,17 +332,16 @@ const CourseCard = ({
           <Button
             variant="primary"
             className="enroll-btn"
-            disabled={enrollingId === course.id}
+            loading={enrollingId === course.id}
             rightIcon={<FaArrowRightLong />}
             onClick={() => onEnroll(course.id)}
           >
-            {enrollingId === course.id
-              ? "Enrolling..."
-              : `Enroll for $${course.price}`}
+            Enroll for ${course.price}
           </Button>
         )}
       </div>
     </div>
   );
 };
+
 export default Explore;

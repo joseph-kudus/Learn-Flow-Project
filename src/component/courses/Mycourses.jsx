@@ -1,9 +1,11 @@
-import React, { useRef, useMemo, useEffect } from "react";
+import React, { useMemo, useRef } from "react";
 import { FaArrowLeftLong, FaArrowRight, FaStar } from "react-icons/fa6";
 import { IoIosMore } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+
 import "../../styles/mycourse.css";
 import Button from "../ui/Button/Button";
+
 const statusClassMap = {
   upcoming: "upcoming",
   submitted: "submitted",
@@ -15,23 +17,26 @@ const statusClassMap = {
 const formatDateLabel = (dateStr) => {
   const today = new Date().toDateString();
   const yesterday = new Date(Date.now() - 86400000).toDateString();
-  const d = new Date(dateStr).toDateString();
 
-  if (d === today)
-    return `Today, ${new Date(dateStr).toLocaleDateString("en-GB", {
+  const date = new Date(dateStr);
+
+  if (date.toDateString() === today) {
+    return `Today, ${date.toLocaleDateString("en-GB", {
       day: "2-digit",
       month: "short",
       year: "numeric",
     })}`;
+  }
 
-  if (d === yesterday)
-    return `Yesterday, ${new Date(dateStr).toLocaleDateString("en-GB", {
+  if (date.toDateString() === yesterday) {
+    return `Yesterday, ${date.toLocaleDateString("en-GB", {
       day: "2-digit",
       month: "short",
       year: "numeric",
     })}`;
+  }
 
-  return new Date(dateStr).toLocaleDateString("en-GB", {
+  return date.toLocaleDateString("en-GB", {
     weekday: "long",
     day: "2-digit",
     month: "short",
@@ -49,7 +54,6 @@ const generateActivities = (enrollmentData) => {
   const activities = [];
 
   enrollmentData.forEach((course) => {
-    // 1. Enrollment activity
     if (course.enrolledAt) {
       const date = getDate(course.enrolledAt);
 
@@ -65,7 +69,6 @@ const generateActivities = (enrollmentData) => {
       });
     }
 
-    // 2. Lesson completed activities
     if (
       Array.isArray(course.completedLessonIds) &&
       course.completedLessonIds.length
@@ -90,7 +93,6 @@ const generateActivities = (enrollmentData) => {
       });
     }
 
-    // 3. Course completed
     if (course.status === "completed" && course.lastAccessed) {
       const date = getDate(course.lastAccessed);
 
@@ -116,6 +118,82 @@ const generateActivities = (enrollmentData) => {
   return activities;
 };
 
+const CourseCard = ({ enrollment, variant = "resume", navigate }) => {
+  const percent = enrollment.progress || 0;
+
+  return (
+    <div className="course-card">
+      <div
+        className={
+          variant === "start" ? "card_container_start" : "card_container"
+        }
+      >
+        <img
+          src={enrollment.image}
+          alt={enrollment.title}
+          onError={(e) => {
+            e.currentTarget.src = "/placeholder.jpg";
+          }}
+        />
+
+        <div className="intro">
+          <p>
+            <strong>{enrollment.title}</strong>
+          </p>
+
+          <p>{enrollment.category}</p>
+        </div>
+      </div>
+
+      {variant === "resume" && (
+        <>
+          <div
+            className="progress-bar"
+            style={{
+              "--progress": `${percent}%`,
+            }}
+          />
+
+          <hr />
+        </>
+      )}
+
+      <div className="card_details">
+        <p>
+          {enrollment.completedLessons || 0}/{enrollment.totalLessons || 0}{" "}
+          Classes
+        </p>
+
+        <p>{enrollment.timeSpent || "1hr 45 Minutes"}</p>
+
+        {variant === "start" && (
+          <p>
+            <FaStar />
+            {enrollment.rating} ratings
+          </p>
+        )}
+      </div>
+
+      <div className="resume-btn">
+        <Button
+          variant={variant === "start" ? "primary" : "secondary"}
+          className={variant === "start" ? "resume-btn-start" : ""}
+          onClick={() => navigate(`/learn/${enrollment.courseId}`)}
+        >
+          {variant === "start" ? "Start Course" : "Resume Classes"}
+        </Button>
+
+        <Button
+          variant="primary"
+          className="arrow-btn"
+          rightIcon={<FaArrowRight />}
+          onClick={() => navigate(`/learn/${enrollment.courseId}`)}
+        />
+      </div>
+    </div>
+  );
+};
+
 const Mycourses = ({ allEnrollments = [], enrollmentData = [] }) => {
   const navigate = useNavigate();
 
@@ -127,6 +205,7 @@ const Mycourses = ({ allEnrollments = [], enrollmentData = [] }) => {
 
     ref.current.scrollBy({
       left: dir === "left" ? -280 : 280,
+
       behavior: "smooth",
     });
   };
@@ -147,23 +226,31 @@ const Mycourses = ({ allEnrollments = [], enrollmentData = [] }) => {
           ? course.lessons.length
           : Number(course.lessons) || course.totalLessons || 0;
 
-        const completedLessons = e.completedLessons || 0;
+        const completedLessons =
+          e.completedLessons ?? e.completedLessonIds?.length ?? 0;
 
-        const percent = totalLessons
+        const progress = totalLessons
           ? Math.round((completedLessons / totalLessons) * 100)
           : e.progress || 0;
 
         return {
           ...e,
+
           courseId: String(e.courseId),
+
           title: course.title,
+
           category: course.category,
+
           image: course.image,
+
           rating: course.rating,
-          lessons: totalLessons,
-          lessonList: Array.isArray(course.lessons) ? course.lessons : [],
+
           totalLessons,
-          progress: percent,
+
+          completedLessons,
+
+          progress,
         };
       })
       .filter(Boolean);
@@ -179,98 +266,17 @@ const Mycourses = ({ allEnrollments = [], enrollmentData = [] }) => {
     [myCourses],
   );
 
-  const realActivities = useMemo(() => {
-    return generateActivities(enrollmentData);
-  }, [enrollmentData]);
-
   const groupedActivities = useMemo(() => {
-    return realActivities.reduce((acc, item) => {
+    return generateActivities(enrollmentData).reduce((acc, item) => {
       const key = item.date.split("T")[0];
+
       if (!acc[key]) acc[key] = [];
+
       acc[key].push(item);
+
       return acc;
     }, {});
-  }, [realActivities]);
-
-  const CourseCard = ({ enrollment, variant = "resume" }) => {
-    const percent = enrollment.progress || 0;
-    return (
-      <div className="course-card">
-        <div
-          className={
-            variant === "start" ? "card_container_start" : "card_container"
-          }
-        >
-          <img
-            src={enrollment.image}
-            alt={enrollment.title}
-            onError={(e) => {
-              e.target.src = "/placeholder.jpg";
-            }}
-          />
-
-          <div className="intro">
-            <p>
-              <strong>{enrollment.title}</strong>
-            </p>
-
-            <p>{enrollment.category}</p>
-          </div>
-        </div>
-
-        {variant === "resume" && (
-          <>
-            <div
-              className="progress-bar"
-              style={{
-                "--progress": `${percent}%`,
-              }}
-            />
-
-            <hr />
-          </>
-        )}
-
-        <div className="card_details">
-          <p>
-            {enrollment.completedLessons || 0}/{enrollment.totalLessons || 0}{" "}
-            Classes
-          </p>
-
-          <p>{enrollment.timeSpent || "1hr 45 Minutes"}</p>
-
-          {variant === "start" && (
-            <p>
-              <FaStar
-                style={{
-                  color: "#FFD166",
-                  marginRight: 4,
-                }}
-              />
-              {enrollment.rating} ratings
-            </p>
-          )}
-        </div>
-
-        <div className="resume-btn">
-          <Button
-            variant={variant === "start" ? "primary" : "secondary"}
-            className={variant === "start" ? "resume-btn-start" : ""}
-            onClick={() => navigate(`/learn/${enrollment.courseId}`)}
-          >
-            {variant === "start" ? "Start Course" : "Resume Classes"}
-          </Button>
-
-          <Button
-            variant="primary"
-            className="arrow-btn"
-            rightIcon={<FaArrowRight />}
-            onClick={() => navigate(`/learn/${enrollment.courseId}`)}
-          />
-        </div>
-      </div>
-    );
-  };
+  }, [enrollmentData]);
 
   return (
     <div className="myclass">
@@ -278,72 +284,60 @@ const Mycourses = ({ allEnrollments = [], enrollmentData = [] }) => {
         <div className="active-course">
           <h3>Active Courses</h3>
 
-          {activeCourses.length > 1 && (
-            <div className="arrows">
-              <Button
-                variant="outline"
-                className="carousel"
-                size="sm"
-                rightIcon={<FaArrowLeftLong />}
-                onClick={() => scroll(activeRef, "left")}
-              />
+          <div className="arrows">
+            <Button
+              variant="outline"
+              className="carousel"
+              leftIcon={<FaArrowLeftLong />}
+              onClick={() => scroll(activeRef, "left")}
+            />
 
-              <Button
-                variant="outline"
-                className="carousel"
-                leftIcon={<FaArrowRight />}
-                onClick={() => scroll(activeRef, "right")}
-              />
-            </div>
-          )}
+            <Button
+              variant="outline"
+              className="carousel"
+              rightIcon={<FaArrowRight />}
+              onClick={() => scroll(activeRef, "right")}
+            />
+          </div>
         </div>
 
         <div className="active-cours" ref={activeRef}>
           {activeCourses.length ? (
             activeCourses.map((e) => (
-              <CourseCard key={e.courseId} enrollment={e} variant="resume" />
+              <CourseCard key={e.courseId} enrollment={e} navigate={navigate} />
             ))
           ) : (
-            <p style={{ padding: "12px", color: "#666" }}>
-              No active courses yet.
-            </p>
+            <p className="empty-state">No active courses yet.</p>
           )}
         </div>
 
         <div className="active-course">
           <h3>Recently Enrolled</h3>
 
-          {recentCourses.length > 1 && (
-            <div className="arrows">
-              <Button
-                variant="outline"
-                size="sm"
-                className="carousel-btn"
-                rightIcon={<FaArrowLeftLong />}
-                onClick={() => scroll(activeRef, "left")}
-              />
+          <div className="arrows">
+            <Button
+              variant="outline"
+              leftIcon={<FaArrowLeftLong />}
+              onClick={() => scroll(recentRef, "left")}
+            />
 
-              <Button
-                variant="outline"
-                className="carousel-btn"
-                size="sm"
-                rightIcon={<FaArrowRight />}
-                onClick={() => scroll(activeRef, "right")}
-              />
-            </div>
-          )}
+            <Button
+              variant="outline"
+              rightIcon={<FaArrowRight />}
+              onClick={() => scroll(recentRef, "right")}
+            />
+          </div>
         </div>
 
         <div className="active-cours" ref={recentRef}>
-          {recentCourses.length ? (
-            recentCourses.map((e) => (
-              <CourseCard key={e.courseId} enrollment={e} variant="start" />
-            ))
-          ) : (
-            <p style={{ padding: "12px", color: "#666" }}>
-              No recent enrollments.
-            </p>
-          )}
+          {recentCourses.map((e) => (
+            <CourseCard
+              key={e.courseId}
+              enrollment={e}
+              variant="start"
+              navigate={navigate}
+            />
+          ))}
         </div>
       </div>
 
@@ -351,54 +345,37 @@ const Mycourses = ({ allEnrollments = [], enrollmentData = [] }) => {
         <div className="active-course-active">
           <h3>Recent Activities</h3>
 
-          <div className="arrows">
-            <Button
-              variant="outline"
-              className="more-btn"
-              rightIcon={<IoIosMore />}
-            />
-          </div>
+          <Button variant="outline" rightIcon={<IoIosMore />} />
         </div>
 
         <div className="actives-wrapper">
-          {Object.keys(groupedActivities).length ? (
-            Object.entries(groupedActivities)
+          {Object.entries(groupedActivities)
+            .sort(([a], [b]) => new Date(b) - new Date(a))
+            .map(([date, items]) => (
+              <div className="todays_activies" key={date}>
+                <p>{formatDateLabel(date)}</p>
 
-              .sort(([a], [b]) => new Date(b) - new Date(a))
+                {items.map((act, index) => (
+                  <div className="lesson_schedule" key={`${act.type}-${index}`}>
+                    <strong>{act.time}</strong>
 
-              .map(([date, items]) => (
-                <div className="todays_activies" key={date}>
-                  <p>{formatDateLabel(date)}</p>
+                    <div className="classes_view">
+                      <p>{act.title}</p>
 
-                  {items.map((act, index) => (
-                    <div className="lesson_schedule" key={index}>
-                      <p>
-                        <strong>{act.time}</strong>
-                      </p>
-
-                      <div className="classes_view">
-                        <p>{act.title}</p>
-
-                        <p>{act.type}</p>
-                      </div>
-
-                      {act.status === "graded" ? (
-                        <p className="graded-text">Graded {act.grade}</p>
-                      ) : (
-                        <span className={statusClassMap[act.status]}>
-                          {act.status.charAt(0).toUpperCase() +
-                            act.status.slice(1)}
-                        </span>
-                      )}
+                      <p>{act.type}</p>
                     </div>
-                  ))}
-                </div>
-              ))
-          ) : (
-            <p style={{ padding: "12px", color: "#666" }}>
-              No recent activities.
-            </p>
-          )}
+
+                    {act.status === "graded" ? (
+                      <p className="graded-text">Graded {act.grade}</p>
+                    ) : (
+                      <span className={statusClassMap[act.status]}>
+                        {act.status}
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ))}
         </div>
       </div>
     </div>

@@ -5,7 +5,8 @@ import { HashRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-<ToastContainer />;
+import "./styles/typography.css"
+
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

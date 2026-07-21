@@ -3,12 +3,14 @@
   margin: 0;
   box-sizing: border-box;
 }
-
+body {
+  line-height: 1.5;
+}
 .header-container {
   width: 100%;
   display: flex;
   justify-content: center;
-  background-color: #000000;
+  background-color: #000;
   border-bottom: 1px solid #222;
   position: sticky;
   top: 0;
@@ -39,6 +41,7 @@
   text-decoration: none;
   font-size: 20px;
   font-weight: 700;
+  line-height: 1;
 }
 
 .logo-l p {
@@ -56,12 +59,13 @@
   text-decoration: none;
   font-size: 14px;
   letter-spacing: 0.5px;
-  transition: color 0.2s;
+  line-height: 1.4;
+  padding: 6px 0;
+  transition: color 0.2s ease;
 }
 
-.nav-center.navbara:hover {
+.nav-center .navbara:hover {
   color: #fff;
-  background: transparent; /* removed the weird bg hover */
 }
 
 .nav-right {
@@ -70,84 +74,109 @@
 }
 
 .cta-button {
-  color: #F7CA4E;
+  color: #f7ca4e;
   padding: 12px 24px;
+  line-height: 1.2;
   border-radius: 20px;
   text-decoration: none;
   font-weight: 600;
-  transition: all 0.2s;
-  border: 1px solid #F7CA4E;
+  transition: all 0.2s ease;
+  border: 1px solid #f7ca4e;
 }
 
 .cta-button:hover {
-  background: #F7CA4E;
+  background: #f7ca4e;
   color: #000;
 }
 
 .menu-toggle {
   display: none;
+  align-items: center;
+  justify-content: center;
   background: none;
   border: none;
   color: #fff;
   font-size: 28px;
+  padding: 0;
   cursor: pointer;
+  line-height: 1;
+}
+
+.menu-toggle svg {
+  display: block;
+  width: 32px;
+  height: 32px;
+  color: #fff;
+  fill: #fff;
 }
 
 /* MOBILE MENU */
 .mobile-menu {
-  display: none;
+  display: flex;
   flex-direction: column;
   position: absolute;
   top: 70px;
   left: 0;
   width: 100%;
   background-color: #000;
-  padding: 20px;
-  gap: 20px;
+  padding: 24px 20px;
+  gap: 22px;
   border-top: 1px solid #222;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
 }
 
 .mobile-menu.show {
-  display: flex;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
-.mobile-menu.navbara {
-  padding: 12px 0;
+.mobile-menu .navbara {
+  padding: 2px 0;
   border-bottom: 1px solid #222;
   font-size: 16px;
 }
 
-.mobile-menu.cta-button {
+.mobile-menu .cta-button {
   text-align: center;
   margin-top: 12px;
 }
 
+/* ACCESSIBILITY */
+.navbara:focus-visible,
+.cta-button:focus-visible,
+.menu-toggle:focus-visible {
+  outline: 2px solid #f7ca4e;
+  outline-offset: 4px;
+}
+
 /* RESPONSIVE */
 @media (max-width: 768px) {
- .nav-center,
- .nav-right {
+  .nav-center,
+  .nav-right {
     display: none;
   }
 
- .menu-toggle {
-    display: block;
-  }
-
- .navbar {
-    padding: 0 20px;
+  .menu-toggle {
+    display: flex;
   }
 }
 
 @media (max-width: 480px) {
- .navbar {
+  .navbar {
     padding: 0 16px;
   }
 
- .logo-l {
+  .logo-l {
     font-size: 18px;
   }
 
- .logo-l p {
+  .logo-l p {
     font-size: 16px;
   }
 }

@@ -2,17 +2,20 @@ import React from "react";
 import { Notebook } from "lucide-react";
 import { Link } from "react-router-dom";
 import "../App.css";
+import whiteLogo from "../assets/learnflow-white.svg";
 
 function Footer() {
-  // <-- Add name here
   return (
     <footer>
       <div className="footer-container">
         <div className="footer-brand">
-          <Link to="/" className="logo-link">
-            <Notebook size={24} />
-            <p>LearnFlow</p>
-          </Link>
+         
+            <Link to="/Landing" className="logo-l">
+              <img src={whiteLogo} alt="LearnFlow logo" />
+              <p>LearnFlow</p>
+            </Link>
+         
+
           <div className="footer-c">
             <p>
               Top learning experiences that create more talent in the world.
@@ -31,13 +34,31 @@ function Footer() {
 
           <div className="footer-section">
             <h4>Social</h4>
-            <a href="https://twitter.com" target="_blank" rel="noreferrer">
+
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit LearnFlow Twitter"
+            >
               Twitter
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noreferrer">
+
+            <a
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit LearnFlow LinkedIn"
+            >
               LinkedIn
             </a>
-            <a href="https://facebook.com" target="_blank" rel="noreferrer">
+
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit LearnFlow Facebook"
+            >
               Facebook
             </a>
           </div>
@@ -55,6 +76,7 @@ function Footer() {
           <div className="footer-sec">
             <p>© 2026 Kudovia programmers University. All rights reserved.</p>
           </div>
+
           <div className="footer-sec">
             <a href="https://twitter.com">Twitter</a>
             <a href="https://linkedin.com">LinkedIn</a>
@@ -67,4 +89,4 @@ function Footer() {
   );
 }
 
-export default Footer; // <-- Export it
+export default Footer;

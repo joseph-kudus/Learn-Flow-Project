@@ -8,16 +8,17 @@ import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [submitting, setSubmitting] = useState(false); // renamed
+  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
   const { login, forgotPassword } = useAuth();
   const navigate = useNavigate();
 
-  // Load saved email on mount
   useEffect(() => {
-    const savedEmail = localStorage.getItem("email");
+    const savedEmail = localStorage.getItem("rememberEmail");
+
     if (savedEmail) {
       setEmail(savedEmail);
       setRememberMe(true);
@@ -28,38 +29,46 @@ export default function Login() {
     e.preventDefault();
     setError("");
 
-    if (!email || !password) {
-      return setError("Please fill all the fields");
+    const cleanEmail = email.trim().toLowerCase();
+
+    if (!cleanEmail || !password) {
+      setError("Please fill all fields");
+      return;
     }
 
     if (password.length < 6) {
-      return setError("Password must be 6 characters or more");
-    }
-
-    // Save/remove email based on checkbox
-    if (rememberMe) {
-      localStorage.setItem("email", email);
-    } else {
-      localStorage.removeItem("email");
+      setError("Password must be 6 characters or more");
+      return;
     }
 
     try {
       setSubmitting(true);
-      await login(email, password, rememberMe); // pass remember flag
+
+      if (rememberMe) {
+        localStorage.setItem("rememberEmail", cleanEmail);
+      } else {
+        localStorage.removeItem("rememberEmail");
+      }
+
+      await login(cleanEmail, password, rememberMe);
+
       navigate("/dashboard");
     } catch (err) {
-      setError("Failed to login: " + (err.message || "Please try again"));
+      setError(err.message || "Invalid email or password");
     } finally {
       setSubmitting(false);
     }
   };
 
   const handleForgot = async () => {
-    if (!email) return setError("Enter email first");
+    if (!email) {
+      setError("Enter your email first");
+      return;
+    }
+
     try {
-      await forgotPassword(email);
-      setError("");
-      alert("Check email for reset link");
+      await forgotPassword(email.trim());
+      setError("Password reset email sent");
     } catch (err) {
       setError(err.message);
     }
@@ -70,40 +79,42 @@ export default function Login() {
       <div className="login-form-wrap">
         <div className="login-content">
           <h1>Welcome!</h1>
+
           <h2>Sign in to your account</h2>
+
           <p className="subtitle">
             Top learning experiences that create more talent
           </p>
 
           <form onSubmit={handleSubmit} className="login-form">
             <div className="input-group">
-              <label htmlFor="email">Email</label>
+              <label>Email</label>
+
               <input
                 type="email"
-                id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 className="inp"
-                required
               />
             </div>
 
             <div className="input-group">
-              <label htmlFor="password">Password</label>
+              <label>Password</label>
+
               <div className="password-wrap">
                 <input
                   type={showPassword ? "text" : "password"}
-                  id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
                   className="inp"
-                  required
                 />
+
                 <button
                   type="button"
                   className="eye-toggle"
+                  aria-label="Show password"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <IoMdEyeOff /> : <IoMdEye />}
@@ -118,6 +129,7 @@ export default function Login() {
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
                 />
+
                 <span>Remember me</span>
               </label>
 
@@ -132,12 +144,12 @@ export default function Login() {
 
             {error && <div className="error-msg">{error}</div>}
 
-            <button type="submit" className="submit-btn" disabled={submitting}>
+            <button className="submit-btn" disabled={submitting}>
               {submitting ? "Signing in..." : "Login"}
             </button>
 
             <p className="register-text">
-              Don't have an Account?{" "}
+              Don't have an account?
               <Link to="/register" className="reg-link">
                 Register
               </Link>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+
 import "./Mylogin.css";
 import smte from "../assets/images/small-team.png";
 import { useAuth } from "../context/AuthContext";
@@ -11,10 +11,13 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
   const [acceptTerms, setAcceptTerms] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -23,38 +26,51 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setError("");
     setSuccess("");
 
-    if (!username || !email || !password || !confirmPassword) {
-      return setError("Please fill all the fields");
+    const cleanUsername = username.trim();
+    const cleanEmail = email.trim().toLowerCase();
+
+    if (!cleanUsername || !cleanEmail || !password || !confirmPassword) {
+      setError("Please fill all the fields");
+      return;
     }
-    if (password !== confirmPassword) {
-      return setError("Passwords do not match");
-    }
+
     if (password.length < 6) {
-      return setError("Password must be 6 characters or more");
+      setError("Password must be 6 characters or more");
+      return;
     }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
     if (!acceptTerms) {
-      return setError("You must accept the terms and conditions");
+      setError("You must accept the terms and conditions");
+      return;
     }
 
     try {
       setLoading(true);
-      const userCredential = await signup(email, password, username);
 
-      // Send verification email
+      const userCredential = await signup(cleanEmail, password, cleanUsername);
+
       if (sendEmailVerification) {
         await sendEmailVerification(userCredential.user);
+
         setSuccess("Account created! Check your email to verify your account.");
-        setTimeout(() => navigate("/login"), 3000);
+
+        setTimeout(() => {
+          navigate("/login");
+        }, 3000);
       } else {
         navigate("/dashboard");
       }
     } catch (err) {
-      setError(
-        "Failed to create account: " + (err.message || "Please try again"),
-      );
+      setError(err.message || "Failed to create account. Please try again");
     } finally {
       setLoading(false);
     }
@@ -63,15 +79,17 @@ export default function Register() {
   return (
     <div className="login-container">
       <div className="login-form-wrap">
-
         <div className="login-content">
           <h1>Welcome!</h1>
+
           <h2>Sign up to get started</h2>
+
           <p className="subtitle">Join thousands learning with us today</p>
 
           <form onSubmit={handleSubmit} className="login-form">
             <div className="input-group">
               <label htmlFor="username">Username:</label>
+
               <input
                 type="text"
                 id="username"
@@ -85,6 +103,7 @@ export default function Register() {
 
             <div className="input-group">
               <label htmlFor="email">Email:</label>
+
               <input
                 type="email"
                 id="email"
@@ -98,6 +117,7 @@ export default function Register() {
 
             <div className="input-group">
               <label htmlFor="password">Password:</label>
+
               <div className="password-wrap">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -108,9 +128,11 @@ export default function Register() {
                   className="inp"
                   required
                 />
+
                 <button
                   type="button"
                   className="eye-toggle"
+                  aria-label="Show password"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <IoMdEyeOff /> : <IoMdEye />}
@@ -120,6 +142,7 @@ export default function Register() {
 
             <div className="input-group">
               <label htmlFor="confirmPassword">Confirm Password</label>
+
               <div className="password-wrap">
                 <input
                   type={showConfirmPassword ? "text" : "password"}
@@ -130,9 +153,11 @@ export default function Register() {
                   className="inp"
                   required
                 />
+
                 <button
                   type="button"
                   className="eye-toggle"
+                  aria-label="Show confirm password"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
                   {showConfirmPassword ? <IoMdEyeOff /> : <IoMdEye />}
@@ -147,6 +172,7 @@ export default function Register() {
                 onChange={(e) => setAcceptTerms(e.target.checked)}
                 required
               />
+
               <span>
                 I agree to the{" "}
                 <Link to="/terms" className="terms-link">
@@ -160,6 +186,7 @@ export default function Register() {
             </label>
 
             {error && <div className="error-msg">{error}</div>}
+
             {success && <div className="success-msg">{success}</div>}
 
             <button type="submit" className="submit-btn" disabled={loading}>
@@ -167,7 +194,7 @@ export default function Register() {
             </button>
 
             <p className="register-text">
-              Already have an Account?
+              Already have an Account?{" "}
               <Link to="/login" className="reg-link">
                 Login
               </Link>
@@ -177,8 +204,7 @@ export default function Register() {
       </div>
 
       <div className="login-image">
-        <img src={smte} alt="Team discussion" className="team-pic"/>
-        
+        <img src={smte} alt="Team discussion" className="team-pic" />
       </div>
     </div>
   );

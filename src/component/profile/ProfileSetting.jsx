@@ -1,21 +1,39 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../../styles/stars.css";
-import defautAvatar from "../../assets/images/default.png";
+
+import defaultAvatar from "../../assets/images/default.png";
+
 import { useAuth } from "../../context/AuthContext";
+
 import { FaRegUser } from "react-icons/fa";
+
 import { HiMiniLanguage } from "react-icons/hi2";
+
 import { MdOutlineLock } from "react-icons/md";
+
 import { TfiWorld } from "react-icons/tfi";
+
 import { CgNotes } from "react-icons/cg";
+
 import { doc, setDoc } from "firebase/firestore";
+
 import { db } from "../../../firebaseconfig";
+
 import { uploadAvatar } from "../../utils/uploadAvatar";
+
 import Button from "../ui/Button/Button";
 
 const ProfileSetting = () => {
+  const { currentUser, userData, loading } = useAuth();
+
   const [profileTap, setProfileTap] = useState("profileinfo");
+
   const [saving, setSaving] = useState(false);
+
   const [uploading, setUploading] = useState(false);
+
+  const [avatar, setAvatar] = useState(defaultAvatar);
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -27,327 +45,346 @@ const ProfileSetting = () => {
     postalCode: "",
   });
 
-  const { currentUser, userData, loading } = useAuth();
+  /*
+  ==========================
+  LOAD USER DATA
+  ==========================
+  */
 
-  const [avatar, setAvatar] = useState(
-    userData?.photoURL || currentUser?.photoURL || defautAvatar,
-  );
+  useEffect(() => {
+    if (!currentUser) return;
+
+    setAvatar(userData?.photoURL || currentUser?.photoURL || defaultAvatar);
+
+    setFormData({
+      firstName: userData?.firstName || "",
+      lastName: userData?.lastName || "",
+      email: currentUser?.email || "",
+
+      phone: userData?.phone || "",
+      country: userData?.country || "",
+      address: userData?.address || "",
+      city: userData?.city || "",
+      postalCode: userData?.postalCode || "",
+    });
+  }, [currentUser, userData]);
+
+  /*
+  ==========================
+  UPLOAD AVATAR
+  ==========================
+  */
 
   const handleAvatarChange = async (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
 
     if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      alert("Please select an image file");
+
+      return;
+    }
 
     try {
       setUploading(true);
 
-      // Upload to Cloudinary
       const imageUrl = await uploadAvatar(file);
 
-      // Save URL to Firebase
       await setDoc(
         doc(db, "users", currentUser.uid),
+
         {
           photoURL: imageUrl,
+
           updatedAt: new Date(),
         },
+
         {
           merge: true,
         },
       );
-      
-      
-      
 
-      // Update UI immediately
       setAvatar(imageUrl);
-
-      alert("Profile photo updated");
     } catch (error) {
-      console.log("Avatar upload failed:", error);
+      console.error("Avatar upload failed:", error);
+
+      alert("Upload failed");
     } finally {
       setUploading(false);
+
+      e.target.value = "";
     }
   };
 
-  useEffect(() => {
-    setAvatar(userData?.photoURL || currentUser?.photoURL || defautAvatar);
-  }, [userData, currentUser]);
-  
-  
-  
-  
-  
-  
+  /*
+  ==========================
+  DELETE AVATAR
+  ==========================
+  */
 
+  const deleteAvatar = async () => {
+    try {
+      await setDoc(
+        doc(db, "users", currentUser.uid),
+
+        {
+          photoURL: "",
+
+          updatedAt: new Date(),
+        },
+
+        {
+          merge: true,
+        },
+      );
+
+      setAvatar(defaultAvatar);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  /*
+  ==========================
+  INPUT CHANGE
+  ==========================
+  */
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+
+      [e.target.name]: e.target.value,
     }));
   };
+
+  /*
+  ==========================
+  SAVE PROFILE
+  ==========================
+  */
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!currentUser) return;
 
     try {
       setSaving(true);
 
       await setDoc(
         doc(db, "users", currentUser.uid),
+
         {
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          phone: formData.phone,
-          country: formData.country,
-          address: formData.address,
-          city: formData.city,
-          postalCode: formData.postalCode,
+          ...formData,
+
           updatedAt: new Date(),
         },
+
         {
           merge: true,
         },
       );
 
-      alert("Profile updated successfully");
+      alert("Profile updated");
     } catch (error) {
       console.log(error);
+
       alert("Update failed");
     } finally {
       setSaving(false);
     }
   };
 
-  if (loading) {
-    return <div>Loading profile...</div>;
-  }
+  if (loading) return <div>Loading profile...</div>;
 
-  if (!currentUser) {
-    return null;
-  }
-
+  if (!currentUser) return null;
   return (
     <div className="profile_seting_container">
       <div className="profile_wrapper">
+        {/* ================= SIDEBAR ================= */}
+
         <div className="personal_information">
           <div className="personalside">
-            <div className="profile-btn">
-              <button
-                className={profileTap === "profileinfo" ? "tab-active" : "tab"}
-                onClick={() => setProfileTap("profileinfo")}
-              >
-                <div className="tab-icon">
-                  <FaRegUser />
-                </div>
+            {[
+              {
+                id: "profileinfo",
+                icon: <FaRegUser />,
+                title: "Personal Information",
+                text: "Manage your personal information",
+              },
 
-                <div className="tab-content">
-                  <h4>Personal Information</h4>
-                  <p>Manage your personal information</p>
-                </div>
-              </button>
-            </div>
+              {
+                id: "login-ser",
+                icon: <FaRegUser />,
+                title: "Login Services",
+                text: "Manage your login methods",
+              },
 
-            <div className="profile-btn">
-              <button
-                className={profileTap === "login-ser" ? "tab-active" : "tab"}
-                onClick={() => setProfileTap("login-ser")}
-              >
-                <div className="tab-icon">
-                  <FaRegUser />
-                </div>
+              {
+                id: "program-res",
+                icon: <CgNotes />,
+                title: "Program & Resources",
+                text: "Manage your learning resources",
+              },
 
-                <div className="tab-content">
-                  <strong>Login Services</strong>
-                  <p>Manage your login methods</p>
-                </div>
-              </button>
-            </div>
+              {
+                id: "language",
+                icon: <HiMiniLanguage />,
+                title: "Preferred Language",
+                text: "Select your preferred language",
+              },
 
-            <div className="profile-btn">
-              <button
-                className={profileTap === "program-res" ? "tab-active" : "tab"}
-                onClick={() => setProfileTap("program-res")}
-              >
-                <div className="tab-icon">
-                  <CgNotes />
-                </div>
+              {
+                id: "timezone",
+                icon: <TfiWorld />,
+                title: "Time Zone",
+                text: "Choose your local time zone",
+              },
 
-                <div className="tab-content">
-                  <strong>Program & Resources</strong>
-                  <p>Manage your learning resources</p>
-                </div>
-              </button>
-            </div>
+              {
+                id: "security",
+                icon: <MdOutlineLock />,
+                title: "Security",
+                text: "Manage your account security",
+              },
+            ].map((item) => (
+              <div className="profile-btn" key={item.id}>
+                <button
+                  className={profileTap === item.id ? "tab-active" : "tab"}
+                  onClick={() => setProfileTap(item.id)}
+                >
+                  <div className="tab-icon">{item.icon}</div>
 
-            <div className="profile-btn">
-              <button
-                className={profileTap === "language" ? "tab-active" : "tab"}
-                onClick={() => setProfileTap("language")}
-              >
-                <div className="tab-icon">
-                  <HiMiniLanguage />
-                </div>
+                  <div className="tab-content">
+                    <strong>{item.title}</strong>
 
-                <div className="tab-content">
-                  <strong>Preferred Language</strong>
-                  <p>Select your preferred language</p>
-                </div>
-              </button>
-            </div>
-
-            <div className="profile-btn">
-              <button
-                className={profileTap === "timezone" ? "tab-active" : "tab"}
-                onClick={() => setProfileTap("timezone")}
-              >
-                <div className="tab-icon">
-                  <TfiWorld />
-                </div>
-
-                <div className="tab-content">
-                  <strong>Time Zone</strong>
-                  <p>Choose your local time zone</p>
-                </div>
-              </button>
-            </div>
-
-            <div className="profile-btn">
-              <button
-                className={profileTap === "security" ? "tab-active" : "tab"}
-                onClick={() => setProfileTap("security")}
-              >
-                <div className="tab-icon">
-                  <MdOutlineLock />
-                </div>
-
-                <div className="tab-content">
-                  <strong>Security</strong>
-                  <p>Manage your account security</p>
-                </div>
-              </button>
-            </div>
+                    <p>{item.text}</p>
+                  </div>
+                </button>
+              </div>
+            ))}
           </div>
         </div>
+
+        {/* ================= CONTENT ================= */}
+
         <div className="personal_setting">
           {profileTap === "profileinfo" && (
             <div className="psetting_wraper">
-              <h4>Personal Informations</h4>
+              <h4>Personal Information</h4>
+
+              {/* IMAGE */}
+
               <div className="image_container">
                 <img
                   src={avatar}
                   alt="avatar"
-                  onError={(e) => {
-                    e.target.src = defautAvatar;
-                  }}
+                  onError={(e) => (e.currentTarget.src = defaultAvatar)}
                 />
+
                 <div className="image_deta">
-                  <p>We only support .JPG, .JPEG, or , PNG file</p>
+                  <p>We only support JPG, JPEG or PNG files</p>
+
                   <div className="btn-btn">
                     <input
+                      id="photo"
                       type="file"
                       accept="image/*"
                       hidden
-                      id="photo"
                       onChange={handleAvatarChange}
                     />
 
-                    <Button variant="primary">Upload your photo</Button>
+                    <Button
+                      type="button"
+                      variant="primary"
+                      loading={uploading}
+                      onClick={() => document.getElementById("photo").click()}
+                    >
+                      Upload your photo
+                    </Button>
 
-                    <Button variant="outline">Delete image</Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={deleteAvatar}
+                    >
+                      Delete image
+                    </Button>
                   </div>
                 </div>
               </div>
+
+              {/* FORM */}
+
               <form onSubmit={handleSubmit}>
                 <div className="form-data">
-                  <div className="labeforname">
-                    <label htmlFor="firstname">First Name</label>
+                  <div className="form-column">
+                    <label>First Name</label>
+
                     <input
                       name="firstName"
                       value={formData.firstName}
                       onChange={handleChange}
-                      required
-                    />
-                    <label>Email</label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      disabled
                     />
 
-                    <div className="form-column">
-                      <h4>Personal Address</h4>
-                      <label htmlFor="country">Country or Region</label>
-                      <input
-                        type="text"
-                        id="country"
-                        name="country"
-                        value={formData.country}
-                        onChange={handleChange}
-                        required
-                      />
-                      <label htmlFor="address">Address</label>
-                      <input
-                        type="text"
-                        id="address"
-                        name="address"
-                        value={formData.address}
-                        onChange={handleChange}
-                      />
-                    </div>
-                  </div>
-                  <div className="form-column">
-                    <label htmlFor="firstname">Last Name</label>
+                    <label>Email</label>
+
+                    <input value={formData.email} disabled />
+
+                    <label>Country</label>
+
                     <input
-                      type="text"
-                      id="lastname"
+                      name="country"
+                      value={formData.country}
+                      onChange={handleChange}
+                    />
+
+                    <label>Address</label>
+
+                    <input
+                      name="address"
+                      value={formData.address}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  <div className="form-column">
+                    <label>Last Name</label>
+
+                    <input
                       name="lastName"
                       value={formData.lastName}
                       onChange={handleChange}
-                      required
                     />
-                    <label htmlFor="phonenumber">Phone Number</label>
+
+                    <label>Phone Number</label>
+
                     <input
-                      type="tel"
-                      id="phone"
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
                     />
-                    <div className="form-column">
-                      <label htmlFor="firstname">City</label>
-                      <input
-                        type="text"
-                        id="city"
-                        name="city"
-                        value={formData.city}
-                        onChange={handleChange}
-                      />
-                      <label htmlFor="postalCode">Postal Code</label>
-                      <input
-                        type="text"
-                        id="postalCode"
-                        name="postalCode"
-                        value={formData.postalCode}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
+
+                    <label>City</label>
+
+                    <input
+                      name="city"
+                      value={formData.city}
+                      onChange={handleChange}
+                    />
+
+                    <label>Postal Code</label>
+
+                    <input
+                      name="postalCode"
+                      value={formData.postalCode}
+                      onChange={handleChange}
+                    />
                   </div>
                 </div>
 
                 <div className="save-profile">
-                  <Button
-                    type="submit"
-                    variant="primary"
-                    size="md"
-                    loading={saving}
-                  >
+                  <Button type="submit" variant="primary" loading={saving}>
                     Edit profile
                   </Button>
                 </div>
@@ -359,4 +396,5 @@ const ProfileSetting = () => {
     </div>
   );
 };
+
 export default ProfileSetting;

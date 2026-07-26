@@ -22,6 +22,7 @@ import { db } from "../../../firebaseconfig";
 import { uploadAvatar } from "../../utils/uploadAvatar";
 
 import Button from "../ui/Button/Button";
+import Input from "../ui/Input/Input";
 
 const ProfileSetting = () => {
   const { currentUser, userData, loading } = useAuth();
@@ -319,66 +320,79 @@ const ProfileSetting = () => {
               <form onSubmit={handleSubmit}>
                 <div className="form-data">
                   <div className="form-column">
-                    <label>First Name</label>
-
-                    <input
+                    <Input
+                      label="First Name"
+                      type="text"
                       name="firstName"
                       value={formData.firstName}
                       onChange={handleChange}
+                      placeholder="Enter your first name"
+                      required
                     />
 
-                    <label>Email</label>
+                    <Input
+                      label="Email"
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      readOnly
+                    />
 
-                    <input value={formData.email} disabled />
-
-                    <label>Country</label>
-
-                    <input
+                    <Input
+                      label="Country"
+                      type="text"
                       name="country"
                       value={formData.country}
                       onChange={handleChange}
+                      placeholder="Enter your country"
                     />
 
-                    <label>Address</label>
-
-                    <input
+                    <Input
+                      label="Address"
+                      type="text"
                       name="address"
                       value={formData.address}
                       onChange={handleChange}
+                      placeholder="Enter your address"
                     />
                   </div>
 
                   <div className="form-column">
-                    <label>Last Name</label>
-
-                    <input
+                    <Input
+                      label="Last Name"
+                      type="text"
                       name="lastName"
                       value={formData.lastName}
                       onChange={handleChange}
+                      placeholder="Enter your last name"
+                      required
                     />
 
-                    <label>Phone Number</label>
-
-                    <input
+                    <Input
+                      label="Phone Number"
                       name="phone"
+                      type="tel"
                       value={formData.phone}
                       onChange={handleChange}
+                      placeholder="Enter phone number"
                     />
 
-                    <label>City</label>
-
-                    <input
+                    <Input
+                      label="City"
+                      type="text"
                       name="city"
                       value={formData.city}
                       onChange={handleChange}
+                      placeholder="Enter your city"
                     />
 
-                    <label>Postal Code</label>
-
-                    <input
+                    <Input
+                      label="Postal Code"
+                      type="text"
                       name="postalCode"
                       value={formData.postalCode}
                       onChange={handleChange}
+                      placeholder="Enter postal code"
                     />
                   </div>
                 </div>

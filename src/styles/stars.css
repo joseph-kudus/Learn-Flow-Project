@@ -221,7 +221,7 @@ form {
 /* Active Tab */
 
 .tab-active {
-  background: #f7ca4e !important;
+  background: #eeebe3 !important;
   border-color: #f7ca4e !important;
 }
 
@@ -321,7 +321,7 @@ form {
 }
 
 .image_cardx button:hover {
-  background: #f7ca4e;
+  background: #ecebe9;
   color: #000;
 }
 
@@ -440,7 +440,7 @@ form {
 }
 
 .tab-active {
-  background: #f7ca4e !important;
+  background: #f9f8f5 !important;
   color: #000;
 }
 .tab-icon {

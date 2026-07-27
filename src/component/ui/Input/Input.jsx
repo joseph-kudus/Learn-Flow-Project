@@ -4,6 +4,7 @@ import "./input.css";
 const Input = forwardRef(
   (
     {
+      type = "text",
       label,
       error,
       helperText,
@@ -19,14 +20,18 @@ const Input = forwardRef(
     ref,
   ) => {
     const generatedId = useId();
-
     const inputId = id || props.name || generatedId;
 
     const wrapperClass = ["input-group", fullWidth && "input-full", className]
       .filter(Boolean)
       .join(" ");
 
-    const fieldClass = ["input-field", error && "input-error", inputClassName]
+    const fieldClass = [
+      "input-field",
+      error && "input-error",
+      props.disabled && "input-disabled",
+      inputClassName,
+    ]
       .filter(Boolean)
       .join(" ");
 
@@ -57,6 +62,7 @@ const Input = forwardRef(
           <input
             ref={ref}
             id={inputId}
+            type={type}
             className={fieldClass}
             aria-invalid={Boolean(error)}
             aria-describedby={describedBy}
@@ -69,7 +75,7 @@ const Input = forwardRef(
           )}
         </div>
 
-        {helperText && !error && (
+        {!error && helperText && (
           <small id={`${inputId}-helper`} className="input-helper">
             {helperText}
           </small>

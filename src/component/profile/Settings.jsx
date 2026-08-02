@@ -6,8 +6,11 @@ import { PiPencilSimpleLineLight } from "react-icons/pi";
 import defaultAvatar from "../../assets/images/default.png";
 import Button from "../ui/Button/Button.jsx";
 import Input from "../../component/ui/Input/Input.jsx";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "../../config/firebaseconfig.js";
+import {
+  updateUserProfile,
+  updateUserAvatar,
+} from "../../services/userService.js";
+
 import { uploadAvatar } from "../../utils/uploadAvatar";
 import { toast } from "react-toastify";
 import countryCodes from "country-codes-list";
@@ -18,6 +21,7 @@ const Settings = () => {
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [avatar, setAvatar] = useState(defaultAvatar);
+  const [countryCode, setCountryCode] = useState("+256");
   const { currentUser, userData, loading } = useAuth();
   const fileInputRef = useRef(null);
 
@@ -61,14 +65,7 @@ const Settings = () => {
     try {
       setSaving(true);
 
-      await setDoc(
-        doc(db, "users", currentUser.uid),
-        {
-          ...formData,
-          updatedAt: serverTimestamp(),
-        },
-        { merge: true },
-      );
+      await updateUserProfile(currentUser.uid, formData);
 
       toast.success("Profile updated successfully!");
     } catch (error) {
@@ -95,19 +92,12 @@ const Settings = () => {
 
       const imageUrl = await uploadAvatar(file);
 
-      await setDoc(
-        doc(db, "users", currentUser.uid),
-        {
-          photoURL: imageUrl,
-          updatedAt: serverTimestamp(),
-        },
-        { merge: true },
-      );
+      await updateUserAvatar(currentUser.uid, imageUrl);
 
       setAvatar(imageUrl);
     } catch (error) {
       console.error(error);
-      alert("Upload failed.");
+      toast.error("Failed to upload avatar.");
     } finally {
       setUploading(false);
       if (fileInputRef.current) {
@@ -143,8 +133,7 @@ const Settings = () => {
   if (loading) return <div className="header-skeleton">Loading...</div>;
   if (!currentUser) return null;
 
-  const [countries, setCountries] = useState([]);
-  const [countryCode, setCountryCode] = useState("+256");
+  
 
   return (
     <div className="setting-container">

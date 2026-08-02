@@ -1,40 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../../styles/stars.css";
-
+import { toast } from "react-toastify";
 import defaultAvatar from "../../assets/images/default.png";
-
 import { useAuth } from "../../context/AuthContext";
-
 import { FaRegUser } from "react-icons/fa";
-
 import { HiMiniLanguage } from "react-icons/hi2";
-
 import { MdOutlineLock } from "react-icons/md";
-
 import { TfiWorld } from "react-icons/tfi";
-
 import { CgNotes } from "react-icons/cg";
 
-import { doc, setDoc } from "firebase/firestore";
-
-import { db } from "../../config/firebaseconfig";
-
 import { uploadAvatar } from "../../utils/uploadAvatar";
-
 import Button from "../ui/Button/Button";
 import Input from "../ui/Input/Input";
+import {
+  updateUserAvatar,
+  updateUserProfile,
+} from "../../services/userService";
 
 const ProfileSetting = () => {
   const { currentUser, userData, loading } = useAuth();
-
   const [profileTap, setProfileTap] = useState("profileinfo");
-
   const [saving, setSaving] = useState(false);
-
   const [uploading, setUploading] = useState(false);
-
   const [avatar, setAvatar] = useState(defaultAvatar);
-
+  const fileInputRef = useRef(null);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -56,12 +45,10 @@ const ProfileSetting = () => {
     if (!currentUser) return;
 
     setAvatar(userData?.photoURL || currentUser?.photoURL || defaultAvatar);
-
     setFormData({
       firstName: userData?.firstName || "",
       lastName: userData?.lastName || "",
       email: currentUser?.email || "",
-
       phone: userData?.phone || "",
       country: userData?.country || "",
       address: userData?.address || "",
@@ -82,7 +69,7 @@ const ProfileSetting = () => {
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      alert("Please select an image file");
+      toast.warning("Please select a valid image file.");
 
       return;
     }
@@ -92,28 +79,13 @@ const ProfileSetting = () => {
 
       const imageUrl = await uploadAvatar(file);
 
-      await setDoc(
-        doc(db, "users", currentUser.uid),
-
-        {
-          photoURL: imageUrl,
-
-          updatedAt: new Date(),
-        },
-
-        {
-          merge: true,
-        },
-      );
+      await updateUserAvatar(currentUser.uid, imageUrl);
 
       setAvatar(imageUrl);
     } catch (error) {
-      console.error("Avatar upload failed:", error);
-
-      alert("Upload failed");
+      toast.error("Failed to upload avatar.");
     } finally {
       setUploading(false);
-
       e.target.value = "";
     }
   };
@@ -126,20 +98,7 @@ const ProfileSetting = () => {
 
   const deleteAvatar = async () => {
     try {
-      await setDoc(
-        doc(db, "users", currentUser.uid),
-
-        {
-          photoURL: "",
-
-          updatedAt: new Date(),
-        },
-
-        {
-          merge: true,
-        },
-      );
-
+      await updateUserAvatar(currentUser.uid, "");
       setAvatar(defaultAvatar);
     } catch (error) {
       console.log(error);
@@ -172,25 +131,13 @@ const ProfileSetting = () => {
     try {
       setSaving(true);
 
-      await setDoc(
-        doc(db, "users", currentUser.uid),
-
-        {
-          ...formData,
-
-          updatedAt: new Date(),
-        },
-
-        {
-          merge: true,
-        },
-      );
+      await updateUserProfile(currentUser.uid, formData);
 
       alert("Profile updated");
     } catch (error) {
       console.log(error);
 
-      alert("Update failed");
+      toast.error("Failed to update profile.");
     } finally {
       setSaving(false);
     }
@@ -288,6 +235,7 @@ const ProfileSetting = () => {
 
                   <div className="btn-btn">
                     <input
+                      ref={fileInputRef}
                       id="photo"
                       type="file"
                       accept="image/*"
@@ -299,7 +247,8 @@ const ProfileSetting = () => {
                       type="button"
                       variant="primary"
                       loading={uploading}
-                      onClick={() => document.getElementById("photo").click()}
+                      ref={fileInputRef}
+                      id="photo"
                     >
                       Upload your photo
                     </Button>

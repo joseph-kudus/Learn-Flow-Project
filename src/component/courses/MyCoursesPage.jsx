@@ -4,7 +4,7 @@ import { collection, query, where, onSnapshot } from "firebase/firestore";
 import Mycourses from "./Mycourses";
 import { useAuth } from "../../context/AuthContext";
 
-import { db } from "../../../firebaseconfig";
+import { db } from "../../config/firebaseconfig";
 import { allEnrollments } from "../../services/allEnrollments";
 
 const MyCoursesPage = () => {

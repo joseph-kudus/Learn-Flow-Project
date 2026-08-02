@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
-import { db, auth } from "../../../firebaseconfig";
+import { db, auth } from "../../config/firebaseconfig";
 import { useAuth } from "../../context/AuthContext";
 import "../../styles/SettingsPage.css";
 import { Link } from "react-router-dom";

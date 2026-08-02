@@ -1,5 +1,6 @@
-const CLOUD_NAME = "ddrxjwifb";
-const UPLOAD_PRESET = "learnflow_avatar";
+import env from "../config/env";
+
+const { cloudName, uploadPreset } = env.cloudinary;
 
 export const uploadAvatar = async (file) => {
   if (!file) {
@@ -7,13 +8,12 @@ export const uploadAvatar = async (file) => {
   }
 
   const formData = new FormData();
-
   formData.append("file", file);
-  formData.append("upload_preset", UPLOAD_PRESET);
+  formData.append("upload_preset", uploadPreset);
 
   try {
     const response = await fetch(
-      `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
       {
         method: "POST",
         body: formData,
@@ -23,14 +23,12 @@ export const uploadAvatar = async (file) => {
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("Cloudinary error:", data);
       throw new Error(data.error?.message || "Cloudinary upload failed");
     }
 
     return data.secure_url;
   } catch (error) {
     console.error("Avatar upload error:", error);
-
     throw error;
   }
 };

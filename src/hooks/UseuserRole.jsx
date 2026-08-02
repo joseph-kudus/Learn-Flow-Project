@@ -1,6 +1,6 @@
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { auth, db } from "../../firebaseconfig";
+import { auth, db } from "../config/firebaseconfig";
 import { doc, getDoc } from "firebase/firestore";
 
 const UseuserRole = () => {

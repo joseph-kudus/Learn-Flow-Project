@@ -7,7 +7,7 @@ import WelcomeInstructor from "../dashboard/WelcomeInstructor";
 import WelcomeLearner from "../dashboard/WelcomeLearner";
 
 import { allEnrollments } from "../../services/allEnrollments";
-import { db} from "../../../firebaseconfig";
+import { db} from "../../config/firebaseconfig";
 
 const DashboardMain = () => {
   const { user, loading: authLoading } = UseuserRole();

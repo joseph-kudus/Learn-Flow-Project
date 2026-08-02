@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { auth, db } from "../../firebaseconfig"; 
+import { auth, db } from "../config/firebaseconfig";
 import {
   createUserWithEmailAndPassword,
   updateProfile,
@@ -174,5 +174,3 @@ export function AuthProvider({ children }) {
     </AuthContext.Provider>
   );
 }
-
-

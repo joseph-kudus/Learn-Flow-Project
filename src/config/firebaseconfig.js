@@ -1,17 +1,22 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth, browserLocalPersistence, setPersistence } from "firebase/auth";
+import {
+  getAuth,
+  browserLocalPersistence,
+  setPersistence,
+} from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import env from "./env";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyA4I3wYX25b4m3gWJYN_uzNGP18EHdRSWA",
-  authDomain: "learnflow-1f4fb.firebaseapp.com",
-  projectId: "learnflow-1f4fb",
-  storageBucket: "learnflow-1f4fb.firebasestorage.app",
-  messagingSenderId: "798764517036",
-  appId: "1:798764517036:web:1d5b2a82ad228910960109",
+  apiKey: env.firebase.apiKey,
+  authDomain: env.firebase.authDomain,
+  projectId: env.firebase.projectId,
+  storageBucket: env.firebase.storageBucket,
+  messagingSenderId: env.firebase.messagingSenderId,
+  appId: env.firebase.appId,
 };
 
 // 1. Initialize app FIRST

@@ -17,7 +17,7 @@ import { CgNotes } from "react-icons/cg";
 
 import { doc, setDoc } from "firebase/firestore";
 
-import { db } from "../../../firebaseconfig";
+import { db } from "../../config/firebaseconfig";
 
 import { uploadAvatar } from "../../utils/uploadAvatar";
 

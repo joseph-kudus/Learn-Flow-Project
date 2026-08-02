@@ -10,7 +10,7 @@ import {
   increment,
 } from "firebase/firestore";
 
-import { db } from "../../firebaseconfig";
+import { db } from "../config/firebaseconfig";
 import { courseImages } from "../assets/courses/courseImages";
 
 /* ======================================================

@@ -1,4 +1,26 @@
+# ==========================================
+# Environment Variables
+# ==========================================
+.env
+.env.local
+.env.development
+.env.production
+.env.*.local
+
+# ==========================================
+# Dependencies
+# ==========================================
+node_modules
+
+# ==========================================
+# Build Output
+# ==========================================
+dist
+dist-ssr
+
+# ==========================================
 # Logs
+# ==========================================
 logs
 *.log
 npm-debug.log*
@@ -7,16 +29,19 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# ==========================================
+# Local Files
+# ==========================================
 *.local
 
-# Editor directories and files
+# ==========================================
+# Editor & OS Files
+# ==========================================
 .vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
+Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj

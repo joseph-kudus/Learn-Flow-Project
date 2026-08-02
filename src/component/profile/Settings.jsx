@@ -7,7 +7,7 @@ import defaultAvatar from "../../assets/images/default.png";
 import Button from "../ui/Button/Button.jsx";
 import Input from "../../component/ui/Input/Input.jsx";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "../../../firebaseconfig.js";
+import { db } from "../../config/firebaseconfig.js";
 import { uploadAvatar } from "../../utils/uploadAvatar";
 import { toast } from "react-toastify";
 import countryCodes from "country-codes-list";
@@ -32,11 +32,6 @@ const Settings = () => {
     employment: "student",
   });
 
- 
- 
- 
- 
- 
   const countrie = Object.entries(
     countryCodes.customList("countryCode", "{countryCallingCode}"),
   ).map(([iso, callingCode]) => {
@@ -52,19 +47,6 @@ const Settings = () => {
       phoneCode: `+${callingCode}`,
     };
   });
- 
-
- 
- 
- 
- 
- 
-
-
-
-
-
-
 
   const displayName =
     userData?.nickname ||

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./course.css";
 import { MdClose } from "react-icons/md";
 import { useAuth } from "../../context/AuthContext";
-import { db } from "../../../firebaseconfig"; 
+import { db } from "../../config/firebaseconfig"; 
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 

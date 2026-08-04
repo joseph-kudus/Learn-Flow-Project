@@ -7,10 +7,12 @@ import {
   updateDoc,
   deleteDoc,
   serverTimestamp,
+  query,
+  where,
+  orderBy,
 } from "firebase/firestore";
+
 import { db } from "../../config/firebaseconfig";
-
-
 
 /**
  * Get all courses
@@ -89,6 +91,27 @@ export const deleteCourse = async (courseId) => {
     await deleteDoc(doc(db, "courses", courseId));
   } catch (error) {
     console.error("Error deleting course:", error);
+    throw error;
+  }
+};
+
+export const getInstructorCourses = async (userId) => {
+  try {
+    const q = query(
+      collection(db, "courses"),
+      where("authorId", "==", userId),
+      orderBy("createdAt", "desc"),
+    );
+
+    const snapshot = await getDocs(q);
+
+    return snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  } catch (error) {
+    console.error("Error getting instructor courses:", error);
+
     throw error;
   }
 };

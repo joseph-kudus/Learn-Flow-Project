@@ -3,12 +3,9 @@ import { useNavigate } from "react-router-dom";
 import "./course.css";
 import { MdClose } from "react-icons/md";
 import { useAuth } from "../../context/AuthContext";
-import { db } from "../../config/firebaseconfig"; 
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
-
-const CLOUDINARY_CLOUD_NAME = "ddrxjwifb"; 
-const CLOUDINARY_UPLOAD_PRESET = "195881453964535"; 
+import { uploadImage } from "../../services/upload/uploadService";
+import { createCourse } from "../../services/course/courseService";
 
 function CreateCourse() {
   const { userData, currentUser } = useAuth();
@@ -33,125 +30,108 @@ function CreateCourse() {
     };
   }, [preview]);
 
-  const uploadImageToCloudinary = (file) => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        // 1. Compress first
-        const options = {
-          maxSizeMB: 1,
-          maxWidthOrHeight: 1920,
-          useWebWorker: true,
-        };
-        const compressedFile = await imageCompression(file, options);
-        console.log(
-          `Compressed: ${(compressedFile.size / 1024 / 1024).toFixed(2)}MB`,
-        );
-
-        
-        const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
-        const xhr = new XMLHttpRequest();
-        const fd = new FormData();
-
-        fd.append("file", compressedFile);
-        fd.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
-        fd.append("folder", `courses/${currentUser.uid}`);
-
-        xhr.open("POST", url, true);
-
-        xhr.upload.onprogress = (e) => {
-          if (e.lengthComputable) {
-            const progress = Math.round((e.loaded / e.total) * 100);
-            setUploadProgress(progress);
-          }
-        };
-
-        xhr.onload = () => {
-          if (xhr.status === 200) {
-            const res = JSON.parse(xhr.responseText);
-            resolve(res.secure_url); // https://res.cloudinary.com/...
-          } else {
-            reject(new Error("Upload failed"));
-          }
-        };
-
-        xhr.onerror = () => reject(new Error("Upload failed"));
-        xhr.send(fd);
-      } catch (err) {
-        reject(err);
-      }
-    });
-  };
-
   const handleChange = async (e) => {
     const { name, value, files } = e.target;
 
-    if (files) {
-      const file = files[0];
-      if (file.size > 10 * 1024 * 1024) {
-        return setError("Image must be under 10MB before compressiaon");
-      }
+    if (!files) {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+      return;
+    }
 
-      setError("");
-      setFormData((prev) => ({ ...prev, [name]: file }));
-      setPreview((old) => {
-        if (old) URL.revokeObjectURL(old);
-        return URL.createObjectURL(file);
-      });
+    const file = files[0];
 
-      if (!currentUser) return setError("You must be logged in to upload");
+    if (file.size > 10 * 1024 * 1024) {
+      setError("Image must be under 10MB.");
+      return;
+    }
 
-      // Start upload immediately in background
+    setError("");
+
+    setFormData((prev) => ({
+      ...prev,
+      image: file,
+    }));
+
+    setPreview((old) => {
+      if (old) URL.revokeObjectURL(old);
+      return URL.createObjectURL(file);
+    });
+
+    if (!currentUser) {
+      setError("You must be logged in.");
+      return;
+    }
+
+    try {
       setUploadingImage(true);
       setUploadProgress(0);
-      try {
-        const url = await uploadImageToCloudinary(file);
-        setImageUrl(url);
-      } catch (err) {
-        console.error(err);
-        setError("Image upload failed. Try again.");
-        setPreview((old) => {
-          if (old) URL.revokeObjectURL(old);
-          return null;
-        });
-        setFormData((prev) => ({ ...prev, image: null }));
-      } finally {
-        setUploadingImage(false);
-      }
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
+
+      const image = await uploadImage(
+        file,
+        `courses/${currentUser.uid}`,
+        setUploadProgress,
+      );
+
+      setImageUrl(image);
+    } catch (err) {
+      console.error(err);
+
+      setError("Image upload failed.");
+
+      setPreview(null);
+
+      setFormData((prev) => ({
+        ...prev,
+        image: null,
+      }));
+    } finally {
+      setUploadingImage(false);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!currentUser) return setError("You must be logged in");
-    if (!formData.title.trim()) return setError("Title is required");
-    if (uploadingImage)
-      return setError("Please wait for image to finish uploading");
-    if (formData.image && !imageUrl)
-      return setError("Image upload failed. Please re-select image");
 
-    setLoading(true);
-    setError("");
+    if (!currentUser) {
+      setError("You must be logged in.");
+      return;
+    }
+
+    if (!formData.title.trim()) {
+      setError("Course title is required.");
+      return;
+    }
+
+    if (uploadingImage) {
+      setError("Please wait for the image upload.");
+      return;
+    }
+
+    if (formData.image && !imageUrl) {
+      setError("Image upload failed.");
+      return;
+    }
 
     try {
-      await addDoc(collection(db, "courses"), {
+      setLoading(true);
+      setError("");
+
+      await createCourse({
         title: formData.title.trim(),
         description: formData.description.trim(),
-        price: parseFloat(formData.price) || 0,
-        imageUrl: imageUrl || "",
+        price: Number(formData.price) || 0,
+        imageUrl,
         author: userData?.username || userData?.email,
         authorId: currentUser.uid,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-        students: [],
-        published: false,
       });
 
       navigate("/dashboard/coursebuilder");
     } catch (err) {
-      console.error("Create course error:", err);
-      setError(err.message || "Failed to create course");
+      console.error(err);
+      setError(err.message || "Failed to create course.");
     } finally {
       setLoading(false);
     }

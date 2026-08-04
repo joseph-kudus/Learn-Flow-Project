@@ -8,8 +8,9 @@ import {
   deleteDoc,
   serverTimestamp,
 } from "firebase/firestore";
+import { db } from "../../config/firebaseconfig";
 
-import { db } from "../config/firebaseconfig";
+
 
 /**
  * Get all courses

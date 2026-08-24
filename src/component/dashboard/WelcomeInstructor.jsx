@@ -8,7 +8,9 @@ import { useAuth } from "../../context/AuthContext";
 function WelcomeInstructor({ user }) {
   const { currentUser } = useAuth();
 
+  const [courses, setCourses] = useState([]);
   const [recentCourses, setRecentCourses] = useState([]);
+  const [loadingCourses, setLoadingCourses] = useState(true);
 
   const fullName =
     user?.nickname ||
@@ -18,28 +20,40 @@ function WelcomeInstructor({ user }) {
 
   useEffect(() => {
     const loadCourses = async () => {
-      if (!currentUser) return;
+      if (!currentUser) {
+        setLoadingCourses(false);
+        return;
+      }
 
       try {
-        const courses = await getInstructorCourses(currentUser.uid);
+        setLoadingCourses(true);
 
-        // show latest 2 courses on dashboard
-        setRecentCourses(courses.slice(0, 2));
+        const instructorCourses = await getInstructorCourses(currentUser.uid);
+
+        // Keep all courses for dashboard statistics
+        setCourses(instructorCourses);
+
+        // Only show the latest 2 courses in the dashboard overview
+        setRecentCourses(instructorCourses.slice(0, 2));
       } catch (error) {
         console.error("Failed loading instructor courses:", error);
+      } finally {
+        setLoadingCourses(false);
       }
     };
 
     loadCourses();
   }, [currentUser]);
 
+  const totalStudents = courses.reduce(
+    (total, course) => total + (Number(course.students) || 0),
+    0,
+  );
+
   const stats = {
-    totalStudents: 124,
-
-    publishedCourses: recentCourses.length,
-
+    totalStudents,
+    totalCourses: courses.length,
     totalEarnings: 1840,
-
     pendingReviews: 3,
   };
 
@@ -69,7 +83,7 @@ function WelcomeInstructor({ user }) {
             <span>Courses</span>
           </div>
 
-          <p className="text-3xl font-bold mt-2">{stats.publishedCourses}</p>
+          <p className="text-3xl font-bold mt-2">{stats.totalCourses}</p>
         </div>
 
         <div className="border rounded-lg p-4">
@@ -102,7 +116,9 @@ function WelcomeInstructor({ user }) {
         </div>
 
         <div className="border rounded-lg">
-          {recentCourses.length === 0 ? (
+          {loadingCourses ? (
+            <p className="p-4 text-gray-500">Loading courses...</p>
+          ) : recentCourses.length === 0 ? (
             <p className="p-4 text-gray-500">No courses created yet.</p>
           ) : (
             recentCourses.map((course) => (
@@ -114,7 +130,7 @@ function WelcomeInstructor({ user }) {
                   <p className="font-medium">{course.title}</p>
 
                   <p className="text-sm text-gray-500">
-                    {course.students || 0} students
+                    {Number(course.students) || 0} students
                   </p>
                 </div>
 

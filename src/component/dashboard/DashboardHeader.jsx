@@ -9,7 +9,6 @@ import { Menu } from "lucide-react";
 import { IoIosArrowDown, IoIosNotificationsOutline } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
 import { RiAccountBoxFill } from "react-icons/ri";
-import { SlSettings } from "react-icons/sl";
 
 import Button from "../ui/Button/Button";
 
@@ -18,6 +17,128 @@ import {
   markNotificationAsRead,
   markAllNotificationsAsRead,
 } from "../../services/notification/notificationService";
+
+/* ======================================================
+   FORMAT NOTIFICATION TIME
+====================================================== */
+
+const formatNotificationTime = (timestamp) => {
+  if (!timestamp) {
+    return "";
+  }
+
+  let date;
+
+  try {
+    if (timestamp?.toDate) {
+      date = timestamp.toDate();
+    } else if (timestamp instanceof Date) {
+      date = timestamp;
+    } else {
+      date = new Date(timestamp);
+    }
+
+    if (Number.isNaN(date.getTime())) {
+      return "";
+    }
+  } catch (error) {
+    return "";
+  }
+
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+
+  const diffSeconds = Math.floor(diffMs / 1000);
+  const diffMinutes = Math.floor(diffSeconds / 60);
+  const diffHours = Math.floor(diffMinutes / 60);
+  const diffDays = Math.floor(diffHours / 24);
+
+  if (diffSeconds < 60) {
+    return "Just now";
+  }
+
+  if (diffMinutes < 60) {
+    return `${diffMinutes} ${diffMinutes === 1 ? "min" : "mins"} ago`;
+  }
+
+  if (diffHours < 24) {
+    return `${diffHours} ${diffHours === 1 ? "hour" : "hours"} ago`;
+  }
+
+  if (diffDays === 1) {
+    return "Yesterday";
+  }
+
+  if (diffDays < 7) {
+    return `${diffDays} days ago`;
+  }
+
+  return date.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+  });
+};
+
+/* ======================================================
+   DATE GROUP HELPER
+====================================================== */
+
+const getNotificationDateKey = (timestamp) => {
+  if (!timestamp) {
+    return "other";
+  }
+
+  let date;
+
+  try {
+    if (timestamp?.toDate) {
+      date = timestamp.toDate();
+    } else {
+      date = new Date(timestamp);
+    }
+
+    if (Number.isNaN(date.getTime())) {
+      return "other";
+    }
+  } catch (error) {
+    return "other";
+  }
+
+  return date.toISOString().split("T")[0];
+};
+
+const formatNotificationDate = (dateKey) => {
+  if (!dateKey || dateKey === "other") {
+    return "";
+  }
+
+  const date = new Date(`${dateKey}T00:00:00`);
+
+  if (Number.isNaN(date.getTime())) {
+    return "";
+  }
+
+  const today = new Date();
+  const todayKey = today.toISOString().split("T")[0];
+
+  if (dateKey === todayKey) {
+    return "Today";
+  }
+
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+
+  const yesterdayKey = yesterday.toISOString().split("T")[0];
+
+  if (dateKey === yesterdayKey) {
+    return "Yesterday";
+  }
+
+  return date.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+  });
+};
 
 function DashboardHeader({ onMenuClick }) {
   const { currentUser, userData, loading } = useAuth();
@@ -32,6 +153,8 @@ function DashboardHeader({ onMenuClick }) {
   const [notifications, setNotifications] = useState([]);
   const [notificationFilter, setNotificationFilter] = useState("all");
   const [loadingNotifications, setLoadingNotifications] = useState(false);
+
+  const [showAllNotifications, setShowAllNotifications] = useState(false);
 
   /* ======================================================
      REFS
@@ -72,6 +195,7 @@ function DashboardHeader({ onMenuClick }) {
   useEffect(() => {
     if (!currentUser?.uid) {
       setNotifications([]);
+      setLoadingNotifications(false);
       return;
     }
 
@@ -125,12 +249,24 @@ function DashboardHeader({ onMenuClick }) {
   const avatar = userData?.photoURL || currentUser?.photoURL || defaultAvatar;
 
   /* ======================================================
-     NOTIFICATION DATA
+     NOTIFICATION COUNTS
   ====================================================== */
 
   const unreadCount = notifications.filter(
     (notification) => !notification.read,
   ).length;
+
+  const courseCount = notifications.filter(
+    (notification) => notification.type === "course",
+  ).length;
+
+  const updateCount = notifications.filter(
+    (notification) => notification.type === "update",
+  ).length;
+
+  /* ======================================================
+     FILTER NOTIFICATIONS
+  ====================================================== */
 
   const filteredNotifications =
     notificationFilter === "all"
@@ -140,8 +276,41 @@ function DashboardHeader({ onMenuClick }) {
         );
 
   /* ======================================================
+     LIMIT / EXPAND NOTIFICATIONS
+  ====================================================== */
+
+  const visibleNotifications = showAllNotifications
+    ? filteredNotifications
+    : filteredNotifications.slice(0, 4);
+
+  /* ======================================================
+     GROUP NOTIFICATIONS BY DATE
+  ====================================================== */
+
+  const groupedNotifications = visibleNotifications.reduce(
+    (groups, notification) => {
+      const dateKey = getNotificationDateKey(notification.createdAt);
+
+      if (!groups[dateKey]) {
+        groups[dateKey] = [];
+      }
+
+      groups[dateKey].push(notification);
+
+      return groups;
+    },
+    {},
+  );
+
+  /* ======================================================
      NOTIFICATION HANDLERS
   ====================================================== */
+
+  const handleNotificationToggle = () => {
+    setOpen(false);
+
+    setOpenNotification((previous) => !previous);
+  };
 
   const handleNotificationClick = async (notification) => {
     if (notification.read) {
@@ -167,26 +336,35 @@ function DashboardHeader({ onMenuClick }) {
   };
 
   const handleMarkAllRead = async () => {
-    const unreadNotifications = notifications.filter(
-      (notification) => !notification.read,
-    );
+    if (!currentUser?.uid) {
+      console.error("Cannot mark notifications as read: no user.");
+      return;
+    }
 
-    if (unreadNotifications.length === 0) {
+    if (unreadCount === 0) {
       return;
     }
 
     try {
-      await markAllNotificationsAsRead(notifications);
+      const result = await markAllNotificationsAsRead(currentUser.uid);
 
-      setNotifications((previous) =>
-        previous.map((notification) => ({
-          ...notification,
-          read: true,
-        })),
-      );
+      console.log("Mark all as read result:", result);
+
+      if (result?.success) {
+        setNotifications((previous) =>
+          previous.map((notification) => ({
+            ...notification,
+            read: true,
+          })),
+        );
+      }
     } catch (error) {
-      console.error("Failed to mark notifications as read:", error);
+      console.error("Failed to mark all notifications as read:", error);
     }
+  };
+
+  const handleSeeAllNotifications = () => {
+    setShowAllNotifications((previous) => !previous);
   };
 
   /* ======================================================
@@ -232,10 +410,7 @@ function DashboardHeader({ onMenuClick }) {
                 className="notification-btn"
                 aria-label="Open notifications"
                 aria-expanded={openNotification}
-                onClick={() => {
-                  setOpen(false);
-                  setOpenNotification((previous) => !previous);
-                }}
+                onClick={handleNotificationToggle}
               />
 
               {/* UNREAD COUNT */}
@@ -246,7 +421,9 @@ function DashboardHeader({ onMenuClick }) {
                 </span>
               )}
 
-              {/* NOTIFICATION DROPDOWN */}
+              {/* ==================================================
+                  NOTIFICATION DROPDOWN
+              ================================================== */}
 
               {openNotification && (
                 <div className="notification-header-drop">
@@ -254,42 +431,46 @@ function DashboardHeader({ onMenuClick }) {
 
                   <div className="notification-header">
                     <h1>Notifications</h1>
-
-                    <button
-                      type="button"
-                      onClick={handleMarkAllRead}
-                      title="Mark all as read"
-                      disabled={unreadCount === 0}
-                    >
-                      <SlSettings />
-                    </button>
                   </div>
 
                   {/* FILTERS */}
 
                   <div className="notification-steps-btn">
                     <Button
+                      type="button"
                       variant="ghost"
                       size="sm"
+                      className={notificationFilter === "all" ? "active" : ""}
                       onClick={() => setNotificationFilter("all")}
                     >
-                      All
+                      <span>All</span>
+                      <strong>{notifications.length}</strong>
                     </Button>
 
                     <Button
+                      type="button"
                       variant="ghost"
                       size="sm"
+                      className={
+                        notificationFilter === "course" ? "active" : ""
+                      }
                       onClick={() => setNotificationFilter("course")}
                     >
-                      Courses
+                      <span>Courses</span>
+                      <strong>{courseCount}</strong>
                     </Button>
 
                     <Button
+                      type="button"
                       variant="ghost"
                       size="sm"
+                      className={
+                        notificationFilter === "update" ? "active" : ""
+                      }
                       onClick={() => setNotificationFilter("update")}
                     >
-                      Updates
+                      <span>Updates</span>
+                      <strong>{updateCount}</strong>
                     </Button>
                   </div>
 
@@ -305,23 +486,78 @@ function DashboardHeader({ onMenuClick }) {
                         No notifications yet.
                       </p>
                     ) : (
-                      filteredNotifications.map((notification) => (
-                        <button
-                          type="button"
-                          key={notification.id}
-                          className={`notification-item ${
-                            !notification.read ? "unread" : ""
-                          }`}
-                          onClick={() => handleNotificationClick(notification)}
-                        >
-                          <div>
-                            <h4>{notification.title}</h4>
+                      Object.entries(groupedNotifications).map(
+                        ([dateKey, groupedItems]) => (
+                          <div key={dateKey} className="notification-group">
+                            {/* DATE */}
 
-                            <p>{notification.message}</p>
+                            {dateKey !== "other" && (
+                              <div className="notification-date">
+                                {formatNotificationDate(dateKey)}
+                              </div>
+                            )}
+
+                            {/* NOTIFICATIONS */}
+
+                            {groupedItems.map((notification) => (
+                              <button
+                                type="button"
+                                key={notification.id}
+                                className={`notification-item ${
+                                  !notification.read ? "unread" : ""
+                                }`}
+                                onClick={() =>
+                                  handleNotificationClick(notification)
+                                }
+                              >
+                                <div className="notification-content">
+                                  <h4>{notification.title || "LearnFlow"}</h4>
+
+                                  <p>{notification.message}</p>
+
+                                  <span className="notification-time">
+                                    {formatNotificationTime(
+                                      notification.createdAt,
+                                    )}
+                                  </span>
+                                </div>
+
+                                {!notification.read && (
+                                  <span className="notification-unread-dot" />
+                                )}
+                              </button>
+                            ))}
                           </div>
-                        </button>
-                      ))
+                        ),
+                      )
                     )}
+                  </div>
+
+                  {/* FOOTER */}
+
+                  <div className="notify_container">
+                    <div className="notify-wrapper">
+                      <button
+                        type="button"
+                        className="notify-wrapperb"
+                        onClick={handleMarkAllRead}
+                        disabled={unreadCount === 0}
+                      >
+                        Mark all as read
+                      </button>
+                    </div>
+
+                    <div className="notify-wrapper">
+                      <button
+                        type="button"
+                        className="notify-wrapperb"
+                        onClick={handleSeeAllNotifications}
+                      >
+                        {showAllNotifications
+                          ? "Show Less"
+                          : "See All Notifications"}
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}
@@ -362,6 +598,7 @@ function DashboardHeader({ onMenuClick }) {
                   aria-expanded={open}
                   onClick={() => {
                     setOpenNotification(false);
+
                     setOpen((previous) => !previous);
                   }}
                 />

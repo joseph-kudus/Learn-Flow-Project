@@ -378,120 +378,6 @@ line-height:1.45;
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ===== Dashboard Layout ===== */
 .dashboardlayout {
   min-height: 100vh;
@@ -537,13 +423,6 @@ line-height:1.45;
   background: var(--accent);
   color: var(--primary);
 }
-
-
-
-
-
-
-
 /* =========================
    ROLE SIDEBAR COLORS
 ========================= */
@@ -708,9 +587,6 @@ background: inherit;
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
-
-
-
 /* ===== Content Area ===== */
 .main-content {
   flex: 1;
@@ -858,6 +734,14 @@ background: inherit;
 }
 .notification-steps-btn button:hover { background: var(--border-color); }
 
+.notify_container{
+  display: flex;
+  justify-content: space-between;
+}
+.notify-wrapperb{
+  color: #f7ca4e;
+  border: none;
+}
 .acc-setting ul { list-style: none; }
 .acc-setting li a {
   color: var(--text-primary);

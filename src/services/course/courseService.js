@@ -14,6 +14,8 @@ import {
 
 import { db } from "../../config/firebaseconfig";
 
+import { createNotification } from "../notification/notificationService";
+
 /**
  * Get all courses
  */
@@ -96,9 +98,6 @@ export const deleteCourse = async (courseId) => {
   }
 };
 
-
-
-
 /**
  * Get courses created by an instructor
  */
@@ -108,10 +107,7 @@ export const getInstructorCourses = async (userId) => {
       return [];
     }
 
-    const q = query(
-      collection(db, "courses"),
-      where("authorId", "==", userId),
-    );
+    const q = query(collection(db, "courses"), where("authorId", "==", userId));
 
     const snapshot = await getDocs(q);
 
@@ -125,33 +121,17 @@ export const getInstructorCourses = async (userId) => {
 
     return courses;
   } catch (error) {
-    console.error(
-      "Error getting instructor courses:",
-      error,
-    );
+    console.error("Error getting instructor courses:", error);
 
     throw error;
   }
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * Publish an instructor course
+ *
+ * Publishes the course and sends a course notification
+ * to every student.
  */
 export const publishCourse = async (courseId, instructorId) => {
   try {
@@ -173,12 +153,18 @@ export const publishCourse = async (courseId, instructorId) => {
 
     const course = courseSnapshot.data();
 
-    // Make sure the instructor owns the course
+    /* ==================================================
+       CHECK COURSE OWNERSHIP
+    ================================================== */
+
     if (course.authorId !== instructorId) {
       throw new Error("You are not authorized to publish this course.");
     }
 
-    // Prevent publishing an already published course
+    /* ==================================================
+       PREVENT DUPLICATE PUBLISHING
+    ================================================== */
+
     if (course.status === "published") {
       return {
         success: false,
@@ -186,14 +172,79 @@ export const publishCourse = async (courseId, instructorId) => {
       };
     }
 
+    /* ==================================================
+       PUBLISH COURSE
+    ================================================== */
+
     await updateDoc(courseRef, {
       status: "published",
       updatedAt: serverTimestamp(),
     });
 
+    /* ==================================================
+       FIND STUDENTS
+    ================================================== */
+
+    let notificationError = null;
+
+    try {
+      const studentsQuery = query(
+        collection(db, "users"),
+        where("role", "==", "student"),
+      );
+
+      const studentsSnapshot = await getDocs(studentsQuery);
+
+      /* ==================================================
+         CREATE NOTIFICATION FOR EACH STUDENT
+      ================================================== */
+
+      const instructorName =
+        course.author?.trim() || course.instructorName?.trim() || "Instructor";
+
+      const courseTitle = course.title?.trim() || "New Course";
+
+      const notificationMessage = `Published a new course: "${courseTitle}"`;
+
+      await Promise.all(
+        studentsSnapshot.docs.map(async (studentDoc) => {
+          const student = studentDoc.data();
+
+          const studentId = student.uid || studentDoc.id;
+
+          if (!studentId) {
+            return;
+          }
+
+          await createNotification({
+            userId: studentId,
+            title: instructorName,
+            message: notificationMessage,
+            type: "course",
+          });
+        }),
+      );
+
+      console.log(
+        `Course notification sent to ${studentsSnapshot.size} student(s).`,
+      );
+    } catch (error) {
+      notificationError = error;
+
+      console.error(
+        "Course published successfully, but notifications could not be created:",
+        error,
+      );
+    }
+
+    /* ==================================================
+       RETURN RESULT
+    ================================================== */
+
     return {
       success: true,
       message: `"${course.title}" has been published successfully.`,
+      notificationSent: !notificationError,
       course: {
         id: courseId,
         ...course,

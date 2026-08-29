@@ -2,6 +2,7 @@ import {
   addDoc,
   collection,
   doc,
+  getDocs,
   onSnapshot,
   query,
   serverTimestamp,
@@ -26,12 +27,11 @@ const notificationsRef = collection(db, "notifications");
  * Create a notification for a user.
  *
  * @param {Object} notification
- * @param {string} notification.userId - Firebase UID
- * @param {string} notification.title - Notification title
- * @param {string} notification.message - Notification message
- * @param {string} [notification.type="update"] - Notification type
- *
- * @returns {Promise<string>} Created notification ID
+ * @param {string} notification.userId
+ * @param {string} notification.title
+ * @param {string} notification.message
+ * @param {string} [notification.type="update"]
+ * @returns {Promise<string>}
  */
 export const createNotification = async ({
   userId,
@@ -52,7 +52,7 @@ export const createNotification = async ({
   }
 
   try {
-    const notification = {
+    const notificationData = {
       userId,
       title: title.trim(),
       message: message.trim(),
@@ -61,7 +61,7 @@ export const createNotification = async ({
       createdAt: serverTimestamp(),
     };
 
-    const notificationDoc = await addDoc(notificationsRef, notification);
+    const notificationDoc = await addDoc(notificationsRef, notificationData);
 
     return notificationDoc.id;
   } catch (error) {
@@ -75,17 +75,17 @@ export const createNotification = async ({
 ====================================================== */
 
 /**
- * Listen for real-time notifications for a user.
+ * Subscribe to notifications belonging to a user.
  *
- * @param {string} userId - Firebase UID
- * @param {Function} onUpdate - Called whenever notifications change
- * @param {Function} [onError] - Called when listener fails
- *
- * @returns {Function} Unsubscribe function
+ * @param {string} userId
+ * @param {Function} onUpdate
+ * @param {Function} [onError]
+ * @returns {Function}
  */
 export const subscribeToUserNotifications = (userId, onUpdate, onError) => {
   if (!userId) {
     console.error("Cannot subscribe to notifications without userId.");
+
     return () => {};
   }
 
@@ -95,9 +95,9 @@ export const subscribeToUserNotifications = (userId, onUpdate, onError) => {
     q,
     (snapshot) => {
       const notifications = snapshot.docs
-        .map((notification) => ({
-          id: notification.id,
-          ...notification.data(),
+        .map((notificationDoc) => ({
+          id: notificationDoc.id,
+          ...notificationDoc.data(),
         }))
         .sort((a, b) => {
           const dateA = a.createdAt?.toMillis?.() || 0;
@@ -123,11 +123,9 @@ export const subscribeToUserNotifications = (userId, onUpdate, onError) => {
 ====================================================== */
 
 /**
- * Get notifications for a user once.
+ * Get a user's notifications once.
  *
- * This is useful when a real-time listener is not required.
- *
- * @param {string} userId - Firebase UID
+ * @param {string} userId
  * @returns {Promise<Array>}
  */
 export const getUserNotifications = async (userId) => {
@@ -155,7 +153,7 @@ export const getUserNotifications = async (userId) => {
 ====================================================== */
 
 /**
- * Mark a single notification as read.
+ * Mark one notification as read.
  *
  * @param {string} notificationId
  */
@@ -165,7 +163,9 @@ export const markNotificationAsRead = async (notificationId) => {
   }
 
   try {
-    await updateDoc(doc(db, "notifications", notificationId), {
+    const notificationRef = doc(db, "notifications", notificationId);
+
+    await updateDoc(notificationRef, {
       read: true,
     });
   } catch (error) {
@@ -176,35 +176,79 @@ export const markNotificationAsRead = async (notificationId) => {
 };
 
 /* ======================================================
-   MARK ALL NOTIFICATIONS AS READ
+   MARK ALL USER NOTIFICATIONS AS READ
 ====================================================== */
 
 /**
- * Mark all unread notifications as read.
+ * Mark all unread notifications belonging to a user as read.
  *
- * @param {Array} notifications
+ * @param {string} userId
+ * @returns {Promise<Object>}
  */
-export const markAllNotificationsAsRead = async (notifications = []) => {
-  const unreadNotifications = notifications.filter(
-    (notification) => !notification.read && notification.id,
-  );
-
-  if (unreadNotifications.length === 0) {
-    return;
+export const markAllNotificationsAsRead = async (userId) => {
+  if (!userId) {
+    throw new Error("User ID is required.");
   }
 
   try {
-    const batch = writeBatch(db);
+    /* ==================================================
+       FIND USER'S UNREAD NOTIFICATIONS
+    ================================================== */
 
-    unreadNotifications.forEach((notification) => {
-      const notificationRef = doc(db, "notifications", notification.id);
+    const q = query(
+      notificationsRef,
+      where("userId", "==", userId),
+      where("read", "==", false),
+    );
+
+    const snapshot = await getDocs(q);
+
+    if (snapshot.empty) {
+      return {
+        success: true,
+        updatedCount: 0,
+      };
+    }
+
+    /* ==================================================
+       UPDATE IN BATCHES
+    ================================================== */
+
+    let batch = writeBatch(db);
+    let batchCount = 0;
+    let updatedCount = 0;
+
+    for (const notificationDoc of snapshot.docs) {
+      const notificationRef = doc(db, "notifications", notificationDoc.id);
 
       batch.update(notificationRef, {
         read: true,
       });
-    });
 
-    await batch.commit();
+      batchCount++;
+      updatedCount++;
+
+      // Firestore batch limit
+      if (batchCount === 500) {
+        await batch.commit();
+
+        batch = writeBatch(db);
+        batchCount = 0;
+      }
+    }
+
+    /* ==================================================
+       COMMIT REMAINING UPDATES
+    ================================================== */
+
+    if (batchCount > 0) {
+      await batch.commit();
+    }
+
+    return {
+      success: true,
+      updatedCount,
+    };
   } catch (error) {
     console.error("Error marking all notifications as read:", error);
 

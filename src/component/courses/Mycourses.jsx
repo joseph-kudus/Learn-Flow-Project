@@ -1,10 +1,12 @@
-import React, { useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { FaArrowLeftLong, FaArrowRight, FaStar } from "react-icons/fa6";
 import { IoIosMore } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 
 import "../../styles/mycourse.css";
 import Button from "../ui/Button/Button";
+
+import { getAvailableCourses } from "../../services/allEnrollments";
 
 const statusClassMap = {
   upcoming: "upcoming",
@@ -78,16 +80,12 @@ const generateActivities = (enrollmentData) => {
 
         activities.push({
           date: date.toISOString(),
-
           time: date.toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",
           }),
-
           title: course.courseTitle,
-
           type: `Lesson ${lessonIndex + 1} Completed`,
-
           status: "submitted",
         });
       });
@@ -98,18 +96,13 @@ const generateActivities = (enrollmentData) => {
 
       activities.push({
         date: date.toISOString(),
-
         time: date.toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
         }),
-
         title: course.courseTitle,
-
         type: "Course Completed",
-
         status: "graded",
-
         grade: "100%",
       });
     }
@@ -169,7 +162,7 @@ const CourseCard = ({ enrollment, variant = "resume", navigate }) => {
         {variant === "start" && (
           <p>
             <FaStar />
-            {enrollment.rating} ratings
+            {enrollment.rating || 4.6} ratings
           </p>
         )}
       </div>
@@ -200,31 +193,75 @@ const Mycourses = ({ allEnrollments = [], enrollmentData = [] }) => {
   const activeRef = useRef(null);
   const recentRef = useRef(null);
 
+  const [availableCourses, setAvailableCourses] = useState(allEnrollments);
+  const [coursesLoading, setCoursesLoading] = useState(true);
+
+  /* ======================================================
+     LOAD STATIC + PUBLISHED FIRESTORE COURSES
+  ====================================================== */
+
+  useEffect(() => {
+    const loadCourses = async () => {
+      try {
+        setCoursesLoading(true);
+
+        const courses = await getAvailableCourses();
+
+        setAvailableCourses(courses);
+      } catch (error) {
+        console.error("Failed loading available courses:", error);
+
+        // Keep existing courses if Firestore fails
+        setAvailableCourses(allEnrollments);
+      } finally {
+        setCoursesLoading(false);
+      }
+    };
+
+    loadCourses();
+  }, [allEnrollments]);
+
   const scroll = (ref, dir) => {
     if (!ref.current) return;
 
     ref.current.scrollBy({
       left: dir === "left" ? -280 : 280,
-
       behavior: "smooth",
     });
   };
 
+  /* ======================================================
+     COURSE MAP
+
+     Includes static + published Firestore courses
+  ====================================================== */
+
   const courseMap = useMemo(
-    () => new Map(allEnrollments.map((c) => [String(c.id), c])),
-    [allEnrollments],
+    () =>
+      new Map(availableCourses.map((course) => [String(course.id), course])),
+    [availableCourses],
   );
+
+  /* ======================================================
+     MY COURSES
+
+     Enrollment → matching static/Firestore course
+  ====================================================== */
 
   const myCourses = useMemo(() => {
     return enrollmentData
       .map((e) => {
         const course = courseMap.get(String(e.courseId));
 
-        if (!course) return null;
+        if (!course) {
+          console.warn("Course not found for enrollment:", e.courseId);
+
+          return null;
+        }
 
         const totalLessons = Array.isArray(course.lessons)
           ? course.lessons.length
-          : Number(course.lessons) || course.totalLessons || 0;
+          : Number(course.lessons) || Number(course.totalLessons) || 0;
 
         const completedLessons =
           e.completedLessons ?? e.completedLessonIds?.length ?? 0;
@@ -242,9 +279,9 @@ const Mycourses = ({ allEnrollments = [], enrollmentData = [] }) => {
 
           category: course.category,
 
-          image: course.image,
+          image: course.image || course.imageUrl || "/placeholder.jpg",
 
-          rating: course.rating,
+          rating: Number(course.rating) || 4.6,
 
           totalLessons,
 
@@ -256,21 +293,35 @@ const Mycourses = ({ allEnrollments = [], enrollmentData = [] }) => {
       .filter(Boolean);
   }, [enrollmentData, courseMap]);
 
+  /* ======================================================
+     ACTIVE COURSES
+  ====================================================== */
+
   const activeCourses = useMemo(
     () => myCourses.filter((e) => e.progress > 0 && e.progress < 100),
     [myCourses],
   );
+
+  /* ======================================================
+     RECENTLY ENROLLED
+  ====================================================== */
 
   const recentCourses = useMemo(
     () => myCourses.filter((e) => e.progress === 0).slice(0, 4),
     [myCourses],
   );
 
+  /* ======================================================
+     ACTIVITIES
+  ====================================================== */
+
   const groupedActivities = useMemo(() => {
     return generateActivities(enrollmentData).reduce((acc, item) => {
       const key = item.date.split("T")[0];
 
-      if (!acc[key]) acc[key] = [];
+      if (!acc[key]) {
+        acc[key] = [];
+      }
 
       acc[key].push(item);
 
@@ -278,9 +329,23 @@ const Mycourses = ({ allEnrollments = [], enrollmentData = [] }) => {
     }, {});
   }, [enrollmentData]);
 
+  if (coursesLoading) {
+    return (
+      <div className="myclass">
+        <div className="Course-Content-Container">
+          <p>Loading courses...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="myclass">
       <div className="Course-Content-Container">
+        {/* ==================================================
+            ACTIVE COURSES
+        ================================================== */}
+
         <div className="active-course">
           <h3>Active Courses</h3>
 
@@ -311,6 +376,10 @@ const Mycourses = ({ allEnrollments = [], enrollmentData = [] }) => {
           )}
         </div>
 
+        {/* ==================================================
+            RECENTLY ENROLLED
+        ================================================== */}
+
         <div className="active-course">
           <h3>Recently Enrolled</h3>
 
@@ -330,16 +399,24 @@ const Mycourses = ({ allEnrollments = [], enrollmentData = [] }) => {
         </div>
 
         <div className="active-cours" ref={recentRef}>
-          {recentCourses.map((e) => (
-            <CourseCard
-              key={e.courseId}
-              enrollment={e}
-              variant="start"
-              navigate={navigate}
-            />
-          ))}
+          {recentCourses.length ? (
+            recentCourses.map((e) => (
+              <CourseCard
+                key={e.courseId}
+                enrollment={e}
+                variant="start"
+                navigate={navigate}
+              />
+            ))
+          ) : (
+            <p className="empty-state">No recently enrolled courses yet.</p>
+          )}
         </div>
       </div>
+
+      {/* ==================================================
+          RECENT ACTIVITIES
+      ================================================== */}
 
       <div className="active-course-activ">
         <div className="active-course-active">
@@ -361,7 +438,6 @@ const Mycourses = ({ allEnrollments = [], enrollmentData = [] }) => {
 
                     <div className="classes_view">
                       <p>{act.title}</p>
-
                       <p>{act.type}</p>
                     </div>
 

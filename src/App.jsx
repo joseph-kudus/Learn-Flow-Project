@@ -29,6 +29,7 @@ import Contact from "./pages/Contact.jsx";
 import ProfileSetting from "./component/profile/ProfileSetting.jsx";
 import CourseDetails from "./component/courses/CourseDetails";
 import MyCoursesPage from "./component/courses/MyCoursesPage.jsx";
+import Notifications from "./component/notifications/Notificatins.jsx";
 
 /**
  * Layout: Wraps public pages with Navbar + Footer

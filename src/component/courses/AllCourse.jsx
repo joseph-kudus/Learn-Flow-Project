@@ -13,9 +13,14 @@ const AllCourse = () => {
       try {
         const courses = await getCourses();
 
-        setFirestoreCourses(courses);
+        // Only show published Firestore courses
+        const publishedCourses = courses.filter(
+          (course) => course.status === "published",
+        );
+
+        setFirestoreCourses(publishedCourses);
       } catch (error) {
-        console.error(error);
+        console.error("Error loading courses:", error);
       }
     };
 

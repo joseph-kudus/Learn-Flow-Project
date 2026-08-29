@@ -10,8 +10,8 @@ import { IoIosMore } from "react-icons/io";
 import "../../styles/explore.css";
 
 import {
-  allEnrollments,
   enrollStudent,
+  getAvailableCourses,
   getUserEnrollments,
   getEnrollmentDetails,
 } from "../../services/allEnrollments";
@@ -53,15 +53,45 @@ const Explore = () => {
 
   const navigate = useNavigate();
 
+  const [availableCourses, setAvailableCourses] = useState([]);
   const [myCourseIds, setMyCourseIds] = useState([]);
   const [enrollmentData, setEnrollmentData] = useState([]);
 
   const [enrollingId, setEnrollingId] = useState(null);
+  const [coursesLoading, setCoursesLoading] = useState(true);
 
   const [trendingFilter, setTrendingFilter] = useState("ALL");
   const [recommendedFilter, setRecommendedFilter] = useState("ALL");
 
   const categories = ["ALL", "CODING", "PROGRAMMING", "MORE"];
+
+  /* ======================================================
+     LOAD AVAILABLE COURSES
+
+     Static courses + published Firestore courses
+  ====================================================== */
+
+  useEffect(() => {
+    const loadCourses = async () => {
+      try {
+        setCoursesLoading(true);
+
+        const courses = await getAvailableCourses();
+
+        setAvailableCourses(courses);
+      } catch (error) {
+        console.error("Failed loading courses:", error);
+      } finally {
+        setCoursesLoading(false);
+      }
+    };
+
+    loadCourses();
+  }, []);
+
+  /* ======================================================
+     LOAD USER ENROLLMENTS
+  ====================================================== */
 
   useEffect(() => {
     if (!currentUser?.uid) return;
@@ -82,6 +112,10 @@ const Explore = () => {
 
     load();
   }, [currentUser]);
+
+  /* ======================================================
+     ENROLL
+  ====================================================== */
 
   const handleEnroll = async (courseId) => {
     if (!currentUser || !userData) {
@@ -119,53 +153,97 @@ const Explore = () => {
     }
   };
 
+  /* ======================================================
+     NORMALIZE COURSES
+
+     Makes static + Firestore courses use the
+     same structure for the UI
+  ====================================================== */
+
   const courses = useMemo(
     () =>
-      allEnrollments.map((course) => ({
-        id: course.id,
+      availableCourses.map((course) => ({
+        id: String(course.id),
 
         title: course.title,
 
-        category: course.category.toUpperCase(),
+        category: String(course.category || "OTHER").toUpperCase(),
 
-        type: course.category.toUpperCase(),
+        type: String(course.category || "OTHER").toUpperCase(),
 
-        image: course.image || "/placeholder.jpg",
+        image: course.image || course.imageUrl || "/placeholder.jpg",
 
         classes: course.lessons?.length || course.totalLessons || 0,
 
-        duration: `${course.durationWeeks} Weeks`,
+        duration: course.durationWeeks
+          ? `${course.durationWeeks} Weeks`
+          : course.duration
+            ? course.duration
+            : "Self-paced",
 
-        rating: Number(course.rating) || 0,
+        rating: Number(course.rating) || 4.6,
 
-        price: 100,
+        price: Number(course.price) || 0,
+
+        author: course.author || "",
+
+        description: course.description || course.desc || "",
+
+        status: course.status || "published",
+        isFirestoreCourse: Boolean(course.status),
       })),
-
-    [],
+    [availableCourses],
   );
 
-  const trendingCourses = useMemo(
-    () => [...courses].sort((a, b) => b.rating - a.rating).slice(0, 4),
+  /* ======================================================
+     TRENDING
+  ====================================================== */
 
-    [courses],
-  );
+  const trendingCourses = useMemo(() => {
+    const sortedCourses = [...courses].sort((a, b) => b.rating - a.rating);
 
-  const recommendedCourses = useMemo(
-    () =>
-      courses.filter((course) => !myCourseIds.includes(course.id)).slice(0, 4),
+    const publishedCourses = sortedCourses.filter(
+      (course) => course.isFirestoreCourse && course.status === "published",
+    );
 
-    [courses, myCourseIds],
-  );
+    const staticCourses = sortedCourses.filter(
+      (course) => !course.isFirestoreCourse,
+    );
+
+    return [...publishedCourses, ...staticCourses].slice(0, 4);
+  }, [courses]);
+
+  /* ======================================================
+     RECOMMENDED
+  ====================================================== */
+
+  const recommendedCourses = useMemo(() => {
+    const notEnrolled = courses.filter(
+      (course) => !myCourseIds.includes(String(course.id)),
+    );
+
+    const publishedCourses = notEnrolled.filter(
+      (course) => course.isFirestoreCourse && course.status === "published",
+    );
+
+    const staticCourses = notEnrolled.filter(
+      (course) => !course.isFirestoreCourse,
+    );
+
+    return [...publishedCourses, ...staticCourses].slice(0, 4);
+  }, [courses, myCourseIds]);
+
+  /* ======================================================
+     FILTERS
+  ====================================================== */
 
   const filteredTrending = useMemo(
     () => filterCourses(trendingCourses, trendingFilter),
-
     [trendingCourses, trendingFilter],
   );
 
   const filteredRecommended = useMemo(
     () => filterCourses(recommendedCourses, recommendedFilter),
-
     [recommendedCourses, recommendedFilter],
   );
 
@@ -183,6 +261,7 @@ const Explore = () => {
           onEnroll={handleEnroll}
           enrollingId={enrollingId}
           navigate={navigate}
+          loading={coursesLoading}
         />
 
         <CourseSection
@@ -196,6 +275,7 @@ const Explore = () => {
           onEnroll={handleEnroll}
           enrollingId={enrollingId}
           navigate={navigate}
+          loading={coursesLoading}
         />
       </div>
     </div>
@@ -213,6 +293,7 @@ const CourseSection = ({
   onEnroll,
   enrollingId,
   navigate,
+  loading,
 }) => (
   <div className="explore_courses">
     <div className="courses_header">
@@ -234,17 +315,21 @@ const CourseSection = ({
     </div>
 
     <div className="course-grid">
-      {courses.map((course) => (
-        <CourseCard
-          key={course.id}
-          course={course}
-          myCourseIds={myCourseIds}
-          enrollmentData={enrollmentData}
-          onEnroll={onEnroll}
-          enrollingId={enrollingId}
-          navigate={navigate}
-        />
-      ))}
+      {loading ? (
+        <p>Loading courses...</p>
+      ) : (
+        courses.map((course) => (
+          <CourseCard
+            key={course.id}
+            course={course}
+            myCourseIds={myCourseIds}
+            enrollmentData={enrollmentData}
+            onEnroll={onEnroll}
+            enrollingId={enrollingId}
+            navigate={navigate}
+          />
+        ))
+      )}
     </div>
   </div>
 );
@@ -263,7 +348,7 @@ const CourseCard = ({
 
   const progress = enrollment?.progress ?? 0;
 
-  const isEnrolled = myCourseIds.includes(course.id);
+  const isEnrolled = myCourseIds.includes(String(course.id));
 
   return (
     <div className="course-card">

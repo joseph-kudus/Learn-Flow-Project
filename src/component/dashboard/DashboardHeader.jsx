@@ -14,14 +14,17 @@ import { SlSettings } from "react-icons/sl";
 import Button from "../ui/Button/Button";
 
 import {
-  getUserNotifications,
+  subscribeToUserNotifications,
   markNotificationAsRead,
   markAllNotificationsAsRead,
 } from "../../services/notification/notificationService";
 
 function DashboardHeader({ onMenuClick }) {
   const { currentUser, userData, loading } = useAuth();
-  console.log("Current user UID:", currentUser?.uid);
+
+  /* ======================================================
+     STATE
+  ====================================================== */
 
   const [open, setOpen] = useState(false);
   const [openNotification, setOpenNotification] = useState(false);
@@ -30,22 +33,26 @@ function DashboardHeader({ onMenuClick }) {
   const [notificationFilter, setNotificationFilter] = useState("all");
   const [loadingNotifications, setLoadingNotifications] = useState(false);
 
+  /* ======================================================
+     REFS
+  ====================================================== */
+
   const dropdownRef = useRef(null);
   const notificationRef = useRef(null);
 
-  /* ==========================================
+  /* ======================================================
      CLOSE DROPDOWNS
-  ========================================== */
+  ====================================================== */
 
   useEffect(() => {
-    const closeDropdowns = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+    const closeDropdowns = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setOpen(false);
       }
 
       if (
         notificationRef.current &&
-        !notificationRef.current.contains(e.target)
+        !notificationRef.current.contains(event.target)
       ) {
         setOpenNotification(false);
       }
@@ -58,43 +65,52 @@ function DashboardHeader({ onMenuClick }) {
     };
   }, []);
 
-  /* ==========================================
-     LOAD NOTIFICATIONS
-  ========================================== */
+  /* ======================================================
+     REAL-TIME NOTIFICATIONS
+  ====================================================== */
 
   useEffect(() => {
-    const loadNotifications = async () => {
-      if (!currentUser) return;
+    if (!currentUser?.uid) {
+      setNotifications([]);
+      return;
+    }
 
-      try {
-        setLoadingNotifications(true);
+    setLoadingNotifications(true);
 
-        const data = await getUserNotifications(currentUser.uid);
-
+    const unsubscribe = subscribeToUserNotifications(
+      currentUser.uid,
+      (data) => {
         setNotifications(data);
-      } catch (error) {
-        console.error("Failed to load notifications:", error);
-      } finally {
         setLoadingNotifications(false);
-      }
+      },
+      (error) => {
+        console.error("Failed to subscribe to notifications:", error);
+
+        setNotifications([]);
+        setLoadingNotifications(false);
+      },
+    );
+
+    return () => {
+      unsubscribe();
     };
+  }, [currentUser?.uid]);
 
-    loadNotifications();
-  }, [currentUser]);
-
-  /* ==========================================
+  /* ======================================================
      LOADING / AUTH
-  ========================================== */
+  ====================================================== */
 
   if (loading) {
     return <div className="header-skeleton">Loading...</div>;
   }
 
-  if (!currentUser) return null;
+  if (!currentUser) {
+    return null;
+  }
 
-  /* ==========================================
+  /* ======================================================
      USER DATA
-  ========================================== */
+  ====================================================== */
 
   const role = (userData?.role || "learner").toLowerCase();
 
@@ -108,9 +124,9 @@ function DashboardHeader({ onMenuClick }) {
 
   const avatar = userData?.photoURL || currentUser?.photoURL || defaultAvatar;
 
-  /* ==========================================
+  /* ======================================================
      NOTIFICATION DATA
-  ========================================== */
+  ====================================================== */
 
   const unreadCount = notifications.filter(
     (notification) => !notification.read,
@@ -123,19 +139,26 @@ function DashboardHeader({ onMenuClick }) {
           (notification) => notification.type === notificationFilter,
         );
 
-  /* ==========================================
+  /* ======================================================
      NOTIFICATION HANDLERS
-  ========================================== */
+  ====================================================== */
 
   const handleNotificationClick = async (notification) => {
-    if (notification.read) return;
+    if (notification.read) {
+      return;
+    }
 
     try {
       await markNotificationAsRead(notification.id);
 
-      setNotifications((prev) =>
-        prev.map((item) =>
-          item.id === notification.id ? { ...item, read: true } : item,
+      setNotifications((previous) =>
+        previous.map((item) =>
+          item.id === notification.id
+            ? {
+                ...item,
+                read: true,
+              }
+            : item,
         ),
       );
     } catch (error) {
@@ -144,11 +167,19 @@ function DashboardHeader({ onMenuClick }) {
   };
 
   const handleMarkAllRead = async () => {
+    const unreadNotifications = notifications.filter(
+      (notification) => !notification.read,
+    );
+
+    if (unreadNotifications.length === 0) {
+      return;
+    }
+
     try {
       await markAllNotificationsAsRead(notifications);
 
-      setNotifications((prev) =>
-        prev.map((notification) => ({
+      setNotifications((previous) =>
+        previous.map((notification) => ({
           ...notification,
           read: true,
         })),
@@ -158,12 +189,16 @@ function DashboardHeader({ onMenuClick }) {
     }
   };
 
+  /* ======================================================
+     RENDER
+  ====================================================== */
+
   return (
     <header className="header">
       <div className="header-nav">
-        {/* ==========================================
+        {/* ==================================================
             LEFT SIDE
-        ========================================== */}
+        ================================================== */}
 
         <div className="header-left">
           <Button
@@ -178,14 +213,14 @@ function DashboardHeader({ onMenuClick }) {
           {(role === "student" || role === "learner") && <SearchBox />}
         </div>
 
-        {/* ==========================================
+        {/* ==================================================
             RIGHT SIDE
-        ========================================== */}
+        ================================================== */}
 
         <div className="header-right">
-          {/* ========================================
+          {/* ==================================================
               NOTIFICATIONS
-          ======================================== */}
+          ================================================== */}
 
           {role === "student" && (
             <div className="notification-wrapper" ref={notificationRef}>
@@ -196,9 +231,10 @@ function DashboardHeader({ onMenuClick }) {
                 leftIcon={<IoIosNotificationsOutline size={25} />}
                 className="notification-btn"
                 aria-label="Open notifications"
+                aria-expanded={openNotification}
                 onClick={() => {
                   setOpen(false);
-                  setOpenNotification((prev) => !prev);
+                  setOpenNotification((previous) => !previous);
                 }}
               />
 
@@ -209,6 +245,8 @@ function DashboardHeader({ onMenuClick }) {
                   {unreadCount > 99 ? "99+" : unreadCount}
                 </span>
               )}
+
+              {/* NOTIFICATION DROPDOWN */}
 
               {openNotification && (
                 <div className="notification-header-drop">
@@ -221,6 +259,7 @@ function DashboardHeader({ onMenuClick }) {
                       type="button"
                       onClick={handleMarkAllRead}
                       title="Mark all as read"
+                      disabled={unreadCount === 0}
                     >
                       <SlSettings />
                     </button>
@@ -289,9 +328,9 @@ function DashboardHeader({ onMenuClick }) {
             </div>
           )}
 
-          {/* ========================================
+          {/* ==================================================
               USER
-          ======================================== */}
+          ================================================== */}
 
           <div className="MyAcc-wraper" ref={dropdownRef}>
             <div className="myacc">
@@ -305,8 +344,8 @@ function DashboardHeader({ onMenuClick }) {
                   <img
                     src={avatar}
                     alt={displayName}
-                    onError={(e) => {
-                      e.currentTarget.src = defaultAvatar;
+                    onError={(event) => {
+                      event.currentTarget.src = defaultAvatar;
                     }}
                   />
                 </div>
@@ -319,9 +358,11 @@ function DashboardHeader({ onMenuClick }) {
                   size="sm"
                   leftIcon={<IoIosArrowDown size={28} />}
                   className="dropdown-toggle"
+                  aria-label="Open account menu"
+                  aria-expanded={open}
                   onClick={() => {
                     setOpenNotification(false);
-                    setOpen((prev) => !prev);
+                    setOpen((previous) => !previous);
                   }}
                 />
               )}

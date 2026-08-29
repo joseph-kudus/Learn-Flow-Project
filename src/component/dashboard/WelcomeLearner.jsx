@@ -1,8 +1,10 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/learnerdashboard.css";
 import StudentEnrollment from "../../component/courses/StudentEnrollment";
 import Button from "../ui/Button/Button";
+
+import { getAvailableCourses } from "../../services/allEnrollments";
 
 const WelcomeLearner = ({
   user,
@@ -12,10 +14,51 @@ const WelcomeLearner = ({
 }) => {
   const navigate = useNavigate();
 
+  /* ======================================================
+     AVAILABLE COURSES
+
+     Static courses + published Firestore courses
+  ====================================================== */
+
+  const [availableCourses, setAvailableCourses] = useState(
+    allEnrollments || [],
+  );
+
+  const [coursesLoading, setCoursesLoading] = useState(true);
+
+  useEffect(() => {
+    const loadCourses = async () => {
+      try {
+        setCoursesLoading(true);
+
+        const courses = await getAvailableCourses();
+
+        setAvailableCourses(courses);
+      } catch (error) {
+        console.error("Failed loading learner courses:", error);
+
+        // Keep static courses available if Firestore fails
+        setAvailableCourses(allEnrollments || []);
+      } finally {
+        setCoursesLoading(false);
+      }
+    };
+
+    loadCourses();
+  }, [allEnrollments]);
+
+  /* ======================================================
+     USER COURSE IDS
+  ====================================================== */
+
   const myCourseIds = useMemo(
-    () => enrollmentData.map((e) => e.courseId),
+    () => enrollmentData.map((e) => String(e.courseId)),
     [enrollmentData],
   );
+
+  /* ======================================================
+     USERNAME
+  ====================================================== */
 
   const displayUsername =
     user?.nickname ||
@@ -27,6 +70,10 @@ const WelcomeLearner = ({
   const enrolledCourses = enrollmentData.length;
 
   const isNewLearner = !enrollmentsLoading && enrolledCourses === 0;
+
+  /* ======================================================
+     COURSE STATS
+  ====================================================== */
 
   const stats = useMemo(() => {
     const completed = enrollmentData.filter((e) => e.progress >= 100).length;
@@ -43,6 +90,10 @@ const WelcomeLearner = ({
       notStarted,
     };
   }, [enrollmentData, enrolledCourses]);
+
+  /* ======================================================
+     COURSE TO CONTINUE
+  ====================================================== */
 
   const courseToContinue = useMemo(() => {
     if (!enrollmentData.length) return null;
@@ -85,21 +136,29 @@ const WelcomeLearner = ({
           </div>
         </div>
 
-        {/* Recommended Courses always visible */}
+        {/* ======================================================
+            RECOMMENDED COURSES
 
-        <StudentEnrollment
-          title="Recommended For You"
-          filter="recommended"
-          limit={6}
-          myCourseIds={myCourseIds}
-          allEnrollments={allEnrollments}
-        />
+            Static + published Firestore courses
+        ====================================================== */}
 
-        {/* Empty state */}
+        {!coursesLoading && (
+          <StudentEnrollment
+            title="Recommended For You"
+            filter="recommended"
+            limit={6}
+            myCourseIds={myCourseIds}
+            allEnrollments={availableCourses}
+          />
+        )}
+
+        {/* ======================================================
+            EMPTY STATE
+        ====================================================== */}
 
         {isNewLearner && (
           <div className="empty-state">
-            <h2>🚀 Pick Your First Course</h2>
+            <h2>Pick Your First Course</h2>
 
             <p>
               You haven't enrolled in any courses yet. Start with one of the
@@ -108,7 +167,9 @@ const WelcomeLearner = ({
           </div>
         )}
 
-        {/* My Courses */}
+        {/* ======================================================
+            MY COURSES
+        ====================================================== */}
 
         {!enrollmentsLoading && enrolledCourses > 0 && (
           <StudentEnrollment

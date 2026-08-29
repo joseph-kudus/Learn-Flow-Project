@@ -9,7 +9,7 @@ import {
   updateDoc,
   increment,
 } from "firebase/firestore";
-
+import { createNotification } from "./notification/notificationService";
 import { db } from "../config/firebaseconfig";
 import { courseImages } from "../assets/courses/courseImages";
 
@@ -388,6 +388,32 @@ export const allEnrollments = [
 ];
 
 /* ======================================================
+   GET ALL AVAILABLE COURSES
+   Static courses + published Firestore courses
+====================================================== */
+
+export const getAvailableCourses = async () => {
+  try {
+    const snapshot = await getDocs(collection(db, "courses"));
+
+    const publishedCourses = snapshot.docs
+      .map((courseDoc) => ({
+        id: courseDoc.id,
+        ...courseDoc.data(),
+        source: "firestore",
+      }))
+      .filter((course) => course.status === "published");
+
+    return [...allEnrollments, ...publishedCourses];
+  } catch (error) {
+    console.error("getAvailableCourses error:", error);
+
+    // If Firestore fails, keep existing static courses available
+    return allEnrollments;
+  }
+};
+
+/* ======================================================
    USER ENROLLMENTS (IDs ONLY)
 ====================================================== */
 
@@ -400,7 +426,7 @@ export const getUserEnrollments = async (firebaseUid) => {
     );
 
     const snapshot = await getDocs(q);
-    return snapshot.docs.map((doc) => Number(doc.data().courseId)); // 1. Only return IDs [1, 5, 11]
+    return snapshot.docs.map((doc) => String(doc.data().courseId));
   } catch (error) {
     console.error("getUserEnrollments error:", error);
     return [];
@@ -413,6 +439,7 @@ export const getUserEnrollments = async (firebaseUid) => {
 
 export const getEnrollmentDetails = async (firebaseUid) => {
   if (!firebaseUid) return [];
+
   try {
     const q = query(
       collection(db, "enrollments"),
@@ -422,9 +449,9 @@ export const getEnrollmentDetails = async (firebaseUid) => {
     const snapshot = await getDocs(q);
 
     return snapshot.docs.map((doc) => ({
-      id: doc.id, // Firestore doc id, needed for updateDoc later
+      id: doc.id,
       ...doc.data(),
-      courseId: Number(doc.data().courseId), // 2. Ensure number for Map lookups
+      courseId: String(doc.data().courseId),
     }));
   } catch (error) {
     console.error("getEnrollmentDetails error:", error);
@@ -503,40 +530,112 @@ export const getUserByEmail = async (email) => {
 ====================================================== */
 
 export const validateEnrollment = async (email, courseId) => {
-  const user = await getUserByEmail(email);
-  if (!user) return { success: false, message: "User not found" };
+  try {
+    const user = await getUserByEmail(email);
 
-  const course = allEnrollments.find((c) => Number(c.id) === Number(courseId));
-  if (!course) return { success: false, message: "Course not found" };
+    if (!user) {
+      return {
+        success: false,
+        message: "User not found",
+      };
+    }
 
-  const role = user.role || "student";
-  if (!course.allowedRoles.includes(role)) {
+    const courses = await getAvailableCourses();
+
+    const course = courses.find(
+      (course) => String(course.id) === String(courseId),
+    );
+
+    if (!course) {
+      return {
+        success: false,
+        message: "Course not found",
+      };
+    }
+
+    /* ==================================================
+       CHECK ROLE
+    ================================================== */
+
+    const role = (user.role || "student").toLowerCase();
+
+    const allowedRoles = course.allowedRoles || ["learner", "student"];
+
+    if (!allowedRoles.includes(role)) {
+      return {
+        success: false,
+        message: `${role} cannot enroll in ${course.title}`,
+      };
+    }
+
+    return {
+      success: true,
+      user,
+      course,
+    };
+  } catch (error) {
+    console.error("validateEnrollment error:", error);
+
     return {
       success: false,
-      message: `${role} cannot enroll in ${course.title}`,
+      message: "Unable to validate enrollment.",
     };
   }
-  return { success: true, user, course };
 };
 
 /* ======================================================
    ENROLL STUDENT
 ====================================================== */
 
+
 export const enrollStudent = async (firebaseUid, email, courseId) => {
   try {
+    /* ======================================================
+       VALIDATE INPUT
+    ====================================================== */
+
+    if (!firebaseUid || !email || !courseId) {
+      return {
+        success: false,
+        message: "Missing enrollment information.",
+      };
+    }
+
+    /* ======================================================
+       VALIDATE ENROLLMENT
+    ====================================================== */
+
     const validation = await validateEnrollment(email, courseId);
-    if (!validation.success) return validation;
+
+    if (!validation.success) {
+      return validation;
+    }
 
     const { user, course } = validation;
+
+    /*
+     * Always use the exact course ID returned by the course.
+     *
+     * Static course:
+     *     1, 2, 3...
+     *
+     * Firestore course:
+     *     "abc123xyz..."
+     */
+    const normalizedCourseId = String(course.id);
+
+    /* ======================================================
+       CHECK EXISTING ENROLLMENT
+    ====================================================== */
 
     const existingQ = query(
       collection(db, "enrollments"),
       where("userId", "==", firebaseUid),
-      where("courseId", "==", Number(course.id)),
+      where("courseId", "==", normalizedCourseId),
     );
 
     const snapshot = await getDocs(existingQ);
+
     if (!snapshot.empty) {
       return {
         success: false,
@@ -544,37 +643,162 @@ export const enrollStudent = async (firebaseUid, email, courseId) => {
       };
     }
 
-    await addDoc(collection(db, "enrollments"), {
+    /* ======================================================
+       CREATE ENROLLMENT
+    ====================================================== */
+
+    const enrollment = await addDoc(collection(db, "enrollments"), {
       userId: firebaseUid,
+
       userName:
         user.username ||
         user.nickname ||
         user.displayName ||
-        user.email.split("@")[0],
+        user.email?.split("@")[0] ||
+        "Student",
+
       email: user.email,
-      courseId: Number(course.id),
+
+      /*
+       * IMPORTANT:
+       * Store ALL course IDs as strings.
+       */
+      courseId: normalizedCourseId,
+
       courseTitle: course.title,
-      category: course.category,
+
+      category: course.category || "Other",
+
       progress: 0,
+
       completedLessons: 0,
+
       completedLessonIds: [],
+
       totalLessons: Array.isArray(course.lessons)
         ? course.lessons.length
-        : course.totalLessons || 0,
+        : Number(course.totalLessons) || 0,
 
       status: "active",
+
       certificateIssued: false,
+
       lastAccessed: serverTimestamp(),
+
       enrolledAt: serverTimestamp(),
     });
 
+    /* ======================================================
+       CREATE NOTIFICATION
+    ====================================================== */
+
+    await createNotification({
+      userId: firebaseUid,
+
+      title: "Enrollment Successful",
+
+      message: `You have successfully enrolled in "${course.title}".`,
+
+      type: "course",
+    });
+
+    /* ======================================================
+       SUCCESS
+    ====================================================== */
+
     return {
       success: true,
+
+      enrollmentId: enrollment.id,
+
       course,
+
       message: `Successfully enrolled in "${course.title}".`,
     };
   } catch (error) {
     console.error("enrollStudent error:", error);
-    return { success: false, message: "Enrollment failed. Please try again." };
+
+    return {
+      success: false,
+
+      message:
+        error?.message ||
+        "Enrollment failed. Please try again.",
+    };
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

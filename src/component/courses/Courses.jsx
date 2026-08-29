@@ -19,34 +19,56 @@ function Courses() {
 
     const fetchCourse = async () => {
       try {
+        /* ==================================================
+         STATIC COURSES
+      ================================================== */
+
         const staticIndex = coursesData.findIndex(
           (course) => String(course.id) === id,
         );
 
         if (staticIndex !== -1) {
           setCourse(coursesData[staticIndex]);
-
           setNextCourse(coursesData[staticIndex + 1] || null);
-
           return;
         }
 
+        /* ==================================================
+         FIRESTORE COURSES
+         Only published courses are visible to students
+      ================================================== */
+
         const firestoreCourses = await getCourses();
 
-        const currentIndex = firestoreCourses.findIndex(
+        const publishedCourses = firestoreCourses.filter(
+          (course) => course.status === "published",
+        );
+
+        /* ==================================================
+         FIND CURRENT COURSE
+      ================================================== */
+
+        const currentIndex = publishedCourses.findIndex(
           (course) => course.id === id,
         );
 
         if (currentIndex === -1) {
           setCourse(null);
+          setNextCourse(null);
           return;
         }
 
-        setCourse(firestoreCourses[currentIndex]);
+        /* ==================================================
+         CURRENT + NEXT COURSE
+      ================================================== */
 
-        setNextCourse(firestoreCourses[currentIndex + 1] || null);
+        setCourse(publishedCourses[currentIndex]);
+
+        setNextCourse(publishedCourses[currentIndex + 1] || null);
       } catch (error) {
         console.error("Error loading course:", error);
+        setCourse(null);
+        setNextCourse(null);
       } finally {
         setLoading(false);
       }

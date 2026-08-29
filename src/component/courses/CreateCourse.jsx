@@ -139,16 +139,12 @@ function CreateCourse() {
 
       await createCourse({
         title: formData.title.trim(),
-
         description: formData.description.trim(),
-
         price: Number(formData.price) || 0,
-
         imageUrl,
-
         author: userData?.username || userData?.email,
-
         authorId: currentUser.uid,
+        status: "draft",
       });
 
       navigate("/dashboard/coursebuilder");

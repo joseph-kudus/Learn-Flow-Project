@@ -57,6 +57,7 @@ export const createCourse = async (courseData) => {
   try {
     const courseRef = await addDoc(collection(db, "courses"), {
       ...courseData,
+      status: "draft",
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     });
@@ -95,22 +96,112 @@ export const deleteCourse = async (courseId) => {
   }
 };
 
+
+
+
+/**
+ * Get courses created by an instructor
+ */
 export const getInstructorCourses = async (userId) => {
   try {
+    if (!userId) {
+      return [];
+    }
+
     const q = query(
       collection(db, "courses"),
       where("authorId", "==", userId),
-      orderBy("createdAt", "desc"),
     );
 
     const snapshot = await getDocs(q);
 
-    return snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
+    const courses = snapshot.docs.map((courseDoc) => ({
+      id: courseDoc.id,
+      ...courseDoc.data(),
     }));
+
+    console.log("Instructor UID:", userId);
+    console.log("Instructor courses:", courses);
+
+    return courses;
   } catch (error) {
-    console.error("Error getting instructor courses:", error);
+    console.error(
+      "Error getting instructor courses:",
+      error,
+    );
+
+    throw error;
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Publish an instructor course
+ */
+export const publishCourse = async (courseId, instructorId) => {
+  try {
+    if (!courseId) {
+      throw new Error("Course ID is required.");
+    }
+
+    if (!instructorId) {
+      throw new Error("Instructor ID is required.");
+    }
+
+    const courseRef = doc(db, "courses", courseId);
+
+    const courseSnapshot = await getDoc(courseRef);
+
+    if (!courseSnapshot.exists()) {
+      throw new Error("Course not found.");
+    }
+
+    const course = courseSnapshot.data();
+
+    // Make sure the instructor owns the course
+    if (course.authorId !== instructorId) {
+      throw new Error("You are not authorized to publish this course.");
+    }
+
+    // Prevent publishing an already published course
+    if (course.status === "published") {
+      return {
+        success: false,
+        message: "Course is already published.",
+      };
+    }
+
+    await updateDoc(courseRef, {
+      status: "published",
+      updatedAt: serverTimestamp(),
+    });
+
+    return {
+      success: true,
+      message: `"${course.title}" has been published successfully.`,
+      course: {
+        id: courseId,
+        ...course,
+        status: "published",
+      },
+    };
+  } catch (error) {
+    console.error("Error publishing course:", error);
 
     throw error;
   }

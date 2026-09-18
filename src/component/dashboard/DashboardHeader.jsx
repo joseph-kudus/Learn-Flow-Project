@@ -1,5 +1,5 @@
 import { useAuth } from "../../context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 
 import defaultAvatar from "../../assets/images/default.png";
@@ -142,6 +142,7 @@ const formatNotificationDate = (dateKey) => {
 
 function DashboardHeader({ onMenuClick }) {
   const { currentUser, userData, loading } = useAuth();
+  const navigate = useNavigate();
 
   /* ======================================================
      STATE
@@ -257,24 +258,23 @@ function DashboardHeader({ onMenuClick }) {
   ).length;
 
   const courseCount = notifications.filter(
-    (notification) => notification.type === "course",
+    (notification) => !notification.read && notification.type === "course",
   ).length;
 
   const updateCount = notifications.filter(
-    (notification) => notification.type === "update",
+    (notification) => !notification.read && notification.type === "update",
   ).length;
-
   /* ======================================================
      FILTER NOTIFICATIONS
   ====================================================== */
 
   const filteredNotifications =
     notificationFilter === "all"
-      ? notifications
+      ? notifications.filter((notification) => !notification.read)
       : notifications.filter(
-          (notification) => notification.type === notificationFilter,
+          (notification) =>
+            !notification.read && notification.type === notificationFilter,
         );
-
   /* ======================================================
      LIMIT / EXPAND NOTIFICATIONS
   ====================================================== */
@@ -313,28 +313,34 @@ function DashboardHeader({ onMenuClick }) {
   };
 
   const handleNotificationClick = async (notification) => {
-    if (notification.read) {
-      return;
-    }
-
     try {
-      await markNotificationAsRead(notification.id);
+      if (!notification.read) {
+        await markNotificationAsRead(notification.id);
 
-      setNotifications((previous) =>
-        previous.map((item) =>
-          item.id === notification.id
-            ? {
-                ...item,
-                read: true,
-              }
-            : item,
-        ),
-      );
+        setNotifications((previous) =>
+          previous.filter((item) => item.id !== notification.id),
+        );
+      }
+
+      setOpenNotification(false);
+
+      // 1. Direct destination
+      if (notification.link) {
+        navigate(notification.link);
+        return;
+      }
+
+      // 2. Course notification fallback
+      if (notification.type === "course" && notification.courseId) {
+        navigate(`/dashboard/course/${notification.courseId}`);
+        return;
+      }
+
+      console.log("Notification has no destination:", notification);
     } catch (error) {
-      console.error("Failed to mark notification as read:", error);
+      console.error("Failed to handle notification click:", error);
     }
   };
-
   const handleMarkAllRead = async () => {
     if (!currentUser?.uid) {
       console.error("Cannot mark notifications as read: no user.");
@@ -444,7 +450,7 @@ function DashboardHeader({ onMenuClick }) {
                       onClick={() => setNotificationFilter("all")}
                     >
                       <span>All</span>
-                      <strong>{notifications.length}</strong>
+                      <strong>{unreadCount}</strong>
                     </Button>
 
                     <Button

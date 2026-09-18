@@ -38,6 +38,8 @@ export const createNotification = async ({
   title,
   message,
   type = "update",
+  link = "",
+  courseId = null,
 }) => {
   if (!userId) {
     throw new Error("Notification userId is required.");
@@ -60,6 +62,16 @@ export const createNotification = async ({
       read: false,
       createdAt: serverTimestamp(),
     };
+
+    // Add destination only when provided
+    if (link) {
+      notificationData.link = link;
+    }
+
+    // Add course ID only for course-related notifications
+    if (courseId !== null && courseId !== undefined) {
+      notificationData.courseId = courseId;
+    }
 
     const notificationDoc = await addDoc(notificationsRef, notificationData);
 

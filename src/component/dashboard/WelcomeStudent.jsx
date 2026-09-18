@@ -43,16 +43,9 @@ const WelcomeStudent = ({
       try {
         const courses = await getCourses();
 
-        const publishedCourses = courses.filter(
-          (course) => course.status === "published",
-        );
-
-        setFirestoreCourses(publishedCourses);
+        setFirestoreCourses(courses);
       } catch (error) {
-        console.error(
-          "Failed to load Firestore courses:",
-          error,
-        );
+        console.error("Failed to load Firestore courses:", error);
 
         setFirestoreCourses([]);
       }

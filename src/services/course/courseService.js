@@ -9,7 +9,6 @@ import {
   serverTimestamp,
   query,
   where,
-  orderBy,
 } from "firebase/firestore";
 
 import { db } from "../../config/firebaseconfig";
@@ -127,11 +126,12 @@ export const getInstructorCourses = async (userId) => {
   }
 };
 
+
 /**
  * Publish an instructor course
  *
  * Publishes the course and sends a course notification
- * to every student.
+ * to every student with a direct link to the course.
  */
 export const publishCourse = async (courseId, instructorId) => {
   try {
@@ -196,15 +196,29 @@ export const publishCourse = async (courseId, instructorId) => {
       const studentsSnapshot = await getDocs(studentsQuery);
 
       /* ==================================================
-         CREATE NOTIFICATION FOR EACH STUDENT
+         NOTIFICATION DATA
       ================================================== */
 
       const instructorName =
-        course.author?.trim() || course.instructorName?.trim() || "Instructor";
+        course.author?.trim() ||
+        course.instructorName?.trim() ||
+        "Instructor";
 
       const courseTitle = course.title?.trim() || "New Course";
 
       const notificationMessage = `Published a new course: "${courseTitle}"`;
+
+      /*
+       * Direct route to the course.
+       *
+       * Change this route only if your actual
+       * course detail route is different.
+       */
+      const courseLink = `/dashboard/course/${courseId}`;
+
+      /* ==================================================
+         CREATE NOTIFICATION FOR EACH STUDENT
+      ================================================== */
 
       await Promise.all(
         studentsSnapshot.docs.map(async (studentDoc) => {
@@ -221,6 +235,10 @@ export const publishCourse = async (courseId, instructorId) => {
             title: instructorName,
             message: notificationMessage,
             type: "course",
+
+            // Navigation data
+            courseId: courseId,
+            link: courseLink,
           });
         }),
       );

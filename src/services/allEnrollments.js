@@ -700,6 +700,10 @@ export const enrollStudent = async (firebaseUid, email, courseId) => {
       message: `You have successfully enrolled in "${course.title}".`,
 
       type: "course",
+
+      courseId: normalizedCourseId,
+
+      link: `/dashboard/course/${normalizedCourseId}`,
     });
 
     /* ======================================================

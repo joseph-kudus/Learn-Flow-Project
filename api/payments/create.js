@@ -82,12 +82,20 @@ export default async function handler(req, res) {
     const customerData = await customerResponse.json();
 
     if (!customerResponse.ok || customerData.status !== "success") {
-      console.error("Flutterwave customer creation error:", customerData);
+      console.error(
+        "Flutterwave customer creation error:",
+        customerResponse.status,
+        customerData,
+      );
 
       return res.status(400).json({
         success: false,
         message:
-          customerData.message || "Unable to create Flutterwave customer.",
+          customerData.message ||
+          customerData.error?.message ||
+          "Unable to create Flutterwave customer.",
+        flutterwaveStatus: customerData.status || "unknown",
+        httpStatus: customerResponse.status,
       });
     }
 

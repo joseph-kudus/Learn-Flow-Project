@@ -229,16 +229,14 @@ const ProfileSetting = () => {
                   alt="avatar"
                   onError={(e) => (e.currentTarget.src = defaultAvatar)}
                 />
-
                 <div className="image_deta">
                   <p>We only support JPG, JPEG or PNG files</p>
-
                   <div className="btn-btn">
                     <input
                       ref={fileInputRef}
                       id="photo"
                       type="file"
-                      accept="image/*"
+                      accept="image/jpeg,image/jpg,image/png"
                       hidden
                       onChange={handleAvatarChange}
                     />
@@ -247,8 +245,7 @@ const ProfileSetting = () => {
                       type="button"
                       variant="primary"
                       loading={uploading}
-                      ref={fileInputRef}
-                      id="photo"
+                      onClick={() => fileInputRef.current?.click()}
                     >
                       Upload your photo
                     </Button>
@@ -257,6 +254,7 @@ const ProfileSetting = () => {
                       type="button"
                       variant="outline"
                       onClick={deleteAvatar}
+                      disabled={uploading}
                     >
                       Delete image
                     </Button>

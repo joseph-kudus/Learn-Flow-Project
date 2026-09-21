@@ -17,6 +17,10 @@ export default async function handler(req, res) {
       userId,
     } = req.body;
 
+    // ==========================================
+    // Validate payment information
+    // ==========================================
+
     if (!amount || !email || !name || !courseId || !courseTitle || !userId) {
       return res.status(400).json({
         success: false,
@@ -57,25 +61,17 @@ export default async function handler(req, res) {
     const accessToken = tokenData.access_token;
 
     // ==========================================
-    // 2. Create Flutterwave customer
+    // 2. Find existing Flutterwave customer
     // ==========================================
 
     const customerResponse = await fetch(
       "https://developersandbox-api.flutterwave.com/customers",
       {
-        method: "POST",
+        method: "GET",
         headers: {
           Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
-          "X-Trace-Id": crypto.randomUUID(),
-          "X-Idempotency-Key": crypto.randomUUID(),
         },
-        body: JSON.stringify({
-          email,
-          name: {
-            first: name,
-          },
-        }),
       },
     );
 
@@ -83,7 +79,7 @@ export default async function handler(req, res) {
 
     if (!customerResponse.ok || customerData.status !== "success") {
       console.error(
-        "Flutterwave customer creation error:",
+        "Flutterwave customer lookup error:",
         customerResponse.status,
         customerData,
       );
@@ -91,19 +87,74 @@ export default async function handler(req, res) {
       return res.status(400).json({
         success: false,
         message:
-          customerData.message ||
-          customerData.error?.message ||
-          "Unable to create Flutterwave customer.",
+          customerData.message || "Unable to retrieve Flutterwave customers.",
         flutterwaveStatus: customerData.status || "unknown",
         httpStatus: customerResponse.status,
       });
     }
 
-    const customer = customerData.data;
+    const customers = customerData.data || [];
+
+    let customer = customers.find(
+      (item) => item.email?.toLowerCase() === email.toLowerCase(),
+    );
+
+    // ==========================================
+    // 3. Create customer if one does not exist
+    // ==========================================
+
+    if (!customer) {
+      const createCustomerResponse = await fetch(
+        "https://developersandbox-api.flutterwave.com/customers",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+            "X-Trace-Id": crypto.randomUUID(),
+            "X-Idempotency-Key": crypto.randomUUID(),
+          },
+          body: JSON.stringify({
+            email,
+            name: {
+              first: name,
+            },
+          }),
+        },
+      );
+
+      const createCustomerData = await createCustomerResponse.json();
+
+      if (
+        !createCustomerResponse.ok ||
+        createCustomerData.status !== "success"
+      ) {
+        console.error(
+          "Flutterwave customer creation error:",
+          createCustomerResponse.status,
+          createCustomerData,
+        );
+
+        return res.status(400).json({
+          success: false,
+          message:
+            createCustomerData.message ||
+            "Unable to create Flutterwave customer.",
+          flutterwaveStatus: createCustomerData.status || "unknown",
+          httpStatus: createCustomerResponse.status,
+        });
+      }
+
+      customer = createCustomerData.data;
+    }
+
+    // ==========================================
+    // 4. Return customer information
+    // ==========================================
 
     return res.status(200).json({
       success: true,
-      message: "Flutterwave customer created successfully.",
+      message: "Flutterwave customer ready.",
       customerId: customer.id,
       amount: Number(amount),
       currency,

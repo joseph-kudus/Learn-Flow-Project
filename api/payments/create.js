@@ -5,10 +5,6 @@ export default async function handler(req, res) {
       message: "Method not allowed",
     });
   }
-  return res.status(200).json({
-    success: true,
-    version: "flutterwave-v4-test",
-  });
 
   try {
     const {
@@ -21,7 +17,14 @@ export default async function handler(req, res) {
       userId,
     } = req.body;
 
-    if (!amount || !email || !name || !courseId || !courseTitle || !userId) {
+    if (
+      !amount ||
+      !email ||
+      !name ||
+      !courseId ||
+      !courseTitle ||
+      !userId
+    ) {
       return res.status(400).json({
         success: false,
         message: "Missing payment information.",

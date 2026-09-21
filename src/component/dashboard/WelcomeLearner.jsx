@@ -5,6 +5,7 @@ import StudentEnrollment from "../../component/courses/StudentEnrollment";
 import Button from "../ui/Button/Button";
 
 import { getAvailableCourses } from "../../services/allEnrollments";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
 const WelcomeLearner = ({
   user,
@@ -25,27 +26,6 @@ const WelcomeLearner = ({
   );
 
   const [coursesLoading, setCoursesLoading] = useState(true);
-
-  useEffect(() => {
-    const loadCourses = async () => {
-      try {
-        setCoursesLoading(true);
-
-        const courses = await getAvailableCourses();
-
-        setAvailableCourses(courses);
-      } catch (error) {
-        console.error("Failed loading learner courses:", error);
-
-        // Keep static courses available if Firestore fails
-        setAvailableCourses(allEnrollments || []);
-      } finally {
-        setCoursesLoading(false);
-      }
-    };
-
-    loadCourses();
-  }, [allEnrollments]);
 
   /* ======================================================
      USER COURSE IDS
@@ -72,8 +52,8 @@ const WelcomeLearner = ({
   const isNewLearner = !enrollmentsLoading && enrolledCourses === 0;
 
   /* ======================================================
-     COURSE STATS
-  ====================================================== */
+  COURSE STATS
+====================================================== */
 
   const stats = useMemo(() => {
     const completed = enrollmentData.filter((e) => e.progress >= 100).length;
@@ -90,6 +70,63 @@ const WelcomeLearner = ({
       notStarted,
     };
   }, [enrollmentData, enrolledCourses]);
+
+  /* ======================================================
+  COURSE COMPLETION CHART
+====================================================== */
+
+  const completionData = useMemo(() => {
+    const total = enrolledCourses;
+
+    if (total === 0) {
+      return [
+        {
+          name: "Not Started",
+          value: 100,
+          count: 0,
+        },
+      ];
+    }
+
+    return [
+      {
+        name: "Completed",
+        value: Math.round((stats.completed / total) * 100),
+        count: stats.completed,
+      },
+      {
+        name: "In Progress",
+        value: Math.round((stats.inProgress / total) * 100),
+        count: stats.inProgress,
+      },
+      {
+        name: "Not Started",
+        value: Math.round((stats.notStarted / total) * 100),
+        count: stats.notStarted,
+      },
+    ];
+  }, [stats, enrolledCourses]);
+
+  useEffect(() => {
+    const loadCourses = async () => {
+      try {
+        setCoursesLoading(true);
+
+        const courses = await getAvailableCourses();
+
+        setAvailableCourses(courses);
+      } catch (error) {
+        console.error("Failed loading learner courses:", error);
+
+        // Keep static courses available if Firestore fails
+        setAvailableCourses(allEnrollments || []);
+      } finally {
+        setCoursesLoading(false);
+      }
+    };
+
+    loadCourses();
+  }, [allEnrollments]);
 
   /* ======================================================
      COURSE TO CONTINUE
@@ -185,19 +222,68 @@ const WelcomeLearner = ({
         <div className="overview">
           <h1>Course Completion Overview</h1>
 
-          <ol>
-            <li>
-              <strong>Completed:</strong> {stats.completed}
-            </li>
+          <div className="completion-chart">
+            <div className="chart-wrapper">
+              <ResponsiveContainer width="100%" height={220}>
+                <PieChart>
+                  <Pie
+                    data={completionData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={55}
+                    outerRadius={90}
+                    paddingAngle={6}
+                    stroke="none"
+                  >
+                    {completionData.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={
+                          entry.name === "Completed"
+                            ? "#4CAF50"
+                            : entry.name === "In Progress"
+                              ? "#F7CA4E"
+                              : "#D9DDE5"
+                        }
+                      />
+                    ))}
+                  </Pie>
 
-            <li>
-              <strong>In Progress:</strong> {stats.inProgress}
-            </li>
+                  <Tooltip formatter={(value, name) => [`${value}%`, name]} />
+                </PieChart>
+              </ResponsiveContainer>
 
-            <li>
-              <strong>Not Started:</strong> {stats.notStarted}
-            </li>
-          </ol>
+              <div className="chart-center">
+                <strong>
+                  {enrolledCourses > 0
+                    ? Math.round((stats.completed / enrolledCourses) * 100)
+                    : 0}
+                  %
+                </strong>
+                <span>Completed</span>
+              </div>
+            </div>
+
+            <div className="completion-legend">
+              {completionData.map((item) => (
+                <div className="completion-item" key={item.name}>
+                  <div className="completion-label">
+                    <span
+                      className={`completion-dot ${item.name
+                        .toLowerCase()
+                        .replace(" ", "-")}`}
+                    />
+
+                    <span>{item.name}</span>
+                  </div>
+
+                  <strong>{item.value}%</strong>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="achievement">
@@ -224,6 +310,6 @@ const WelcomeLearner = ({
       </div>
     </div>
   );
-};
+};;
 
 export default WelcomeLearner;

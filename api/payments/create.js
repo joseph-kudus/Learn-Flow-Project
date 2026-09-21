@@ -24,54 +24,41 @@ export default async function handler(req, res) {
       });
     }
 
-    const txRef = `LF-${courseId}-${userId}-${Date.now()}`;
-
-    const response = await fetch("https://api.flutterwave.com/v3/payments", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.FLW_SECRET_KEY}`,
-        "Content-Type": "application/json",
+    // 1. Get Flutterwave v4 access token
+    const tokenResponse = await fetch(
+      "https://idp.flutterwave.com/realms/flutterwave/protocol/openid-connect/token",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          client_id: process.env.FLW_CLIENT_ID,
+          client_secret: process.env.FLW_CLIENT_SECRET,
+          grant_type: "client_credentials",
+        }),
       },
-      body: JSON.stringify({
-        tx_ref: txRef,
-        amount: Number(amount),
-        currency,
+    );
 
-        redirect_url: `${process.env.APP_URL}/#/payment/callback`,
+    const tokenData = await tokenResponse.json();
 
-        customer: {
-          email,
-          name,
-        },
+    if (!tokenResponse.ok || !tokenData.access_token) {
+      console.error("Flutterwave token error:", tokenData);
 
-        customizations: {
-          title: "LearnFlow",
-          description: `Payment for ${courseTitle}`,
-        },
-
-        meta: {
-          userId,
-          courseId,
-          courseTitle,
-        },
-      }),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok || data.status !== "success") {
-      console.error("Flutterwave payment error:", data);
-
-      return res.status(400).json({
+      return res.status(401).json({
         success: false,
-        message: data.message || "Unable to create payment.",
+        message: "Unable to authenticate with Flutterwave.",
       });
     }
 
+    const accessToken = tokenData.access_token;
+
+    // 2. Temporary response for authentication testing
     return res.status(200).json({
       success: true,
-      paymentLink: data.data.link,
-      txRef,
+      message: "Flutterwave authentication successful.",
+      expiresIn: tokenData.expires_in,
+      hasAccessToken: Boolean(accessToken),
     });
   } catch (error) {
     console.error("Create payment error:", error);

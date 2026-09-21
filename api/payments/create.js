@@ -5,6 +5,10 @@ export default async function handler(req, res) {
       message: "Method not allowed",
     });
   }
+  return res.status(200).json({
+    success: true,
+    version: "flutterwave-v4-test",
+  });
 
   try {
     const {

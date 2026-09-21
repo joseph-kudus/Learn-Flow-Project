@@ -17,21 +17,17 @@ export default async function handler(req, res) {
       userId,
     } = req.body;
 
-    if (
-      !amount ||
-      !email ||
-      !name ||
-      !courseId ||
-      !courseTitle ||
-      !userId
-    ) {
+    if (!amount || !email || !name || !courseId || !courseTitle || !userId) {
       return res.status(400).json({
         success: false,
         message: "Missing payment information.",
       });
     }
 
+    // ==========================================
     // 1. Get Flutterwave v4 access token
+    // ==========================================
+
     const tokenResponse = await fetch(
       "https://idp.flutterwave.com/realms/flutterwave/protocol/openid-connect/token",
       {
@@ -60,12 +56,52 @@ export default async function handler(req, res) {
 
     const accessToken = tokenData.access_token;
 
-    // 2. Temporary response for authentication testing
+    // ==========================================
+    // 2. Create Flutterwave customer
+    // ==========================================
+
+    const customerResponse = await fetch(
+      "https://developersandbox-api.flutterwave.com/customers",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+          "X-Trace-Id": crypto.randomUUID(),
+          "X-Idempotency-Key": crypto.randomUUID(),
+        },
+        body: JSON.stringify({
+          email,
+          name: {
+            first: name,
+          },
+        }),
+      },
+    );
+
+    const customerData = await customerResponse.json();
+
+    if (!customerResponse.ok || customerData.status !== "success") {
+      console.error("Flutterwave customer creation error:", customerData);
+
+      return res.status(400).json({
+        success: false,
+        message:
+          customerData.message || "Unable to create Flutterwave customer.",
+      });
+    }
+
+    const customer = customerData.data;
+
     return res.status(200).json({
       success: true,
-      message: "Flutterwave authentication successful.",
-      expiresIn: tokenData.expires_in,
-      hasAccessToken: Boolean(accessToken),
+      message: "Flutterwave customer created successfully.",
+      customerId: customer.id,
+      amount: Number(amount),
+      currency,
+      courseId,
+      courseTitle,
+      userId,
     });
   } catch (error) {
     console.error("Create payment error:", error);

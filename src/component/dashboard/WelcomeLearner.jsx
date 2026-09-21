@@ -163,22 +163,35 @@ const WelcomeLearner = ({
               variant="primary"
               className="welcome-text-btn"
               onClick={() =>
-                courseToContinue
-                  ? navigate(`/learn/${courseToContinue.courseId}`)
-                  : navigate("/catalog")
+                isNewLearner
+                  ? navigate("/catalog")
+                  : courseToContinue
+                    ? navigate(`/learn/${courseToContinue.courseId}`)
+                    : navigate("/catalog")
               }
             >
-              {courseToContinue ? "Continue Learning" : "Browse All Courses"}
+              {isNewLearner ? "Join Now" : "Continue Learning"}
             </Button>
           </div>
         </div>
 
         {/* ======================================================
+            MY COURSES
+        ====================================================== */}
+
+        {!enrollmentsLoading && enrolledCourses > 0 && (
+          <StudentEnrollment
+            title="My Courses"
+            filter="enrolled"
+            myCourseIds={myCourseIds}
+            enrollmentData={enrollmentData}
+          />
+        )}
+        {/* ======================================================
             RECOMMENDED COURSES
 
             Static + published Firestore courses
         ====================================================== */}
-
         {!coursesLoading && (
           <StudentEnrollment
             title="Recommended For You"
@@ -202,19 +215,6 @@ const WelcomeLearner = ({
               recommendations above.
             </p>
           </div>
-        )}
-
-        {/* ======================================================
-            MY COURSES
-        ====================================================== */}
-
-        {!enrollmentsLoading && enrolledCourses > 0 && (
-          <StudentEnrollment
-            title="My Courses"
-            filter="enrolled"
-            myCourseIds={myCourseIds}
-            enrollmentData={enrollmentData}
-          />
         )}
       </div>
 
@@ -310,6 +310,6 @@ const WelcomeLearner = ({
       </div>
     </div>
   );
-};;
+};
 
 export default WelcomeLearner;

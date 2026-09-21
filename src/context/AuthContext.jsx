@@ -34,7 +34,7 @@ export function AuthProvider({ children }) {
   const [error, setError] = useState("");
 
   // Creates new user in Firebase Auth + Firestore doc
-  async function signup(email, password, username, role = "student") {
+  async function signup(email, password, username, role = "learner") {
     setError("");
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
@@ -106,7 +106,7 @@ export function AuthProvider({ children }) {
               nickname: user.displayName || "",
               photoURL: user.photoURL || "",
               emailVerified: user.emailVerified,
-              role: "student",
+              role: "learner",
               createdAt: serverTimestamp(),
             });
           }

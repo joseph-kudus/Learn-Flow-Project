@@ -21,7 +21,7 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const { signup, sendEmailVerification } = useAuth();
+  const { signup } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -56,19 +56,15 @@ export default function Register() {
     try {
       setLoading(true);
 
-      const userCredential = await signup(cleanEmail, password, cleanUsername);
+      // signup() already creates the account,
+      // saves the learner role, and sends the verification email.
+      await signup(cleanEmail, password, cleanUsername);
 
-      if (sendEmailVerification) {
-        await sendEmailVerification(userCredential.user);
+      setSuccess("Account created! Check your email to verify your account.");
 
-        setSuccess("Account created! Check your email to verify your account.");
-
-        setTimeout(() => {
-          navigate("/login");
-        }, 3000);
-      } else {
-        navigate("/dashboard");
-      }
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
     } catch (err) {
       setError(err.message || "Failed to create account. Please try again");
     } finally {

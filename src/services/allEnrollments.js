@@ -4,12 +4,13 @@ import {
   where,
   getDocs,
   addDoc,
-  serverTimestamp,
-  doc,
   updateDoc,
-  increment,
+  doc,
+  serverTimestamp,
 } from "firebase/firestore";
+
 import { createNotification } from "./notification/notificationService";
+import { updateUserRole } from "./userService";
 import { db } from "../config/firebaseconfig";
 import { courseImages } from "../assets/courses/courseImages";
 
@@ -177,6 +178,7 @@ export const allEnrollments = [
     rating: 4.7,
     allowedRoles: ["learner", "student"],
   },
+
   {
     id: 6,
     title: "Ethical Hacking",
@@ -190,7 +192,7 @@ export const allEnrollments = [
         title: "DEFINING ETHICAL HACKING",
         video: "",
         notes:
-          "Ethical hackers are usually security professionals or network penetration testers who use their hacking skills and toolsets for defensive and protective purposes. ● Test their network and systems        security for vulnerabilities using the same tools that a hacker might use to compromise the network. ● Any computer professional can learn the skills of ethical hacking",
+          "Ethical hackers are usually security professionals or network penetration testers who use their hacking skills and toolsets for defensive and protective purposes. ● Test their network and systems security for vulnerabilities using the same tools that a hacker might use to compromise the network. ● Any computer professional can learn the skills of ethical hacking",
         assignment: "..",
       },
       {
@@ -227,6 +229,7 @@ export const allEnrollments = [
     rating: 4.9,
     allowedRoles: ["learner", "student"],
   },
+
   {
     id: 7,
     title: "Intro to C++",
@@ -264,6 +267,7 @@ export const allEnrollments = [
     rating: 4.6,
     allowedRoles: ["learner", "student"],
   },
+
   {
     id: 8,
     title: "Intro to Programming",
@@ -283,6 +287,7 @@ export const allEnrollments = [
     rating: 4.5,
     allowedRoles: ["learner", "student"],
   },
+
   {
     id: 9,
     title: "Intro to C",
@@ -302,6 +307,7 @@ export const allEnrollments = [
     rating: 4.6,
     allowedRoles: ["learner", "student"],
   },
+
   {
     id: 10,
     title: "JavaScript for Frontend Developers",
@@ -321,6 +327,7 @@ export const allEnrollments = [
     rating: 4.9,
     allowedRoles: ["learner", "student"],
   },
+
   {
     id: 11,
     title: "React JS Fundamentals",
@@ -340,6 +347,7 @@ export const allEnrollments = [
     rating: 4.9,
     allowedRoles: ["learner", "student"],
   },
+
   {
     id: 12,
     title: "Python for Web Development",
@@ -359,6 +367,7 @@ export const allEnrollments = [
     rating: 4.8,
     allowedRoles: ["learner", "student"],
   },
+
   {
     id: 13,
     title: "Beginner's Guide to Software Engineering",
@@ -408,7 +417,6 @@ export const getAvailableCourses = async () => {
   } catch (error) {
     console.error("getAvailableCourses error:", error);
 
-    // If Firestore fails, keep existing static courses available
     return allEnrollments;
   }
 };
@@ -419,6 +427,7 @@ export const getAvailableCourses = async () => {
 
 export const getUserEnrollments = async (firebaseUid) => {
   if (!firebaseUid) return [];
+
   try {
     const q = query(
       collection(db, "enrollments"),
@@ -426,7 +435,10 @@ export const getUserEnrollments = async (firebaseUid) => {
     );
 
     const snapshot = await getDocs(q);
-    return snapshot.docs.map((doc) => String(doc.data().courseId));
+
+    return snapshot.docs.map((enrollmentDoc) =>
+      String(enrollmentDoc.data().courseId),
+    );
   } catch (error) {
     console.error("getUserEnrollments error:", error);
     return [];
@@ -448,10 +460,10 @@ export const getEnrollmentDetails = async (firebaseUid) => {
 
     const snapshot = await getDocs(q);
 
-    return snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-      courseId: String(doc.data().courseId),
+    return snapshot.docs.map((enrollmentDoc) => ({
+      id: enrollmentDoc.id,
+      ...enrollmentDoc.data(),
+      courseId: String(enrollmentDoc.data().courseId),
     }));
   } catch (error) {
     console.error("getEnrollmentDetails error:", error);
@@ -460,8 +472,9 @@ export const getEnrollmentDetails = async (firebaseUid) => {
 };
 
 /* ======================================================
-   MARK LESSON COMPLETE - NEW HELPER FOR CoursePlayer
+   MARK LESSON COMPLETE
 ====================================================== */
+
 export const markLessonComplete = async (
   enrollmentDocId,
   lessonIndex,
@@ -513,16 +526,24 @@ export const markLessonComplete = async (
     };
   }
 };
+
 /* ======================================================
    GET USER
 ====================================================== */
 
 export const getUserByEmail = async (email) => {
   if (!email) return null;
+
   const q = query(collection(db, "users"), where("email", "==", email));
+
   const snapshot = await getDocs(q);
+
   if (snapshot.empty) return null;
-  return { id: snapshot.docs[0].id, ...snapshot.docs[0].data() };
+
+  return {
+    id: snapshot.docs[0].id,
+    ...snapshot.docs[0].data(),
+  };
 };
 
 /* ======================================================
@@ -557,7 +578,7 @@ export const validateEnrollment = async (email, courseId) => {
        CHECK ROLE
     ================================================== */
 
-    const role = (user.role || "student").toLowerCase();
+    const role = (user.role || "learner").toLowerCase();
 
     const allowedRoles = course.allowedRoles || ["learner", "student"];
 
@@ -587,23 +608,14 @@ export const validateEnrollment = async (email, courseId) => {
    ENROLL STUDENT
 ====================================================== */
 
-
 export const enrollStudent = async (firebaseUid, email, courseId) => {
   try {
-    /* ======================================================
-       VALIDATE INPUT
-    ====================================================== */
-
     if (!firebaseUid || !email || !courseId) {
       return {
         success: false,
         message: "Missing enrollment information.",
       };
     }
-
-    /* ======================================================
-       VALIDATE ENROLLMENT
-    ====================================================== */
 
     const validation = await validateEnrollment(email, courseId);
 
@@ -612,21 +624,11 @@ export const enrollStudent = async (firebaseUid, email, courseId) => {
     }
 
     const { user, course } = validation;
-
-    /*
-     * Always use the exact course ID returned by the course.
-     *
-     * Static course:
-     *     1, 2, 3...
-     *
-     * Firestore course:
-     *     "abc123xyz..."
-     */
     const normalizedCourseId = String(course.id);
 
-    /* ======================================================
+    /* ==================================================
        CHECK EXISTING ENROLLMENT
-    ====================================================== */
+    ================================================== */
 
     const existingQ = query(
       collection(db, "enrollments"),
@@ -643,80 +645,59 @@ export const enrollStudent = async (firebaseUid, email, courseId) => {
       };
     }
 
-    /* ======================================================
+    /* ==================================================
        CREATE ENROLLMENT
-    ====================================================== */
+    ================================================== */
 
     const enrollment = await addDoc(collection(db, "enrollments"), {
       userId: firebaseUid,
-
       userName:
         user.username ||
         user.nickname ||
         user.displayName ||
         user.email?.split("@")[0] ||
         "Student",
-
       email: user.email,
-
-      /*
-       * IMPORTANT:
-       * Store ALL course IDs as strings.
-       */
       courseId: normalizedCourseId,
-
       courseTitle: course.title,
-
       category: course.category || "Other",
-
       progress: 0,
-
       completedLessons: 0,
-
       completedLessonIds: [],
-
       totalLessons: Array.isArray(course.lessons)
         ? course.lessons.length
         : Number(course.totalLessons) || 0,
-
       status: "active",
-
       certificateIssued: false,
-
       lastAccessed: serverTimestamp(),
-
       enrolledAt: serverTimestamp(),
     });
 
-    /* ======================================================
-       CREATE NOTIFICATION
-    ====================================================== */
+    /* ==================================================
+       UPGRADE LEARNER → STUDENT
+    ================================================== */
+
+    if (user.role === "learner" && user.id === firebaseUid) {
+      await updateUserRole(firebaseUid, "student");
+    }
+
+    /* ==================================================
+       CREATE ENROLLMENT NOTIFICATION
+    ================================================== */
 
     await createNotification({
       userId: firebaseUid,
-
       title: "Enrollment Successful",
-
       message: `You have successfully enrolled in "${course.title}".`,
-
       type: "course",
-
       courseId: normalizedCourseId,
-
       link: `/dashboard/course/${normalizedCourseId}`,
     });
 
-    /* ======================================================
-       SUCCESS
-    ====================================================== */
-
     return {
       success: true,
-
       enrollmentId: enrollment.id,
-
       course,
-
       message: `Successfully enrolled in "${course.title}".`,
     };
   } catch (error) {
@@ -724,85 +705,7 @@ export const enrollStudent = async (firebaseUid, email, courseId) => {
 
     return {
       success: false,
-
-      message:
-        error?.message ||
-        "Enrollment failed. Please try again.",
+      message: error?.message || "Enrollment failed. Please try again.",
     };
   }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

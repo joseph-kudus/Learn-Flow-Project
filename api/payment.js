@@ -68,6 +68,12 @@ const MOBILE_MONEY_OPTIONS = {
     countryCode: "221",
     networks: ["ORANGEMONEY", "WAVE"],
   },
+  SP: {
+    name: "South Sudan",
+    currency: "SSP",
+    countryCode: "211",
+    network: ["MTN", "ZAIN", "DIGITEL"],
+  },
 };
 
 export default async function handler(req, res) {

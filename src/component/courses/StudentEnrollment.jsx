@@ -8,6 +8,7 @@ import {
 } from "../../services/allEnrollments";
 import { useAuth } from "../../context/AuthContext";
 import CourseCard from "./CourseCard";
+import CoursePayment from "../payment/CoursePayment";
 import "../../styles/learnerdashboard.css";
 
 const StudentEnrollment = ({
@@ -30,6 +31,13 @@ const StudentEnrollment = ({
   const [availableCourses, setAvailableCourses] = useState([]);
   const [coursesLoading, setCoursesLoading] = useState(true);
   const [loading, setLoading] = useState(!enrollmentDataProp);
+
+  // ======================================================
+  // PAYMENT
+  // ======================================================
+
+  const [paymentCourse, setPaymentCourse] = useState(null);
+  const [paymentLoading, setPaymentLoading] = useState(false);
 
   const enrollmentData = enrollmentDataProp ?? enrollmentDataInternal;
   const setEnrollmentData = setEnrollmentDataProp ?? setEnrollmentDataInternal;
@@ -97,67 +105,8 @@ const StudentEnrollment = ({
   }, [currentUser, enrollmentDataProp, setMyCourseIds, setEnrollmentData]);
 
   /* ======================================================
-     ENROLL
-  ====================================================== */
-
-  const handleEnroll = async (courseId) => {
-    if (!currentUser || !userData) {
-      alert("Please login first.");
-      return;
-    }
-
-    try {
-      setEnrollingId(courseId);
-
-      const result = await enrollStudent(
-        currentUser.uid,
-        userData.email,
-        courseId,
-      );
-
-      alert(result.message);
-
-      if (result.success) {
-        /*
-         * If parent provides refresh, let parent remain
-         * the single source of truth.
-         */
-        if (onRefresh) {
-          await onRefresh();
-        } else {
-          /*
-           * Otherwise refresh enrollment data locally.
-           */
-          const [ids, details] = await Promise.all([
-            getUserEnrollments(currentUser.uid),
-            getEnrollmentDetails(currentUser.uid),
-          ]);
-
-          setMyCourseIds?.(ids);
-          setEnrollmentData(details);
-        }
-
-        navigate(`/learn/${courseId}`);
-      }
-    } catch (error) {
-      console.error("Enrollment Error:", error);
-      alert("Enrollment failed.");
-    } finally {
-      setEnrollingId(null);
-    }
-  };
-
-  /* ======================================================
-     RESUME
-  ====================================================== */
-
-  const handleResume = (courseId) => {
-    navigate(`/learn/${courseId}`);
-  };
-
-  /* ======================================================
      NORMALIZE COURSE IDS
-
+     
      Firestore IDs can be strings while static courses
      use numbers.
   ====================================================== */
@@ -185,9 +134,178 @@ const StudentEnrollment = ({
   }, [availableCourses]);
 
   /* ======================================================
-     COURSES TO SHOW
+     COMPLETE ENROLLMENT
+     
+     This function is ONLY called after:
+     
+     - Free course
+     OR
+     - Successful verified payment
+  ====================================================== */
 
-     Now uses BOTH static and published Firestore courses.
+  const completeEnrollment = async (course) => {
+    if (!currentUser || !userData) {
+      alert("Please login first.");
+      return;
+    }
+
+    try {
+      setEnrollingId(course.id);
+
+      const result = await enrollStudent(
+        currentUser.uid,
+        userData.email,
+        course.id,
+      );
+
+      alert(result.message);
+
+      if (result.success) {
+        /*
+         * If parent provides refresh, let parent remain
+         * the single source of truth.
+         */
+        if (onRefresh) {
+          await onRefresh();
+        } else {
+          /*
+           * Otherwise refresh enrollment data locally.
+           */
+          const [ids, details] = await Promise.all([
+            getUserEnrollments(currentUser.uid),
+            getEnrollmentDetails(currentUser.uid),
+          ]);
+
+          setMyCourseIds?.(ids);
+          setEnrollmentData(details);
+        }
+
+        navigate(`/learn/${course.id}`);
+      }
+    } catch (error) {
+      console.error("Enrollment Error:", error);
+      alert("Enrollment failed.");
+    } finally {
+      setEnrollingId(null);
+    }
+  };
+
+  /* ======================================================
+     ENROLL
+     
+     Paid course:
+       -> Open payment
+     
+     Free course:
+       -> Enroll immediately
+  ====================================================== */
+
+  const handleEnroll = async (courseId) => {
+    console.log("ENROLL NOW CLICKED:", courseId);
+    if (!currentUser || !userData) {
+      alert("Please login first.");
+      return;
+    }
+
+    const course = courses.find((item) => String(item.id) === String(courseId));
+
+    if (!course) {
+      console.error("Course not found:", courseId);
+      alert("Course not found.");
+      return;
+    }
+
+    console.log("SELECTED COURSE:", course);
+    console.log("RAW COURSE PRICE:", course.price);
+    
+    const coursePrice = Number(course.price) || 0;
+    
+    console.log("FINAL COURSE PRICE:", coursePrice);
+    
+    // Free course → enroll immediately
+    if (coursePrice <= 0) {
+      await completeEnrollment(course);
+      return;
+    }
+    
+    // Paid course → open payment for this course
+    setPaymentCourse(course);
+  };
+  /* ======================================================
+     PAYMENT SUCCESS
+     
+     CoursePayment only confirms the payment.
+     
+     Enrollment happens HERE.
+  ====================================================== */
+
+  const handlePaymentSuccess = async (verification) => {
+    if (!paymentCourse) {
+      console.error("Payment succeeded but no course was selected.");
+      return;
+    }
+
+    /*
+     * Extra safety check.
+     *
+     * Never enroll unless the server says the payment
+     * was actually verified.
+     */
+    if (!verification?.verified) {
+      console.error("Payment was not verified:", verification);
+      alert("Payment could not be verified. Enrollment was not completed.");
+      return;
+    }
+
+    try {
+      setPaymentLoading(true);
+
+      console.log("PAYMENT VERIFIED - COMPLETING ENROLLMENT:", {
+        courseId: paymentCourse.id,
+        courseTitle: paymentCourse.title,
+        verification,
+      });
+
+      await completeEnrollment(paymentCourse);
+
+      /*
+       * Close payment UI after enrollment attempt.
+       */
+      setPaymentCourse(null);
+    } catch (error) {
+      console.error("Post-payment enrollment failed:", error);
+      alert(
+        "Payment was successful, but enrollment could not be completed. Please contact support.",
+      );
+    } finally {
+      setPaymentLoading(false);
+    }
+  };
+
+  /* ======================================================
+     CANCEL PAYMENT
+  ====================================================== */
+
+  const handleCancelPayment = () => {
+    if (paymentLoading) {
+      return;
+    }
+
+    setPaymentCourse(null);
+  };
+
+  /* ======================================================
+     RESUME
+  ====================================================== */
+
+  const handleResume = (courseId) => {
+    navigate(`/learn/${courseId}`);
+  };
+
+  /* ======================================================
+     COURSES TO SHOW
+     
+     Uses BOTH static and published Firestore courses.
   ====================================================== */
 
   const coursesToShow = useMemo(() => {
@@ -234,7 +352,7 @@ const StudentEnrollment = ({
 
     /* ======================================================
        RECOMMENDED
-       
+
        Put Firestore courses first so newly published
        instructor courses can appear in recommendations.
     ====================================================== */
@@ -332,6 +450,37 @@ const StudentEnrollment = ({
           </div>
         )}
       </div>
+
+      {/* ==================================================
+          PAYMENT
+          
+          Only appears after the user selects a paid course.
+         ================================================== */}
+
+      {paymentCourse && (
+        <div className="course-payment-section">
+          <CoursePayment
+            courseId={paymentCourse.id}
+            courseTitle={paymentCourse.title}
+            amount={Number(paymentCourse.price) || 0}
+            currency="USD"
+            onSuccess={handlePaymentSuccess}
+          />
+
+          {!paymentLoading && (
+            <button
+              type="button"
+              onClick={handleCancelPayment}
+              style={{
+                marginTop: "10px",
+                cursor: "pointer",
+              }}
+            >
+              Cancel Payment
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };

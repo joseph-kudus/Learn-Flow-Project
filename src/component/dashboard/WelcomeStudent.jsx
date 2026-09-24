@@ -11,7 +11,7 @@ import StudentEnrollment from "../../component/courses/StudentEnrollment";
 import Button from "../ui/Button/Button";
 
 import { getCourses } from "../../services/course/courseService";
-import CoursePayment from "../payment/CoursePayment";
+
 
 const WelcomeStudent = ({
   user,
@@ -253,15 +253,7 @@ const WelcomeStudent = ({
 
   return (
     <section className="content-section">
-      <CoursePayment
-        courseId="test-course-1"
-        courseTitle="LearnFlow Test Course"
-        amount={10}
-        currency="USD"
-        onSuccess={(data) => {
-          console.log("PAYMENT TEST SUCCESS:", data);
-        }}
-      />
+      
       <div className="welcome-banner">
         <div className="greet-banner">
           <h1>Hello {firstnamedisplay}</h1>

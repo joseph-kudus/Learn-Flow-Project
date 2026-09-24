@@ -95,7 +95,10 @@ const CourseCard = ({
               variant="primary"
               className="btn-enroll"
               loading={loading}
-              onClick={() => onEnroll?.(item.id)}
+              onClick={() => {
+                console.log("COURSE CARD ENROLL CLICKED:", item.id);
+                onEnroll?.(item.id);
+              }}
             >
               Enroll Now
             </Button>

@@ -8,6 +8,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import { IoIosMore } from "react-icons/io";
 
 import "../../styles/explore.css";
+import CoursePayment from "../payment/CoursePayment";
 
 import {
   enrollStudent,
@@ -64,6 +65,9 @@ const Explore = () => {
   const [recommendedFilter, setRecommendedFilter] = useState("ALL");
 
   const categories = ["ALL", "CODING", "PROGRAMMING", "MORE"];
+
+  const [paymentCourse, setPaymentCourse] = useState(null);
+  const [paymentLoading, setPaymentLoading] = useState(false);
 
   /* ======================================================
      LOAD AVAILABLE COURSES
@@ -123,13 +127,87 @@ const Explore = () => {
       return;
     }
 
-    setEnrollingId(courseId);
+    const course = courses.find((item) => String(item.id) === String(courseId));
+
+    if (!course) {
+      console.error("Course not found:", courseId);
+      alert("Course not found.");
+      return;
+    }
+
+    const coursePrice = Number(course.price) || 0;
+
+    // Free course → enroll immediately
+    if (coursePrice <= 0) {
+      setEnrollingId(courseId);
+
+      try {
+        const result = await enrollStudent(
+          currentUser.uid,
+          userData.email,
+          course.id,
+        );
+
+        alert(result.message);
+
+        if (result.success) {
+          const [ids, details] = await Promise.all([
+            getUserEnrollments(currentUser.uid),
+            getEnrollmentDetails(currentUser.uid),
+          ]);
+
+          setMyCourseIds(ids);
+          setEnrollmentData(details);
+
+          navigate(`/learn/${course.id}`);
+        }
+      } catch (error) {
+        console.error("Enrollment failed:", error);
+        alert("Enrollment failed.");
+      } finally {
+        setEnrollingId(null);
+      }
+
+      return;
+    }
+
+    // Paid course → open payment
+    console.log("PAID COURSE SELECTED:", {
+      courseId: course.id,
+      courseTitle: course.title,
+      price: coursePrice,
+    });
+
+    setPaymentCourse(course);
+  };
+
+  const handlePaymentSuccess = async (verification) => {
+    if (!paymentCourse) {
+      console.error("Payment succeeded but no course was selected.");
+      return;
+    }
+
+    if (!verification?.verified) {
+      console.error("Payment was not verified:", verification);
+      alert("Payment could not be verified. Enrollment was not completed.");
+      return;
+    }
 
     try {
+      setPaymentLoading(true);
+
+      console.log("PAYMENT VERIFIED - COMPLETING ENROLLMENT:", {
+        courseId: paymentCourse.id,
+        courseTitle: paymentCourse.title,
+        verification,
+      });
+
+      setEnrollingId(paymentCourse.id);
+
       const result = await enrollStudent(
         currentUser.uid,
         userData.email,
-        courseId,
+        paymentCourse.id,
       );
 
       alert(result.message);
@@ -143,16 +221,27 @@ const Explore = () => {
         setMyCourseIds(ids);
         setEnrollmentData(details);
 
-        navigate(`/learn/${courseId}`);
+        setPaymentCourse(null);
+
+        navigate(`/learn/${paymentCourse.id}`);
       }
     } catch (error) {
-      console.error(error);
-      alert("Enrollment failed.");
+      console.error("Post-payment enrollment failed:", error);
+
+      alert(
+        "Payment was successful, but enrollment could not be completed. Please contact support.",
+      );
     } finally {
+      setPaymentLoading(false);
       setEnrollingId(null);
     }
   };
 
+  const handleCancelPayment = () => {
+    if (paymentLoading) return;
+
+    setPaymentCourse(null);
+  };
   /* ======================================================
      NORMALIZE COURSES
 
@@ -249,6 +338,30 @@ const Explore = () => {
 
   return (
     <div className="explore-page">
+      {paymentCourse && (
+        <div className="course-payment-section">
+          <CoursePayment
+            courseId={paymentCourse.id}
+            courseTitle={paymentCourse.title}
+            amount={Number(paymentCourse.price) || 0}
+            currency="USD"
+            onSuccess={handlePaymentSuccess}
+          />
+
+          {!paymentLoading && (
+            <button
+              type="button"
+              onClick={handleCancelPayment}
+              style={{
+                marginTop: "10px",
+                cursor: "pointer",
+              }}
+            >
+              Cancel Payment
+            </button>
+          )}
+        </div>
+      )}
       <div className="categories_container">
         <CourseSection
           title="Trending Courses"

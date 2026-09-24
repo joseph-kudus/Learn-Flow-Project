@@ -25,6 +25,7 @@ export const allEnrollments = [
     category: "Management",
     image: courseImages[1],
     video: "/videos/people-management.mp4",
+    price: 10,
     description:
       "Beginner's Guide to becoming a professional frontend developer.",
     durationWeeks: 8,
@@ -58,6 +59,7 @@ export const allEnrollments = [
     category: "BLOCKCHAIN",
     image: courseImages[2],
     video: "/videos/advance-rush.mp4",
+    price: 10,
     description:
       "Learn blockchain development from beginner to advanced level.",
     durationWeeks: 7,
@@ -93,6 +95,7 @@ export const allEnrollments = [
     description:
       "Build intelligent robotics and machine learning applications.",
     durationWeeks: 12,
+    price:20,
     lessons: [
       {
         title: "Introduction to Robotics",
@@ -124,6 +127,7 @@ export const allEnrollments = [
     image: courseImages[4],
     description: "Learn Python programming from absolute beginner level.",
     durationWeeks: 6,
+    price: 20,
     lessons: [
       {
         title: "Python Introduction",
@@ -155,6 +159,7 @@ export const allEnrollments = [
     image: courseImages[5],
     description: "Master JavaScript fundamentals for web development.",
     durationWeeks: 7,
+    price: 14,
     lessons: [
       {
         title: "JavaScript Introduction",
@@ -186,6 +191,7 @@ export const allEnrollments = [
     image: courseImages[6],
     description: "Introduction to penetration testing and cybersecurity.",
     durationWeeks: 9,
+    price: 10,
     totalLessons: 28,
     lessons: [
       {
@@ -238,6 +244,7 @@ export const allEnrollments = [
     description: "Learn object-oriented programming using C++.",
     durationWeeks: 8,
     totalLessons: 24,
+    price: 10,
     lessons: [
       {
         title: "The Introduction",
@@ -276,6 +283,7 @@ export const allEnrollments = [
     description: "Understand programming fundamentals and logical thinking.",
     durationWeeks: 5,
     totalLessons: 18,
+    price: 10,
     lessons: [
       {
         title: "Coming Soon",
@@ -296,6 +304,7 @@ export const allEnrollments = [
     description: "Learn the C programming language from scratch.",
     durationWeeks: 6,
     totalLessons: 21,
+    price: 18,
     lessons: [
       {
         title: "Coming Soon",
@@ -316,6 +325,7 @@ export const allEnrollments = [
     description: "Become a frontend JavaScript developer.",
     durationWeeks: 8,
     totalLessons: 26,
+    price: 21,
     lessons: [
       {
         title: "Coming Soon",
@@ -335,6 +345,7 @@ export const allEnrollments = [
     image: courseImages[11],
     description: "Build modern React applications.",
     durationWeeks: 8,
+    price: 31,
     totalLessons: 25,
     lessons: [
       {
@@ -356,6 +367,7 @@ export const allEnrollments = [
     description: "Develop backend web applications using Python.",
     durationWeeks: 10,
     totalLessons: 34,
+    price: 40,
     lessons: [
       {
         title: "Coming Soon",
@@ -376,6 +388,7 @@ export const allEnrollments = [
     description:
       "Software engineering is the systematic process of designing, building, testing, and maintaining computer programs. Core pillars include learning programming languages like Python or JavaScript, mastering data structures, and practicing version control.",
     durationWeeks: 14,
+    price: 80,
     totalLessons: 45,
     lessons: [
       {

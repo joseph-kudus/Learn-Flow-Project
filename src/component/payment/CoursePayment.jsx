@@ -64,6 +64,12 @@ const MOBILE_MONEY_OPTIONS = {
     countryCode: "221",
     networks: ["ORANGEMONEY", "WAVE"],
   },
+  SP: {
+    name: "South Sudan",
+    currency: "SSP",
+    countryCode: "211",
+    network: ["MTN", "ZAIN", "DIGITEL"],
+  },
 };
 
 const PENDING_PAYMENT_KEY = "learnflow_pending_payment";

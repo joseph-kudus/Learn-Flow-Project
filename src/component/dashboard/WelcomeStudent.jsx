@@ -1,4 +1,3 @@
-
 import React, { useEffect, useMemo, useState } from "react";
 import { Courseicon } from "../../assets/images/Myimg";
 import { book2 } from "../../assets/images/logos";
@@ -12,6 +11,7 @@ import StudentEnrollment from "../../component/courses/StudentEnrollment";
 import Button from "../ui/Button/Button";
 
 import { getCourses } from "../../services/course/courseService";
+import CoursePayment from "../payment/CoursePayment";
 
 const WelcomeStudent = ({
   user,
@@ -107,9 +107,7 @@ const WelcomeStudent = ({
         .map((category) => category.toUpperCase()),
     );
 
-    const pinnedWithData = PINNED.filter((value) =>
-      existingCats.has(value),
-    );
+    const pinnedWithData = PINNED.filter((value) => existingCats.has(value));
 
     const hasOthers = courseCatalog.some((course) => {
       const category = course?.category?.toUpperCase();
@@ -140,13 +138,7 @@ const WelcomeStudent = ({
   ====================================================== */
 
   const courseMap = useMemo(
-    () =>
-      new Map(
-        courseCatalog.map((course) => [
-          String(course.id),
-          course,
-        ]),
-      ),
+    () => new Map(courseCatalog.map((course) => [String(course.id), course])),
     [courseCatalog],
   );
 
@@ -166,15 +158,10 @@ const WelcomeStudent = ({
           enrollment.status?.toLowerCase() !== "completed",
       )
       .map((enrollment) => {
-        const course = courseMap.get(
-          String(enrollment.courseId),
-        );
+        const course = courseMap.get(String(enrollment.courseId));
 
         if (!course) {
-          console.warn(
-            "Missing course:",
-            enrollment.courseId,
-          );
+          console.warn("Missing course:", enrollment.courseId);
 
           return null;
         }
@@ -185,28 +172,19 @@ const WelcomeStudent = ({
           course.lessons?.length ||
           1;
 
-        const completedLessons =
-          Number(enrollment.completedLessons) || 0;
+        const completedLessons = Number(enrollment.completedLessons) || 0;
 
         const nextLessonIndex =
-          enrollment.nextLessonIndex ??
-          completedLessons ??
-          0;
+          enrollment.nextLessonIndex ?? completedLessons ?? 0;
 
         return {
           id: course.id,
 
           title: course.title,
 
-          category:
-            course.category?.toUpperCase() ||
-            "OTHER",
+          category: course.category?.toUpperCase() || "OTHER",
 
-          img:
-            course.image ||
-            course.imageUrl ||
-            course.img ||
-            Courseicon,
+          img: course.image || course.imageUrl || course.img || Courseicon,
 
           classesCompleted: completedLessons,
 
@@ -218,18 +196,12 @@ const WelcomeStudent = ({
 
           progress: Math.min(
             100,
-            Math.round(
-              (completedLessons / totalLessons) * 100,
-            ),
+            Math.round((completedLessons / totalLessons) * 100),
           ),
         };
       })
       .filter(Boolean);
-  }, [
-    enrollmentData,
-    courseMap,
-    enrollmentsLoading,
-  ]);
+  }, [enrollmentData, courseMap, enrollmentsLoading]);
 
   /* ======================================================
      FILTER COURSES
@@ -242,16 +214,12 @@ const WelcomeStudent = ({
 
     if (activeCategory === "MORE") {
       return enrolledCourses.filter(
-        (course) =>
-          !["CODING", "PROGRAMMING"].includes(
-            course.category,
-          ),
+        (course) => !["CODING", "PROGRAMMING"].includes(course.category),
       );
     }
 
     return enrolledCourses.filter(
-      (course) =>
-        course.category === activeCategory,
+      (course) => course.category === activeCategory,
     );
   }, [activeCategory, enrolledCourses]);
 
@@ -262,13 +230,10 @@ const WelcomeStudent = ({
   const hasActiveCourses = enrolledCourses.length > 0;
 
   const hasEnrollmentHistory =
-    enrollmentData.length > 0 ||
-    completedCourses.length > 0;
+    enrollmentData.length > 0 || completedCourses.length > 0;
 
   const isNewStudent =
-    !enrollmentsLoading &&
-    !hasEnrollmentHistory &&
-    courseCatalog.length > 0;
+    !enrollmentsLoading && !hasEnrollmentHistory && courseCatalog.length > 0;
 
   /* ======================================================
      LOADING UI
@@ -277,9 +242,7 @@ const WelcomeStudent = ({
   if (isLoading) {
     return (
       <section className="content-section">
-        <p className="coursent">
-          Loading courses...
-        </p>
+        <p className="coursent">Loading courses...</p>
       </section>
     );
   }
@@ -290,12 +253,19 @@ const WelcomeStudent = ({
 
   return (
     <section className="content-section">
+      <CoursePayment
+        courseId="test-course-1"
+        courseTitle="LearnFlow Test Course"
+        amount={10}
+        currency="USD"
+        onSuccess={(data) => {
+          console.log("PAYMENT TEST SUCCESS:", data);
+        }}
+      />
       <div className="welcome-banner">
         <div className="greet-banner">
           <h1>Hello {firstnamedisplay}</h1>
-          <p>
-            Let's learn something exciting today!
-          </p>
+          <p>Let's learn something exciting today!</p>
         </div>
 
         <FilterButtons
@@ -317,10 +287,7 @@ const WelcomeStudent = ({
         ) : hasActiveCourses ? (
           filteredCourses.length > 0 ? (
             filteredCourses.map((course) => (
-              <div
-                key={course.id}
-                className="course-card-container"
-              >
+              <div key={course.id} className="course-card-container">
                 <div className="card-header">
                   <img
                     src={course.img}
@@ -331,9 +298,7 @@ const WelcomeStudent = ({
                   <div className="bek">
                     <h3>{course.title}</h3>
 
-                    <span className="card-category">
-                      {course.category}
-                    </span>
+                    <span className="card-category">{course.category}</span>
                   </div>
                 </div>
 
@@ -347,9 +312,7 @@ const WelcomeStudent = ({
                     />
                   </div>
 
-                  <span className="progress-text">
-                    {course.progress}%
-                  </span>
+                  <span className="progress-text">{course.progress}%</span>
                 </div>
 
                 <div className="lessons">
@@ -357,8 +320,7 @@ const WelcomeStudent = ({
                     <img src={book2} alt="ff" />
 
                     <p>
-                      {course.classesCompleted}/
-                      {course.totalClasses} Classes
+                      {course.classesCompleted}/{course.totalClasses} Classes
                     </p>
                   </div>
 
@@ -375,15 +337,11 @@ const WelcomeStudent = ({
                   <Button
                     variant="primary"
                     onClick={() =>
-                      navigate(
-                        `/dashboard/course/${course.id}`,
-                        {
-                          state: {
-                            lessonIndex:
-                              course.nextLessonIndex,
-                          },
+                      navigate(`/dashboard/course/${course.id}`, {
+                        state: {
+                          lessonIndex: course.nextLessonIndex,
                         },
-                      )
+                      })
                     }
                   >
                     Resume Classes
@@ -392,33 +350,23 @@ const WelcomeStudent = ({
                   <Button
                     variant="primary"
                     className="arrow-btn"
-                    rightIcon={
-                      <FaArrowRightLong />
-                    }
+                    rightIcon={<FaArrowRightLong />}
                     onClick={() =>
-                      navigate(
-                        `/dashboard/course/${course.id}`,
-                        {
-                          state: {
-                            lessonIndex:
-                              course.nextLessonIndex,
-                          },
+                      navigate(`/dashboard/course/${course.id}`, {
+                        state: {
+                          lessonIndex: course.nextLessonIndex,
                         },
-                      )
+                      })
                     }
                   />
                 </div>
               </div>
             ))
           ) : (
-            <p className="coursent">
-              No courses in this category.
-            </p>
+            <p className="coursent">No courses in this category.</p>
           )
         ) : (
-          <p className="coursent">
-            No active courses found.
-          </p>
+          <p className="coursent">No active courses found.</p>
         )}
       </div>
 
@@ -430,9 +378,7 @@ const WelcomeStudent = ({
         <div className="table-header">
           <h3>Completed courses</h3>
 
-          <button className="view-all">
-            View All
-          </button>
+          <button className="view-all">View All</button>
         </div>
 
         <table className="courses-table">
@@ -463,31 +409,17 @@ const WelcomeStudent = ({
             ) : (
               completedCourses.map((course) => (
                 <tr key={course.id}>
-                  <td>
-                    {course.code ||
-                      course.courseCode}
-                  </td>
+                  <td>{course.code || course.courseCode}</td>
 
-                  <td>
-                    {course.title ||
-                      course.courseTitle}
-                  </td>
+                  <td>{course.title || course.courseTitle}</td>
 
                   <td>{course.grade}</td>
 
-                  <td>
-                    {course.date ||
-                      course.completedAt}
-                  </td>
+                  <td>{course.date || course.completedAt}</td>
 
                   <td>
-                    <span
-                      className={`status ${course.status}`}
-                    >
-                      {course.status ===
-                      "pass"
-                        ? "Pass"
-                        : "Fail"}
+                    <span className={`status ${course.status}`}>
+                      {course.status === "pass" ? "Pass" : "Fail"}
                     </span>
                   </td>
                 </tr>

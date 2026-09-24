@@ -72,7 +72,7 @@ const MOBILE_MONEY_OPTIONS = {
     name: "South Sudan",
     currency: "SSP",
     countryCode: "211",
-    network: ["MTN", "ZAIN", "DIGITEL"],
+    networks: ["MTN", "ZAIN", "DIGITEL"],
   },
 };
 

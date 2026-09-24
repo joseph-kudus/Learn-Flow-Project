@@ -64,11 +64,12 @@ const MOBILE_MONEY_OPTIONS = {
     countryCode: "221",
     networks: ["ORANGEMONEY", "WAVE"],
   },
+
   SP: {
     name: "South Sudan",
     currency: "SSP",
     countryCode: "211",
-    network: ["MTN", "ZAIN", "DIGITEL"],
+    networks: ["MTN", "ZAIN", "DIGITEL"],
   },
 };
 
@@ -514,13 +515,17 @@ const CoursePayment = ({
 
       if (paymentMethod === "mobile_money" && data?.redirectUrl) {
         console.log(
-          "OPENING FLUTTERWAVE SANDBOX AUTHORIZATION:",
+          "REDIRECTING TO FLUTTERWAVE SANDBOX AUTHORIZATION:",
           data.redirectUrl,
         );
 
         /*
-          Save the payment before opening
-          Flutterwave.
+          Save the payment before leaving
+          LearnFlow.
+
+          This is important because the
+          payment information is needed when
+          the user returns from Flutterwave.
         */
 
         sessionStorage.setItem(PENDING_PAYMENT_KEY, JSON.stringify(data));
@@ -528,31 +533,16 @@ const CoursePayment = ({
         setPendingPayment(data);
 
         /*
-          Open Flutterwave sandbox
-          authorization page.
+          Redirect the current tab to Flutterwave.
+
+          Using location.href instead of
+          window.open prevents browser popup
+          blocking and means the student
+          never needs to find the payment
+          URL in the console.
         */
 
-        const authorizationWindow = window.open(
-          data.redirectUrl,
-          "_blank",
-          "noopener,noreferrer",
-        );
-
-        if (!authorizationWindow) {
-          setError(
-            "Your browser blocked the Flutterwave payment window. Please allow pop-ups and try again.",
-          );
-
-          setLoading(false);
-
-          return;
-        }
-
-        setError(
-          "Payment authorization opened in a new tab. Complete the sandbox payment, then return here.",
-        );
-
-        setLoading(false);
+        window.location.href = data.redirectUrl;
 
         return;
       }
